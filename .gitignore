@@ -36,3 +36,7 @@
 
 # Special file
 ftt
+
+# CMakelists
+CMakeLists.txt
+/cmake-build-debug
