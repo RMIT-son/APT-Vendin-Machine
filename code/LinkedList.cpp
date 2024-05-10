@@ -1,11 +1,23 @@
 #include "LinkedList.h"
 
 LinkedList::LinkedList() {
-   head = nullptr;
-
-   // TODO
+    head = nullptr;
+    count = 0;
 }
 
 LinkedList::~LinkedList() {
-    // TODO
+    clearList();
 }
+
+bool LinkedList::clearList() {
+    Node* current = head;
+    while (current != nullptr) {
+        Node* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
+    count = 0;
+    return true;
+}
+

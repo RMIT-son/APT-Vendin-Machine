@@ -8,14 +8,14 @@ class LinkedList
 public:
     LinkedList();
     ~LinkedList();
-
+    bool clearList();
     // more functions to be added perhaps...
 
 private:
     // the beginning of the list
     Node* head;
   
-    // how many nodes are there in the list?
+    // how many nodes are there in the list
     unsigned count;
 };
 

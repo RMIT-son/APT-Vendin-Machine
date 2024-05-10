@@ -63,7 +63,7 @@ public:
 class Node
 {
 public:
-    Node();
+    Node(FoodItem* data);
     ~Node();
     // pointer to the data held for the node 
     FoodItem* data;
