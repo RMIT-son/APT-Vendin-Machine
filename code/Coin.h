@@ -17,6 +17,9 @@ enum Denomination
 class Coin
 {
 public:
+    Coin(Denomination denom, unsigned count);
+    int getValue() const;
+
     // the denomination type
     enum Denomination denom;
     
