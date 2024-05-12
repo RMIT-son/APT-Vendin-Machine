@@ -22,17 +22,20 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
     std::cout << "Please enter the ID of the food you wish to purchase: ";
     std::getline(std::cin, id);
 
+    // Find the food item with the given ID in the foodList
     Node* node = foodList.find(id);
     if (node == nullptr) {
         std::cout << "Error: Food item with ID " << id << " not found." << std::endl;
         return;
     }
 
+    // Check if the food item is in stock
     if (node->data.on_hand == 0) {
         std::cout << "Error: No more " << node->data.name << " available." << std::endl;
         return;
     }
 
+    // Display the selected food item and prompt the user to enter payment
     std::cout << "You have selected \"" << node->data.name << " - " << node->data.description << "\". This will cost you $"
               << static_cast<double>(node->data.price.dollars) + static_cast<double>(node->data.price.cents) / 100 << "." << std::endl;
     std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
@@ -42,21 +45,25 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
     unsigned denomination;
     std::vector<unsigned> denominations;
     while (true) {
+        // Display the remaining amount to be paid
         std::cout << "You still need to give us $"
                   << std::setw(6) << std::fixed << std::setprecision(2)
                   << static_cast<double>(node->data.price.dollars) + static_cast<double>(node->data.price.cents) / 100 - static_cast<double>(totalPaid) / 100
                   << ": ";
 
+        // Read the next denomination from the user
         if (!(std::cin >> denomination)) {
             std::cout << std::endl << "Purchase cancelled." << std::endl;
             return;
         }
 
+        // Check if the user wants to cancel the purchase
         if (denomination == 0) {
             std::cout << std::endl << "Purchase cancelled." << std::endl;
             return;
         }
 
+        // Validate the entered denomination
         bool validDenom = false;
         for (int i = 0; i < numCoins; i++) {
             if (coins[i].getValue() == static_cast<int>(denomination)) {
@@ -70,13 +77,16 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
             continue;
         }
 
+        // Add the valid denomination to the total paid and the denominations vector
         totalPaid += denomination;
         denominations.push_back(denomination);
 
+        // Check if the total paid is greater than or equal to the price of the food item
         if (totalPaid >= node->data.price.dollars * 100 + node->data.price.cents) {
             unsigned change = totalPaid - (node->data.price.dollars * 100 + node->data.price.cents);
             std::cout << "Your change is ";
 
+            // Dispense the change to the customer
             for (unsigned int i = 0; i < denominations.size(); i++) {
                 unsigned coinValue = denominations[i];
                 unsigned coinCount = change / coinValue;
@@ -96,6 +106,7 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
 }
 
 void displayBalance(const Coin coins[], int numCoins) {
+    // Print the header for the balance summary
     std::cout << "Balance Summary" << std::endl;
     std::cout << "-------------" << std::endl;
     std::cout << std::setw(5) << "Denom" << " | "
@@ -109,9 +120,12 @@ void displayBalance(const Coin coins[], int numCoins) {
         return a.getValue() < b.getValue();
     });
 
+    // Calculate the total balance
     double totalBalance = 0.0;
     for (const Coin& coin : sortedCoins) {
+        // Only display coins with a non-zero quantity
         if (coin.count > 0) {
+            // Print the denomination, quantity, and value of the coin
             std::cout << std::setw(5) << coin.getValue() << " | "
                       << std::setw(7) << std::right << coin.count << " | $ "
                       << std::setw(6) << std::fixed << std::setprecision(2) << std::right
@@ -121,6 +135,7 @@ void displayBalance(const Coin coins[], int numCoins) {
         }
     }
 
+    // Print the total balance
     std::cout << "---------------------------" << std::endl;
     std::cout << std::setw(17) << std::right << "$" << std::setw(6) << std::fixed << std::setprecision(2) << totalBalance << std::endl;
 }
