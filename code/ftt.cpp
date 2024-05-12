@@ -57,7 +57,7 @@ int main(int argc, char **argv)
                 } else if (option == 6) {
                     
                 } else if (option == 7) {
-                    running =false;
+                    running = false;
                 } else {
                     std::cout << "Error: number was outside of range." << std::endl;
                 }
