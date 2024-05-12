@@ -1,6 +1,0 @@
-# ninja log v5
-34	171	7370500118115750	CMakeFiles/APT_Vending_Machine.dir/code/Coin.cpp.obj	b6c0446f3d821b9
-46	356	7370500119957491	CMakeFiles/APT_Vending_Machine.dir/code/Node.cpp.obj	c85e863bb8bc6057
-41	394	7370500120337717	CMakeFiles/APT_Vending_Machine.dir/code/LinkedList.cpp.obj	57bfb820015d6df6
-1	513	7370500121524583	CMakeFiles/APT_Vending_Machine.dir/code/ftt.cpp.obj	47e8b11661676344
-514	762	7370500123972335	APT_Vending_Machine.exe	217976fcb3d97327
