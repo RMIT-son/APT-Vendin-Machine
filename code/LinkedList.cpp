@@ -10,17 +10,11 @@ LinkedList::~LinkedList() {
 }
 
 bool LinkedList::clearList() {
-    bool cleared = false;
-    Node* current = head.get();
-    while (current != nullptr) {
-        Node* next = current->next.get();
-        delete current;
-        current = next;
+    while (head != nullptr) {
+        head = std::move(head->next);
     }
-    head = nullptr;
     count = 0;
-    cleared = true;
-    return cleared;
+    return true;
 }
 
 bool LinkedList::sortList() {
@@ -131,6 +125,10 @@ Node* LinkedList::findNode(const std::string& id) const {
 
 unsigned LinkedList::getCount() const {
     return count;
+}
+
+Node* LinkedList::getHead() {
+    return head.get();
 }
 
 // Path: code/Node.cpp

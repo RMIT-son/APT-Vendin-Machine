@@ -16,7 +16,7 @@ public:
     bool removeNode(std::string& id);
     Node* findNode(const std::string& id) const;
     unsigned getCount() const;
-
+    Node* getHead();
 
 private:
     // the beginning of the list

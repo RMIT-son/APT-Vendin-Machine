@@ -4,9 +4,8 @@
 
 #ifndef FOOD_H
 #define FOOD_H
+#include <fstream>
 #include "LinkedList.h"
-
-
 
 
 class Food {
@@ -37,23 +36,54 @@ public:
      *@param id The id of the food item to be purchased.
      *@return True if the food item was purchased successfully, false otherwise.
      */
-    bool purchaseFood(std::string& id);
+    bool removeFood(std::string& id);
 
     /**
-     *@brief Restock a food item in the food object
-     *@details This function will restock a food item in the food object.
-     *@param id The id of the food item to be restocked.
-     *@return True if the food item was restocked successfully, false otherwise.
+     *@brief Sort the food items in the food object
+     *@details This function will sort the food items in the food object.
      */
     bool sortFood();
+
+    /**
+     *@brief Clear all the food items from the food object
+     *@details This function will clear all the food items from the food object.
+     */
     bool clearFood();
-    bool removeFood(std::string& id);
+
+    /**
+     *@brief Find a food item in the food object
+     *@details This function will find a food item in the food object.
+     *@param id The id of the food item to be found.
+     *@return A pointer to the food item if it was found, nullptr otherwise.
+     */
     FoodItem* findFood(const std::string& id) const;
+
+    /**
+     *@brief Get the number of food items in the food object
+     *@details This function will return the number of food items in the food object.
+     *@return The number of food items in the food object.
+     */
     unsigned getFoodCount() const;
-    LinkedList readFromFile(const std::string& filename);
+
+    /**
+     *@brief Read food items from a file
+     *@details This function will read food items from a file and add them to the food object.
+     *@param filename The name of the file to read the food items from.
+     */
+    void readFromFile(const std::string& filename);
+
+    /**
+     *@brief Write food items to a file
+     *@details This function will write the food items in the food object to a file.
+     *@param filename The name of the file to write the food items to.
+     *@return True if the food items were written successfully, false otherwise.
+     */
     bool writeToFile(const std::string& filename);
 private:
-
+    // the beginning of the list
+    LinkedList foodList;
+    // how many nodes are there in the list
+    unsigned count = 0;
 };
 
 
