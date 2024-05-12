@@ -49,7 +49,7 @@ int main(int argc, char **argv)
                 } else if (option == 2) {
 
                 } else if (option == 3) {
-                    
+                    running = false;
                 } else if (option == 4) {
                     
                 } else if (option == 5) {
