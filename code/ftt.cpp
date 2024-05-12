@@ -1,4 +1,7 @@
 #include <iostream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
 #include "LinkedList.h"
 
 /**
@@ -81,23 +84,23 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
     std::getline(std::cin, id);
 
     // Find the food item with the given ID in the foodList
-    Node* node = foodList.find(id);
+    Node* node = foodList.findNode(id);
     if (node == nullptr) {
         std::cout << "Error: Food item with ID " << id << " not found." << std::endl;
         return;
     }
 
     // Check if the food item is in stock
-    if (node->data.on_hand == 0) {
-        std::cout << "Error: No more " << node->data.name << " available." << std::endl;
+    if (node->data->on_hand == 0) {
+        std::cout << "Error: No more " << node->data->name << " available." << std::endl;
         return;
     }
 
     // Display the selected food item and prompt the user to enter payment
-    std::cout << "You have selected \"" << node->data.name << " - " << node->data.description << "\". This will cost you $"
-              << static_cast<double>(node->data.price.dollars) + static_cast<double>(node->data.price.cents) / 100 << "." << std::endl;
+    std::cout << "You have selected \"" << node->data->name << " - " << node->data->description << "\". This will cost you $"
+              << static_cast<double>(node->data->price.dollars) + static_cast<double>(node->data->price.cents) / 100 << "." << std::endl;
     std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
-    std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase." << std::endl;
+    std::cout << "Please enter 0 or press Enter on a new line to cancel this purchase." << std::endl;
 
     unsigned totalPaid = 0;
     unsigned denomination;
@@ -106,7 +109,7 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
         // Display the remaining amount to be paid
         std::cout << "You still need to give us $"
                   << std::setw(6) << std::fixed << std::setprecision(2)
-                  << static_cast<double>(node->data.price.dollars) + static_cast<double>(node->data.price.cents) / 100 - static_cast<double>(totalPaid) / 100
+                  << static_cast<double>(node->data->price.dollars) + static_cast<double>(node->data->price.cents) / 100 - static_cast<double>(totalPaid) / 100
                   << ": ";
 
         // Read the next denomination from the user
@@ -140,8 +143,8 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
         denominations.push_back(denomination);
 
         // Check if the total paid is greater than or equal to the price of the food item
-        if (totalPaid >= node->data.price.dollars * 100 + node->data.price.cents) {
-            unsigned change = totalPaid - (node->data.price.dollars * 100 + node->data.price.cents);
+        if (totalPaid >= node->data->price.dollars * 100 + node->data->price.cents) {
+            unsigned change = totalPaid - (node->data->price.dollars * 100 + node->data->price.cents);
             std::cout << "Your change is ";
 
             // Dispense the change to the customer
@@ -156,7 +159,7 @@ void purchaseMeal(LinkedList& foodList, Coin coins[], int numCoins) {
             }
 
             std::cout << std::endl;
-            node->data.on_hand--;
+            node->data->on_hand--;
             std::cout << "Thank you for your purchase!" << std::endl;
             return;
         }
