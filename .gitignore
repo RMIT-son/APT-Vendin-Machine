@@ -40,3 +40,7 @@ ftt
 # CMakelists
 CMakeLists.txt
 /cmake-build-debug
+
+# IDE
+/.vscode
+/.idea
