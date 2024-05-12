@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
-#include <string> 
+#include <string>
+#include <memory>
 #include "Coin.h"
 
 
@@ -64,11 +65,12 @@ class Node
 {
 public:
     Node();
+    explicit Node(std::shared_ptr<FoodItem> data);
     ~Node();
     // pointer to the data held for the node 
-    FoodItem* data;
+    std::shared_ptr<FoodItem> data{};
     // pointer to the next node in the list 
-    Node* next;
+    std::unique_ptr<Node> next;
 };
 
 #endif // NODE_H

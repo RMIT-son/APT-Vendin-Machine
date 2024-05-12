@@ -1,5 +1,4 @@
 #include "Coin.h"
- 
  // implement functions for managing coins
  Coin::Coin(Denomination denom, unsigned count) {
      this->denom = denom;
@@ -29,3 +28,5 @@ int Coin::getValue() const {
         return 0;
     }
 }
+
+// implement functions for managing coins; this may depend on your design.
