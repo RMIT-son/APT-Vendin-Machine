@@ -1,10 +1,15 @@
 #include "Node.h"
 
-Node::Node(FoodItem* data) {
+Node::Node() {
+    this->data = nullptr;
+    this->next = nullptr;
+}
+
+Node::Node(std::shared_ptr<FoodItem> data) {
     this->data = data;
     this->next = nullptr;
 }
 
 Node::~Node(){
-    delete data;
+    next = nullptr;
 }
