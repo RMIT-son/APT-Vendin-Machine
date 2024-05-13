@@ -15,6 +15,7 @@ class Helper {
 public:
     static Price readPrice(const std::string& priceStr);
     static std::string priceToString(const Price& price);
+    static bool isValidPrice(const std::string& priceStr);
 };
 
 
