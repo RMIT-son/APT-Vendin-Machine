@@ -91,6 +91,7 @@ private:
     LinkedList foodList;
     // how many nodes are there in the list
     unsigned count = 0;
+    unsigned nodesBeenExisted = 0;
 };
 
 

@@ -117,7 +117,7 @@ void addFood(Food& foodList) {
 
         bool priceValid = true;
         while (priceValid) {
-            std::cout << "Enter the price for this item (in cents): ";
+            std::cout << "Enter the price for this item: ";
             std::string foodPrice = readInput();
             if(Helper::isValidPrice(foodPrice)) {
                 running = false;
