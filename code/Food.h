@@ -4,9 +4,11 @@
 
 #ifndef FOOD_H
 #define FOOD_H
+#define FOOD_DELIM '|'
 #include <fstream>
 #include "LinkedList.h"
 #include "Helper.h"
+
 
 
 class Food {
