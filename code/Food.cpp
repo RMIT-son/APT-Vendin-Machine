@@ -4,6 +4,8 @@
 
 #include "Food.h"
 
+#include <unordered_set>
+
 Food::Food() {
     // Initialize the Food LinkedList
     count = 0;
@@ -90,6 +92,34 @@ bool Food::writeToFile(const std::string& filename) {
 
 Node* Food::getHead() {
     return foodList.getHead();
+}
+
+std::string Food::generateID() {
+    std::unordered_set<int> idSet;
+    Node* current = foodList.getHead();
+
+    // Traverse the linked list and store all IDs in the set
+    while (current != nullptr) {
+        int numericId = std::stoi(current->data->id.substr(1));  // Skip the first character 'F'
+        idSet.insert(numericId);
+        current = current->next.get();
+    }
+
+    // Find the smallest non-existent ID
+    int newId = 1;
+    while (idSet.find(newId) != idSet.end()) {
+        newId++;
+    }
+
+    // Convert newId to string and pad with leading zeros if necessary
+    std::string newIdStr = std::to_string(newId);
+    while (newIdStr.length() < 4) {  // Assuming IDs have 4 digits
+        newIdStr.insert(newIdStr.begin(), '0');
+    }
+
+    // Add 'F' prefix and return
+    newIdStr.insert(newIdStr.begin(), 'F');
+    return newIdStr;
 }
 
 
