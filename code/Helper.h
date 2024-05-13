@@ -29,6 +29,7 @@ public:
      */
     static std::string priceToString(const Price& price);
     static bool isValidPrice(const std::string& priceStr);
+    static bool isValidDenomination(const std::string& priceStr);
 };
 
 

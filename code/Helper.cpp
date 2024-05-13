@@ -3,11 +3,14 @@
 //
 
 #include "Helper.h"
+#include "Coin.h"
 #include <string>
 #include <sstream>
 #include <cctype>
 #include <algorithm>
 #include <iostream>
+#include <vector>
+#include <map>
 
 Price Helper::readPrice(const std::string& priceStr) {
     // Read the price from a string
@@ -57,4 +60,34 @@ bool Helper::isValidPrice(const std::string& priceStr) {
     }
 
     return true; // String can be converted to Price
+}
+
+bool Helper::isValidDenomination(const std::string& priceStr) {
+    try {
+        // Convert the priceStr to an integer
+        int value = std::stoi(priceStr);
+
+        // Check if the integer value corresponds to any of the defined denomination values
+        switch (value) {
+            case FIVE_CENTS_VALUE:
+            case TEN_CENTS_VALUE:
+            case TWENTY_CENTS_VALUE:
+            case FIFTY_CENTS_VALUE:
+            case ONE_DOLLAR_VALUE:
+            case TWO_DOLLARS_VALUE:
+            case FIVE_DOLLARS_VALUE:
+            case TEN_DOLLARS_VALUE:
+            case TWENTY_DOLLARS_VALUE:
+            case FIFTY_DOLLARS_VALUE:
+                return true;
+            default:
+                return false;
+        }
+    } catch (const std::invalid_argument& e) {
+        // If the string is not a valid integer, return false
+        return false;
+    } catch (const std::out_of_range& e) {
+        // If the integer conversion results in an out of range error, also return false
+        return false;
+    }
 }
