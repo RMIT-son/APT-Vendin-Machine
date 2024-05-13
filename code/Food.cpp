@@ -55,10 +55,10 @@ void Food::readFromFile(const std::string& filename) {
     while (std::getline(file, line)) {
         std::istringstream iss(line);
         std::string id, name, description, priceStr;
-        std::getline(iss, id, '|');
-        std::getline(iss, name, '|');
-        std::getline(iss, description, '|');
-        std::getline(iss, priceStr, '|');
+        std::getline(iss, id, FOOD_DELIM);
+        std::getline(iss, name, FOOD_DELIM);
+        std::getline(iss, description, FOOD_DELIM);
+        std::getline(iss, priceStr, FOOD_DELIM);
         Price price = Helper::readPrice(priceStr); // Convert double to Price
         std::shared_ptr<FoodItem> item = std::make_shared<FoodItem>();
         item->id = id;
@@ -78,9 +78,9 @@ bool Food::writeToFile(const std::string& filename) {
     }
     Node* current = foodList.getHead(); // Use a getter method here
     while (current != nullptr) {
-        file << current->data->id << "|"
-             << current->data->name << "|"
-             << current->data->description << "|"
+        file << current->data->id << FOOD_DELIM
+             << current->data->name << FOOD_DELIM
+             << current->data->description << FOOD_DELIM
              << Helper::priceToString(current->data->price) << std::endl;
         current = current->next.get();
     }
