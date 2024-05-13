@@ -28,6 +28,7 @@ public:
      * @return The string representation of the price.
      */
     static std::string priceToString(const Price& price);
+    static bool isValidPrice(const std::string& priceStr);
 };
 
 

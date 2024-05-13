@@ -55,7 +55,7 @@ public:
     Price price;
     
     // how many of this food item do we have on hand? 
-    unsigned on_hand;    
+    unsigned on_hand = DEFAULT_FOOD_STOCK_LEVEL;    
 };
 
 /**
