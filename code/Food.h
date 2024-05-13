@@ -84,6 +84,13 @@ public:
     bool writeToFile(const std::string& filename);
 
     /**
+     * @brief Generate a unique ID for a food item
+     * @details This function will generate the smallest unique ID for a food item.
+     * @return String containing the unique ID
+     */
+    std::string generateID();
+
+    /**
      * @brief Get the head of the list
      * @return The head of the list
      */
