@@ -71,6 +71,35 @@ void displayFoodMenu(Food &foodList)
     }
 }
 
+void processPayment(FoodItem* foodItem, CoinManager& coinManager, unsigned int& totalPaid, const std::string& denomination) {
+    Denomination denom = coinManager.getDenomination(std::stoi(denomination));
+    coinManager.addCoin(denom, 1); // Adding the money to the machine
+    totalPaid += std::stoi(denomination);
+
+    if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
+        unsigned change = totalPaid - (foodItem->price.dollars * 100 + foodItem->price.cents);
+        // Calculate and dispense change
+        std::vector<Denomination> changeDenominations = coinManager.calculateChange(change);
+        coinManager.dispenseCoins(changeDenominations); // Decrement the counts
+
+        std::cout << "Your change is ";
+        for (auto denom : changeDenominations) {
+            unsigned int value = coinManager.getValue(denom);
+            if (value >= 100) {
+                std::cout << "$" << value / 100; // Divides by 100 to convert cents to dollars
+            } else {
+                std::cout << value << "c"; // For values less than 100, display as cents
+            }
+            std::cout << " "; // Add a space after each denomination for separation
+        }
+        std::cout << std::endl; // New line after listing all denominations
+        std::cout << std::endl;
+
+        foodItem->on_hand--;
+        std::cout << "Thank you for your purchase!" << std::endl;
+    }
+}
+
 void purchaseMeal(Food &foodList, CoinManager &coinManager)
 { // Added CoinManager reference
     bool running = true;
@@ -81,7 +110,7 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
         std::cout << "Please enter the ID of the food you wish to purchase: ";
         std::string id = readInput();
         if (!std::cin.eof()) {
-        FoodItem *foodItem = foodList.findFood(id);
+            FoodItem *foodItem = foodList.findFood(id);
             if (foodItem == nullptr)
             {
                 std::cout << "Item not found. Please check the food ID and try again." << std::endl;
@@ -133,35 +162,10 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                             }
                             else
                             {
-                                Denomination denom = coinManager.getDenomination(std::stoi(denomination));
-                                coinManager.addCoin(denom, 1); // Adding the money to the machine
-                                totalPaid += std::stoi(denomination);
-                                if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents)
-                                {
-                                    unsigned change = totalPaid - (foodItem->price.dollars * 100 + foodItem->price.cents);
-                                    // Calculate and dispense change
-                                    std::vector<Denomination> changeDenominations = coinManager.calculateChange(change);
-                                    coinManager.dispenseCoins(changeDenominations); // Decrement the counts
-                                    std::cout << "Your change is ";
-                                    for (auto denom : changeDenominations)
-                                    {
-                                        unsigned int value = coinManager.getValue(denom);
-                                        if (value >= 100)
-                                        {                                    // This assumes that any value 100 cents or higher should be displayed in dollars
-                                            std::cout << "$" << value / 100; // Divides by 100 to convert cents to dollars
-                                        }
-                                        else
-                                        {
-                                            std::cout << value << "c"; // For values less than 100, display as cents
-                                        }
-                                        std::cout << " "; // Add a space after each denomination for separation
-                                    }
-                                    std::cout << std::endl; // New line after listing all denominations
-                                    std::cout << std::endl;
-                                    foodItem->on_hand--;
-                                    std::cout << "Thank you for your purchase!" << std::endl;
-                                    running = false;
+                                processPayment(foodItem, coinManager, totalPaid, denomination);
+                                if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
                                     denominating = false;
+                                    running = false;
                                 }
                             }
                         }
