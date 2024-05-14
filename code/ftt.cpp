@@ -184,29 +184,47 @@ void addFood(Food &foodList)
     while (running)
     {
         std::string newId;
+        std::string newFoodName;
+        std::string newFoodDescription;
         newId = foodList.generateID();
         std::cout << "This new meal item will have the Item ID of " << newId << std::endl;
-        std::cout << "Enter the item name: ";
-        std::string foodName = readInput();
-        if (std::cin.eof() || foodName == "")
+        
+        bool nameValid = true;
+        while (nameValid)
         {
-            std::cin.clear();
-            // running = false;
-            std::cout << "Option cancelled, returning to menu." << std::endl;
-            break;
+            std::cout << "Enter the item name: ";
+            std::string foodName = readInput();
+            if (Helper::isValidName(foodName)) {
+                newFoodName = foodName;
+                nameValid = false;
+            }    
+            if (std::cin.eof() || foodName == "")
+            {
+                std::cin.clear();
+                // running = false;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
+                break;
+            }
         }
-
-        std::cout << "Enter the item description: ";
-        std::string foodDescription = readInput();
-
-        if (std::cin.eof() || foodDescription == "")
+        
+        bool descriptionValid = true;
+        while (descriptionValid) 
         {
-            std::cin.clear();
-            // running = false;
-            std::cout << "Option cancelled, returning to menu." << std::endl;
-            break;
+            std::cout << "Enter the item description: ";
+            std::string foodDescription = readInput();
+            if (Helper::isValidDescription(foodDescription)) {
+                newFoodDescription = foodDescription;
+                descriptionValid = false;
+            }
+            if (std::cin.eof() || foodDescription == "")
+            {
+                std::cin.clear();
+                // running = false;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
+                break;
+            }
         }
-
+        
         bool priceValid = true;
         while (priceValid)
         {
@@ -218,14 +236,10 @@ void addFood(Food &foodList)
                 priceValid = false;
                 std::shared_ptr<FoodItem> newFood = std::make_shared<FoodItem>();
                 newFood->id = newId;
-                newFood->name = foodName;
-                newFood->description = foodDescription;
+                newFood->name = newFoodName;
+                newFood->description = newFoodDescription;
                 newFood->price = Helper::readPrice(foodPrice);
                 foodList.addFood(newFood);
-            }
-            else
-            {
-                std::cout << "Error: money is not formatted properly" << std::endl;
             }
         }
     }
@@ -315,8 +329,8 @@ int main(int argc, char **argv)
                 else if (option == 3)
                 {
                     running = false;
-                    foodList.writeToFile(foodFile);
-                    manager.writeToFile(coinFile);
+                    // foodList.writeToFile(foodFile);
+                    // manager.writeToFile(coinFile);
                 }
                 else if (option == 4)
                 {

@@ -4,6 +4,7 @@
 
 #include "Helper.h"
 #include "Coin.h"
+#include "Node.h"
 #include <string>
 #include <sstream>
 #include <cctype>
@@ -32,6 +33,15 @@ std::string Helper::priceToString(const Price& price) {
     return oss.str();
 }
 
+bool canDispenseCents(int cents, const std::vector<int>& denominations) {
+    for (const int denom : denominations) {
+        while (cents >= denom) {
+            cents -= denom;
+        }
+    }
+    return cents == 0;
+}
+
 bool Helper::isValidPrice(const std::string& priceStr) {
     std::istringstream iss(priceStr);
     std::string dollarStr, centStr;
@@ -42,8 +52,14 @@ bool Helper::isValidPrice(const std::string& priceStr) {
     }
 
     // Read cents part
-    if (!std::getline(iss, centStr) || centStr.length() != 2) {
+    if (!std::getline(iss, centStr)) {
+        std::cout << "Error: money is not formatted properly" << std::endl;
         return false; // Nothing after the dot or not exactly two digits for cents
+    }
+
+    if(centStr.length() != 2) {
+        std::cout << "Error: there are not two digits for cents." << std::endl;
+        return false;
     }
 
     // Check if dollarStr and centStr are numeric
@@ -52,11 +68,19 @@ bool Helper::isValidPrice(const std::string& priceStr) {
         return false; // Non-digit characters found
     }
 
+    // Convert cents to integer
+    int cents;
     try {
-        std::stoi(dollarStr);
-        std::stoi(centStr);
+        cents = std::stoi(centStr);
     } catch(const std::exception&) {
         return false; // Conversion to integer failed
+    }
+
+    // Check if cents can be dispensed
+    std::vector<int> denominations = {FIFTY_DOLLARS_VALUE, TWENTY_DOLLARS_VALUE, TEN_DOLLARS_VALUE, FIVE_DOLLARS_VALUE, TWO_DOLLARS_VALUE, ONE_DOLLAR_VALUE, FIFTY_CENTS_VALUE, TWENTY_CENTS_VALUE, TEN_CENTS_VALUE, FIVE_CENTS_VALUE};
+    if (!canDispenseCents(cents, denominations)) {
+        std::cout << "Error: price is not a valid denomination." << std::endl;
+        return false; // Cannot dispense the exact cents amount
     }
 
     return true; // String can be converted to Price
@@ -90,4 +114,32 @@ bool Helper::isValidDenomination(const std::string& priceStr) {
         // If the integer conversion results in an out of range error, also return false
         return false;
     }
+}
+
+bool Helper::isValidName(const std::string& name) {
+    bool isValid = true;
+    if (name.length() > NAMELEN) {
+        std::cout << "The maximum length of a food item name is 40 characters" << std::endl;
+        isValid = false;
+    }
+    
+    if (name.find('|') != std::string::npos) {
+        std::cout << "Invalid character found!" <<std::endl;
+        isValid = false;
+    }
+    return isValid;
+}
+
+bool Helper::isValidDescription(const std::string& description) {
+    bool isValid = true;
+    if (description.length() > DESCLEN) {
+        std::cout << "The maximum length of a food item description is 255 characters" << std::endl;
+        isValid = false;
+    }
+    
+    if (description.find('|') != std::string::npos) {
+        std::cout << "Invalid character found!" <<std::endl;
+        isValid = false;
+    }
+    return isValid;
 }
