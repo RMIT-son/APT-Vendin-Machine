@@ -153,15 +153,9 @@ bool CoinManager::writeToFile(const std::string& filename) {
     }
 
     for (const auto& pair : coins) {
-        // Print the denomination that is being processed
-        std::cout << "Processing denomination: " << pair.first << std::endl;
-
         // Directly use the denomination and count from the coins map
         int denomination = getValue(pair.first);
         unsigned count = pair.second;
-
-        std::cout << "Denomination: " << denomination << ", Count: " << count << std::endl;
-
         file << denomination << DELIM << count << "\n";
         if (file.fail()) {
             std::cerr << "Failed to write to file: " << filename << std::endl;
