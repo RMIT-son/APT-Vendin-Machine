@@ -55,7 +55,7 @@ public:
     Price price;
     
     // how many of this food item do we have on hand? 
-    unsigned on_hand;    
+    unsigned on_hand = DEFAULT_FOOD_STOCK_LEVEL;    
 };
 
 /**
@@ -64,10 +64,26 @@ public:
 class Node
 {
 public:
+    /**
+     * @brief Default constructor for Nodes
+     * @details This constructor will create a new Node object with no data in it.
+     */
     Node();
+
+    /**
+     * @brief Constructor for Nodes
+     * @details This constructor will create a new Node object with the given FoodItem in it.
+     * @param data The data to store in the node.
+     */
     explicit Node(std::shared_ptr<FoodItem> data);
+
+    /**
+     * @brief Default destructor for Nodes
+     * @details This destructor will destroy the Node object and free up any memory that was allocated for it.
+     */
     ~Node();
-    // pointer to the data held for the node 
+
+    // the data stored in the node
     std::shared_ptr<FoodItem> data{};
     // pointer to the next node in the list 
     std::unique_ptr<Node> next;

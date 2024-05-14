@@ -4,6 +4,8 @@
 
 #include "Food.h"
 
+#include <unordered_set>
+
 Food::Food() {
     // Initialize the Food LinkedList
     count = 0;
@@ -51,11 +53,20 @@ void Food::readFromFile(const std::string& filename) {
         std::cerr << "Unable to open file: " << filename << std::endl;
         return;
     }
-    std::string id, name;
-    while (file >> id >> name) {
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string id, name, description, priceStr;
+        std::getline(iss, id, FOOD_DELIM);
+        std::getline(iss, name, FOOD_DELIM);
+        std::getline(iss, description, FOOD_DELIM);
+        std::getline(iss, priceStr, FOOD_DELIM);
+        Price price = Helper::readPrice(priceStr); // Convert double to Price
         std::shared_ptr<FoodItem> item = std::make_shared<FoodItem>();
         item->id = id;
         item->name = name;
+        item->description = description;
+        item->price = price;
         foodList.addNodeSorted(item);
     }
     file.close();
@@ -69,11 +80,49 @@ bool Food::writeToFile(const std::string& filename) {
     }
     Node* current = foodList.getHead(); // Use a getter method here
     while (current != nullptr) {
-        file << current->data->id << " " << current->data->name << "\n";
+        file << current->data->id << FOOD_DELIM
+             << current->data->name << FOOD_DELIM
+             << current->data->description << FOOD_DELIM
+             << Helper::priceToString(current->data->price) << std::endl;
         current = current->next.get();
     }
     file.close();
     return true;
 }
+
+Node* Food::getHead() {
+    return foodList.getHead();
+}
+
+std::string Food::generateID() {
+    std::unordered_set<int> idSet;
+    Node* current = foodList.getHead();
+
+    // Traverse the linked list and store all IDs in the set
+    while (current != nullptr) {
+        int numericId = std::stoi(current->data->id.substr(1));  // Skip the first character 'F'
+        idSet.insert(numericId);
+        current = current->next.get();
+    }
+
+    // Find the smallest non-existent ID
+    int newId = 1;
+    while (idSet.find(newId) != idSet.end()) {
+        newId++;
+    }
+
+    // Convert newId to string and pad with leading zeros if necessary
+    std::string newIdStr = std::to_string(newId);
+    while (newIdStr.length() < 4) {  // Assuming IDs have 4 digits
+        newIdStr.insert(newIdStr.begin(), '0');
+    }
+
+    // Add 'F' prefix and return
+    newIdStr.insert(newIdStr.begin(), 'F');
+    return newIdStr;
+}
+
+
+
 
 

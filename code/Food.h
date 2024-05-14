@@ -4,8 +4,11 @@
 
 #ifndef FOOD_H
 #define FOOD_H
+#define FOOD_DELIM '|'
 #include <fstream>
 #include "LinkedList.h"
+#include "Helper.h"
+
 
 
 class Food {
@@ -79,11 +82,25 @@ public:
      *@return True if the food items were written successfully, false otherwise.
      */
     bool writeToFile(const std::string& filename);
+
+    /**
+     * @brief Generate a unique ID for a food item
+     * @details This function will generate the smallest unique ID for a food item.
+     * @return String containing the unique ID
+     */
+    std::string generateID();
+
+    /**
+     * @brief Get the head of the list
+     * @return The head of the list
+     */
+    Node* getHead();
 private:
     // the beginning of the list
     LinkedList foodList;
     // how many nodes are there in the list
     unsigned count = 0;
+    unsigned nodesBeenExisted = 0;
 };
 
 
