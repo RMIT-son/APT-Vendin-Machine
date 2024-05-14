@@ -277,13 +277,13 @@ void displayBalance(CoinManager &manager)
 int main(int argc, char **argv)
 {
 
-    // if (argc < 3) {
-    //     std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file>" << std::endl;
-    //     return 1;
-    // }
+    if (argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file>" << std::endl;
+        return 1;
+    }
 
-    std::string foodFile = "foods.dat";//argv[1];
-    std::string coinFile = "coins.dat";//argv[2];
+    std::string foodFile = argv[1];
+    std::string coinFile = argv[2];
 
     bool running = true;
     CoinManager manager;
