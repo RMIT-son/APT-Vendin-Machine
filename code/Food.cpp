@@ -56,11 +56,19 @@ void Food::readFromFile(const std::string& filename) {
     std::string line;
     while (std::getline(file, line)) {
         std::istringstream iss(line);
-        std::string id, name, description, priceStr;
-        std::getline(iss, id, FOOD_DELIM);
-        std::getline(iss, name, FOOD_DELIM);
-        std::getline(iss, description, FOOD_DELIM);
-        std::getline(iss, priceStr, FOOD_DELIM);
+        std::vector<std::string> fields;
+        std::string field;
+        while (std::getline(iss, field, '|')) { // Assuming '|' is the delimiter
+            fields.push_back(field);
+        }
+        if (fields.size() != 4) {
+            std::cerr << "Invalid line format: " << line << std::endl;
+            continue;
+        }
+        std::string id = fields[0];
+        std::string name = fields[1];
+        std::string description = fields[2];
+        std::string priceStr = fields[3];
         Price price = Helper::readPrice(priceStr); // Convert double to Price
         std::shared_ptr<FoodItem> item = std::make_shared<FoodItem>();
         item->id = id;
