@@ -59,7 +59,7 @@ void displayFoodMenu(Food &foodList)
     const Node *current = foodList.getHead();
     std::cout << "Food Menu\n"
               << "---------\n";
-    std::cout << "ID    |Name                                             |Price\n";
+    std::cout << "ID   |Name                                              |Price\n";
     std::cout << "---------------------------------------------------------------\n";
     while (current != nullptr)
     {

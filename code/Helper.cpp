@@ -28,7 +28,8 @@ Price Helper::readPrice(const std::string& priceStr) {
 std::string Helper::priceToString(const Price& price) {
     std::ostringstream oss;
 	// Convert the price to a string with 2 decimal places separated by a period
-    oss << price.dollars << "." << std::setfill('0') << std::setw(2) << price.cents;
+    oss << price.dollars << "." << std::setfill('0') << std::setw(2)
+    << price.cents;
     return oss.str();
 }
 
@@ -43,7 +44,7 @@ bool Helper::isValidPrice(const std::string& priceStr) {
 
     // Read cents part
     if (!std::getline(iss, centStr) || centStr.length() != 2) {
-        return false; // Nothing after the dot or not exactly two digits for cents
+        return false;//Nothing after the dot or not exactly two digits for cents
     }
 
     // Check if dollarStr and centStr are numeric
@@ -67,7 +68,8 @@ bool Helper::isValidDenomination(const std::string& priceStr) {
         // Convert the priceStr to an integer
         int value = std::stoi(priceStr);
 
-        // Check if the integer value corresponds to any of the defined denomination values
+        // Check if the integer value corresponds to
+        // any of the defined denomination values
         switch (value) {
             case FIVE_CENTS_VALUE:
             case TEN_CENTS_VALUE:
@@ -87,7 +89,8 @@ bool Helper::isValidDenomination(const std::string& priceStr) {
         // If the string is not a valid integer, return false
         return false;
     } catch (const std::out_of_range& e) {
-        // If the integer conversion results in an out of range error, also return false
+        // If the integer conversion results in an out of range error,
+        // also return false
         return false;
     }
 }
