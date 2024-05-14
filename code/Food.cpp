@@ -100,7 +100,8 @@ std::string Food::generateID() {
 
     // Traverse the linked list and store all IDs in the set
     while (current != nullptr) {
-        int numericId = std::stoi(current->data->id.substr(1));  // Skip the first character 'F'
+        int numericId = std::stoi(current->data->id.substr(1));
+        // Skip the first character 'F'
         idSet.insert(numericId);
         current = current->next.get();
     }

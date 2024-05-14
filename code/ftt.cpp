@@ -59,38 +59,47 @@ void displayFoodMenu(Food &foodList)
     const Node *current = foodList.getHead();
     std::cout << "Food Menu\n"
               << "---------\n";
-    std::cout << "ID    |Name                                             |Price\n";
-    std::cout << "---------------------------------------------------------------\n";
+    std::cout <<"ID    |Name                                             |Price"
+                 "\n";
+    std::cout << "-------------------------------------------------------------"
+                 "--\n";
     while (current != nullptr)
     {
         std::cout << std::left << std::setw(6) << current->data->id
                   << "|" << std::setw(49) << current->data->name
-                  << "|" << "$" << current->data->price.dollars << "." << current->data->price.cents
+                  << "|" << "$" << current->data->price.dollars << "."
+                  << current->data->price.cents
                   << std::endl;
         current = current->next.get();
     }
 }
 
-void processPayment(FoodItem* foodItem, CoinManager& coinManager, unsigned int& totalPaid, const std::string& denomination) {
+void processPayment(FoodItem* foodItem, CoinManager& coinManager,
+                    unsigned int& totalPaid, const std::string& denomination) {
     Denomination denom = coinManager.getDenomination(std::stoi(denomination));
     coinManager.addCoin(denom, 1); // Adding the money to the machine
     totalPaid += std::stoi(denomination);
 
     if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
-        unsigned change = totalPaid - (foodItem->price.dollars * 100 + foodItem->price.cents);
+        unsigned change = totalPaid -
+                (foodItem->price.dollars * 100 + foodItem->price.cents);
         // Calculate and dispense change
-        std::vector<Denomination> changeDenominations = coinManager.calculateChange(change);
+        std::vector<Denomination> changeDenominations =
+                coinManager.calculateChange(change);
         coinManager.dispenseCoins(changeDenominations); // Decrement the counts
 
         std::cout << "Your change is ";
         for (auto denom : changeDenominations) {
             unsigned int value = coinManager.getValue(denom);
             if (value >= 100) {
-                std::cout << "$" << value / 100; // Divides by 100 to convert cents to dollars
+                std::cout << "$" << value / 100;
+                // Divides by 100 to convert cents to dollars
             } else {
-                std::cout << value << "c"; // For values less than 100, display as cents
+                std::cout << value << "c";
+                // For values less than 100, display as cents
             }
-            std::cout << " "; // Add a space after each denomination for separation
+            std::cout << " ";
+            // Add a space after each denomination for separation
         }
         std::cout << std::endl; // New line after listing all denominations
         std::cout << std::endl;
@@ -113,28 +122,41 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
             FoodItem *foodItem = foodList.findFood(id);
             if (foodItem == nullptr)
             {
-                std::cout << "Item not found. Please check the food ID and try again." << std::endl;
+                std::cout << "Item not found. "
+                             "Please check the food ID and try again."
+                             << std::endl;
             }
             else
             {
                 if (foodItem->on_hand == 0)
                 {
-                    std::cout << "Error: No more " << foodItem->name << " available." << std::endl;
+                    std::cout << "Error: No more " << foodItem->name
+                    << " available." << std::endl;
                 }
                 else
                 {
-                    std::cout << "You have selected \"" << foodItem->name << " - " << foodItem->description << "\". This will cost you $"
-                              << static_cast<double>(foodItem->price.dollars) + static_cast<double>(foodItem->price.cents) / 100 << "." << std::endl;
-                    std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
-                    std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase." << std::endl;
+                    std::cout << "You have selected \"" << foodItem->name
+                    << " - " << foodItem->description
+                    << "\". This will cost you $"
+                              << static_cast<double>(foodItem->price.dollars) +
+                              static_cast<double>(foodItem->price.cents) / 100
+                              << "." << std::endl;
+                    std::cout << "Please hand over the money - "
+                                 "type in the value of each note/coin in cents."
+                                 << std::endl;
+                    std::cout << "Please enter ctrl-D or enter on a new line to"
+                                 " cancel this purchase." << std::endl;
 
                     unsigned int totalPaid = 0;
                     bool denominating = true;
                     while (denominating)
                     {
                         std::cout << "You still need to give us $"
-                                  << std::setw(6) << std::fixed << std::setprecision(2)
-                                  << static_cast<double>(foodItem->price.dollars) + static_cast<double>(foodItem->price.cents) / 100 - static_cast<double>(totalPaid) / 100
+                                  << std::setw(6) << std::fixed
+                                  << std::setprecision(2)
+                                  << static_cast<double>(foodItem->price.dollars) +
+                                  static_cast<double>(foodItem->price.cents) /
+                                  100 - static_cast<double>(totalPaid) / 100
                                   << ": ";
                         std::string denomination = readInput();
 
@@ -145,30 +167,35 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                             std::cin.clear();
                             running = false;
                             denominating = false;
-                            continue;
+//                            continue;
                         }
 
-                        if (!isNumber(denomination))
+                        else if (!isNumber(denomination))
                         {
                             std::cout << std::endl
-                                      << "Error: input was not numeric." << std::endl;
-                            continue;
+                                      << "Error: input was not numeric."
+                                      << std::endl;
+//                            continue;
                         }
-                        else
-                        {
-                            if (!Helper::isValidDenomination(denomination))
+
+
+                            else if (!Helper::isValidDenomination(denomination))
                             {
-                                std::cout << "Error: invalid denomination encountered." << std::endl;
+                                std::cout << "Error: "
+                                             "invalid denomination encountered."
+                                             << std::endl;
                             }
                             else
                             {
-                                processPayment(foodItem, coinManager, totalPaid, denomination);
-                                if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
+                                processPayment(foodItem, coinManager,
+                                               totalPaid, denomination);
+                                if (totalPaid >= foodItem->price.dollars * 100
+                                + foodItem->price.cents) {
                                     denominating = false;
                                     running = false;
                                 }
                             }
-                        }
+
                     }
                 }
             }
@@ -177,7 +204,7 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Purchase Cancelled" << std::endl;
             running = false;
-            break;
+//            break;
         }
     }
 }
@@ -189,7 +216,8 @@ void addFood(Food &foodList)
     {
         std::string newId;
         newId = foodList.generateID();
-        std::cout << "This new meal item will have the Item ID of " << newId << std::endl;
+        std::cout << "This new meal item will have the Item ID of "
+        << newId << std::endl;
         std::cout << "Enter the item name: ";
         std::string foodName = readInput();
         if (std::cin.eof() || foodName == "")
@@ -197,39 +225,44 @@ void addFood(Food &foodList)
             std::cin.clear();
             // running = false;
             std::cout << "Option cancelled, returning to menu." << std::endl;
-            break;
+            running = false;
         }
-
-        std::cout << "Enter the item description: ";
-        std::string foodDescription = readInput();
-
-        if (std::cin.eof() || foodDescription == "")
+        else
         {
-            std::cin.clear();
-            // running = false;
-            std::cout << "Option cancelled, returning to menu." << std::endl;
-            break;
-        }
+            std::cout << "Enter the item description: ";
+            std::string foodDescription = readInput();
 
-        bool priceValid = true;
-        while (priceValid)
-        {
-            std::cout << "Enter the price for this item: ";
-            std::string foodPrice = readInput();
-            if (Helper::isValidPrice(foodPrice))
+            if (std::cin.eof() || foodDescription == "")
             {
+                std::cin.clear();
+                // running = false;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
                 running = false;
-                priceValid = false;
-                std::shared_ptr<FoodItem> newFood = std::make_shared<FoodItem>();
-                newFood->id = newId;
-                newFood->name = foodName;
-                newFood->description = foodDescription;
-                newFood->price = Helper::readPrice(foodPrice);
-                foodList.addFood(newFood);
             }
             else
             {
-                std::cout << "Error: money is not formatted properly" << std::endl;
+                bool priceValid = true;
+                while (priceValid)
+                {
+                    std::cout << "Enter the price for this item: ";
+                    std::string foodPrice = readInput();
+                    if (Helper::isValidPrice(foodPrice))
+                    {
+                        running = false;
+                        priceValid = false;
+                        std::shared_ptr<FoodItem>newFood =std::make_shared<FoodItem>();
+                        newFood->id = newId;
+                        newFood->name = foodName;
+                        newFood->description = foodDescription;
+                        newFood->price = Helper::readPrice(foodPrice);
+                        foodList.addFood(newFood);
+                    }
+                    else
+                    {
+                        std::cout << "Error: money is not formatted properly"
+                                  << std::endl;
+                    }
+                }
             }
         }
     }
@@ -253,7 +286,8 @@ void removeFood(Food &foodList) {
 
 void displayBalance(CoinManager &manager)
 {
-    std::map<Denomination, unsigned> sortedCoins(manager.coins.begin(), manager.coins.end());
+    std::map<Denomination, unsigned> sortedCoins(manager.coins.begin(),
+                                                 manager.coins.end());
 
     double totalValue = 0.0;
     std::cout << "Balance Summary\n";
@@ -269,20 +303,23 @@ void displayBalance(CoinManager &manager)
 
         std::cout << std::right << std::setw(5) << denomination << " | "
                   << std::setw(8) << count << " |$"
-                  << std::setw(7) << std::fixed << std::setprecision(2) << value << std::endl;
+                  << std::setw(7) << std::fixed << std::setprecision(2)
+                  << value << std::endl;
 
         totalValue += value;
     }
 
     std::cout << "---------------------------\n";
-    std::cout << "Total:            $" << std::setw(7) << std::fixed << std::setprecision(2) << totalValue << std::endl;
+    std::cout << "Total:            $" << std::setw(7) << std::fixed <<
+    std::setprecision(2) << totalValue << std::endl;
 }
 
 int main(int argc, char **argv)
 {
 
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file>"
+        << std::endl;
         return 1;
     }
 
@@ -300,7 +337,8 @@ int main(int argc, char **argv)
         std::string input = readInput();
         if (std::cin.eof()) {
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                            '\n');
             // TODO use Helper function to replace this
             std::cout << "Error in input. Please try again." << std::endl;
         } else
@@ -341,7 +379,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                std::cout << "Error: number was outside of range." << std::endl;
+                std::cout << "Error: number was outside of range."<< std::endl;
             }
         }
             else
