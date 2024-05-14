@@ -18,6 +18,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 // enumeration representing the various types of currency available in the system. 
 enum Denomination
@@ -112,6 +113,8 @@ public:
 
     // Coins Map to store the count of each denomination
     std::unordered_map<Denomination, unsigned> coins;
+    std::vector<Denomination> calculateChange(unsigned amount);
+    void dispenseCoins(const std::vector<Denomination>& denominations);
 };
 
 #endif // COIN_H

@@ -180,5 +180,33 @@ bool CoinManager::writeToFile(const std::string& filename) {
     return true;
 }
 
+std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
+    std::vector<Denomination> change;
+    std::vector<Denomination> denominations = {FIFTY_DOLLARS, TWENTY_DOLLARS, TEN_DOLLARS, FIVE_DOLLARS, TWO_DOLLARS, ONE_DOLLAR, FIFTY_CENTS, TWENTY_CENTS, TEN_CENTS, FIVE_CENTS};
 
+    for (Denomination denom : denominations) {
+        while (amount >= static_cast<unsigned int>(getValue(denom)) && coins[denom] > 0) {
+            amount -= static_cast<unsigned int>(getValue(denom));
+            change.push_back(denom);
+        }
+        if (amount == 0) break;
+    }
 
+    if (amount > 0) {
+        std::cerr << "Insufficient change available." << std::endl;
+    }
+
+    return change;
+}
+
+void CoinManager::dispenseCoins(const std::vector<Denomination>& denominations) {
+    for (const Denomination& denom : denominations) {
+        if (coins[denom] > 0) {
+            coins[denom]--;
+        } else {
+            std::cerr << "Error: Attempt to dispense an unavailable denomination of " << getValue(denom) << " cents." << std::endl;
+            // Depending on system design, you might want to handle the error differently
+            // throw std::runtime_error("Attempt to dispense an unavailable denomination.");
+        }
+    }
+}
