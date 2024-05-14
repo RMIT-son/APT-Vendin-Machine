@@ -102,6 +102,7 @@ bool CoinManager::removeCoin(Denomination denom, unsigned count) {
 void CoinManager::readFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
         return;
     }
 
@@ -114,26 +115,10 @@ void CoinManager::readFromFile(const std::string& filename) {
         int value = std::stoi(valueStr);
         unsigned count = std::stoul(countStr);
         Denomination denom;
-        if (value == FIFTY_DOLLARS_VALUE) {
-            denom = FIFTY_DOLLARS;
-        } else if (value == TWENTY_DOLLARS_VALUE) {
-            denom = TWENTY_DOLLARS;
-        } else if (value == TEN_DOLLARS_VALUE) {
-            denom = TEN_DOLLARS;
-        } else if (value == FIVE_DOLLARS_VALUE) {
-            denom = FIVE_DOLLARS;
-        } else if (value == TWO_DOLLARS_VALUE) {
-            denom = TWO_DOLLARS;
-        } else if (value == ONE_DOLLAR_VALUE) {
-            denom = ONE_DOLLAR;
-        } else if (value == FIFTY_CENTS_VALUE) {
-            denom = FIFTY_CENTS;
-        } else if (value == TWENTY_CENTS_VALUE) {
-            denom = TWENTY_CENTS;
-        } else if (value == TEN_CENTS_VALUE) {
-            denom = TEN_CENTS;
-        } else if (value == FIVE_CENTS_VALUE) {
-            denom = FIVE_CENTS;
+        try {
+            denom = getDenomination(value);
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Invalid coin value: " << value << std::endl;
         }
         coins[denom] = count;
     }
