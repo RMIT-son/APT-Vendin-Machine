@@ -21,7 +21,8 @@ public:
 
     /**
      *@brief Default destructor for the Food class
-     *@details This destructor will destroy the Food object and free up any memory that was allocated for it.
+     *@details This destructor will destroy the Food object and
+     * free up any memory that was allocated for it.
      */
     ~Food();
 

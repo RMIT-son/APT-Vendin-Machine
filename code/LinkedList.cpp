@@ -58,7 +58,8 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
         head = std::move(newNode);
     } else {
         Node* current = head.get();
-        while (current->next && current->next->data->name < newNode->data->name) {
+        while (current->next && current->next->data->name<newNode->data->name)
+        {
             current = current->next.get();
         }
         newNode->next = std::move(current->next);
@@ -68,28 +69,6 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
     return true;
 }
 
-// bool LinkedList::removeNode(Node* node) {
-//     if (node == nullptr) {
-//         return false;
-//     }
-//     if (head == node) {
-//         head = node->next;
-//         delete node;
-//         count--;
-//         return true;
-//     }
-//     Node* current = head;
-//     while (current->next != nullptr) {
-//         if (current->next == node) {
-//             current->next = node->next;
-//             delete node;
-//             count--;
-//             return true;
-//         }
-//         current = current->next;
-//     }
-//     return false;
-// }
 
 bool LinkedList::removeNode(std::string& id) {
     if (!head) {
@@ -132,4 +111,3 @@ Node* LinkedList::getHead() {
 }
 
 // Path: code/Node.cpp
-

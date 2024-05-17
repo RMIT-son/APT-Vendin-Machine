@@ -20,7 +20,8 @@
 #include <unordered_map>
 #include <vector>
 
-// enumeration representing the various types of currency available in the system. 
+// enumeration representing the various types of currency
+// available in the system.
 enum Denomination
 {
     FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS, ONE_DOLLAR, 
@@ -28,8 +29,8 @@ enum Denomination
 };
 
 
-// represents a coin type stored in the cash register perhaps. Each demonination
-// will have exactly one of these in the cash register.
+// represents a coin type stored in the cash register perhaps.
+// Each demonination will have exactly one of these in the cash register.
 class Coin
 {
 public:
