@@ -19,7 +19,8 @@ bool LinkedList::clearList() {
 
 bool LinkedList::sortList() {
     if (!head || !head->next) {
-        return false; // List is empty or has only one node, no need to sort
+        // List is empty or has only one node, no need to sort
+        return false;
     }
     bool swapped;
     do {
