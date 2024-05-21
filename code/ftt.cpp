@@ -272,7 +272,7 @@ void addFood(Food &foodList)
                 newFoodName = foodName;
                 nameValid = false;
             }
-            if (foodName.empty() || std::cin.eof())
+            if (foodName == "" || std::cin.eof())
             {
                 std::cin.clear();
                 running = false;
@@ -305,7 +305,7 @@ void addFood(Food &foodList)
         {
             std::cout << "Enter the price for this item: ";
             std::string foodPrice = readInput();
-            if (std::cin.eof() || foodPrice.empty())
+            if (std::cin.eof() || foodPrice == "")
             {
                 std::cin.clear();
                 running = false;
@@ -316,7 +316,7 @@ void addFood(Food &foodList)
             {
                 running = false;
                 priceValid = false;
-                std::shared_ptr<FoodItem> newFood=std::make_shared<FoodItem>();
+                std::shared_ptr<FoodItem> newFood = std::make_shared<FoodItem>();
                 newFood->id = newId;
                 newFood->name = newFoodName;
                 newFood->description = newFoodDescription;
