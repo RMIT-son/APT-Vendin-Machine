@@ -28,7 +28,7 @@ Price Helper::readPrice(const std::string& priceStr) {
 
 std::string Helper::priceToString(const Price& price) {
     std::ostringstream oss;
-	// Convert the price to a string with 2 decimal places separated by a period
+	//Convert the price to a string with 2 decimal places separated by a period
     oss << price.dollars << "." << std::setfill('0') << std::setw(2)
     << price.cents;
     return oss.str();
@@ -49,7 +49,8 @@ bool Helper::isValidPrice(const std::string& priceStr) {
 
     // Read dollars part and expect a dot
     if (!std::getline(iss, dollarStr, '.') || dollarStr.empty()) {
-        return false; // No dot or nothing before the dot
+        // No dot or nothing before the dot
+        return false;
     }
 
     // Read cents part
@@ -67,7 +68,8 @@ bool Helper::isValidPrice(const std::string& priceStr) {
     // Check if dollarStr and centStr are numeric
     if (!std::all_of(dollarStr.begin(), dollarStr.end(), ::isdigit) ||
         !std::all_of(centStr.begin(), centStr.end(), ::isdigit)) {
-        return false; // Non-digit characters found
+        // Non-digit characters found
+        return false;
     }
 
     // Convert cents to integer
@@ -75,7 +77,8 @@ bool Helper::isValidPrice(const std::string& priceStr) {
     try {
         cents = std::stoi(centStr);
     } catch(const std::exception&) {
-        return false; // Conversion to integer failed
+        // Conversion to integer failed
+        return false;
     }
 
     // Check if cents can be dispensed
@@ -133,7 +136,8 @@ bool Helper::isValidDenomination(const std::string& priceStr) {
 bool Helper::isValidName(const std::string& name) {
     bool isValid = true;
     if (name.length() > NAMELEN) {
-        std::cout << "The maximum length of a food item name is 40 characters" << std::endl;
+        std::cout << "The maximum length of a food item name is 40 characters"
+        << std::endl;
         isValid = false;
     }
     
@@ -147,7 +151,8 @@ bool Helper::isValidName(const std::string& name) {
 bool Helper::isValidDescription(const std::string& description) {
     bool isValid = true;
     if (description.length() > DESCLEN) {
-        std::cout << "The maximum length of a food item description is 255 characters" << std::endl;
+        std::cout << "The maximum length of a food item description"
+                     " is 255 characters" << std::endl;
         isValid = false;
     }
     

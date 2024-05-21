@@ -47,7 +47,8 @@ bool LinkedList::addNode(std::shared_ptr<FoodItem> data) {
         current->next = std::move(newNode);
     }
     count++;
-    return true; // Always return true as the node is always added
+    // Always return true as the node is always added
+    return true;
 }
 
 bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
@@ -88,12 +89,14 @@ bool LinkedList::removeNode(std::string& id) {
             }
         }
     }
-    return isRemoved; // Return the result of the remove operation
+    // Return the result of the remove operation
+    return isRemoved;
 }
 
 Node* LinkedList::findNode(const std::string& id) const {
     Node* foundNode = nullptr;
-    for (Node* current = head.get(); current != nullptr && foundNode == nullptr; current = current->next.get()) {
+    for (Node* current = head.get(); current != nullptr
+    && foundNode == nullptr; current = current->next.get()) {
         if (current->data->id == id) {
             foundNode = current;
         }

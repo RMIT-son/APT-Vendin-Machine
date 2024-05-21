@@ -9,8 +9,6 @@
 #include "LinkedList.h"
 #include "Helper.h"
 
-
-
 class Food {
 public:
     /**
@@ -102,8 +100,5 @@ private:
     // how many nodes are there in the list
     unsigned count = 0;
 };
-
-
-
 
 #endif //FOOD_H
