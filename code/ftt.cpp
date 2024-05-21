@@ -20,6 +20,11 @@ std::string readInput()
 {
     std::string input;
     if (std::getline(std::cin, input)) {
+        // Remove trailing whitespace
+        size_t end = input.find_last_not_of(" \t\n\r\f\v");
+        if (end != std::string::npos) {
+            input = input.substr(0, end + 1);
+        }
         std::cout << std::endl;
         return input;
     } else if (std::cin.eof()) {
@@ -77,7 +82,7 @@ void displayFoodMenu(Food &foodList)
 void processPayment(FoodItem* foodItem, CoinManager& coinManager,
                     unsigned int& totalPaid, const std::string& denomination) {
     Denomination denom = coinManager.getDenomination(std::stoi(denomination));
-    coinManager.addCoin(denom, 1); // Adding the money to the machine
+    coinManager.addCoin(denom, 1);
     totalPaid += std::stoi(denomination);
 
     if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
@@ -362,8 +367,8 @@ int main(int argc, char **argv)
                 else if (option == 3)
                 {
                     running = false;
-                    // foodList.writeToFile(foodFile);
-                    // manager.writeToFile(coinFile);
+                    foodList.writeToFile(foodFile);
+                    manager.writeToFile(coinFile);
                 }
                 else if (option == 4)
                 {
