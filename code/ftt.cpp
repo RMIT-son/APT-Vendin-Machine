@@ -75,10 +75,12 @@ void displayFoodMenu(Food &foodList)
 }
 
 void processPayment(FoodItem* foodItem, CoinManager& coinManager,
-                    unsigned int& totalPaid, const std::string& denomination) {
+                    unsigned int& totalPaid, const std::string& denomination, 
+                    std::vector<Denomination>& addedDenominations) {
     Denomination denom = coinManager.getDenomination(std::stoi(denomination));
     coinManager.addCoin(denom, 1); // Adding the money to the machine
     totalPaid += std::stoi(denomination);
+    addedDenominations.push_back(denom);
 
     if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
         unsigned change = totalPaid -
@@ -93,20 +95,31 @@ void processPayment(FoodItem* foodItem, CoinManager& coinManager,
             unsigned int value = coinManager.getValue(denom);
             if (value >= 100) {
                 std::cout << "$" << value / 100;
-                // Divides by 100 to convert cents to dollars
             } else {
                 std::cout << value << "c";
-                // For values less than 100, display as cents
             }
             std::cout << " ";
-            // Add a space after each denomination for separation
         }
-        std::cout << std::endl; // New line after listing all denominations
         std::cout << std::endl;
 
         foodItem->on_hand--;
         std::cout << "Thank you for your purchase!" << std::endl;
     }
+}
+
+void processRefund(CoinManager& coinManager, const std::vector<Denomination>& addedDenominations) {
+    std::cout << "Refund: ";
+    for (const auto& denom : addedDenominations) {
+        coinManager.removeCoin(denom, 1); // Remove the money from the machine
+        unsigned int value = coinManager.getValue(denom);
+        if (value >= 100) {
+            std::cout << "$" << value / 100;
+        } else {
+            std::cout << value << "c";
+        }
+        std::cout << " ";
+    }
+    std::cout << std::endl;
 }
 
 void purchaseMeal(Food &foodList, CoinManager &coinManager)
@@ -156,6 +169,7 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
 
                             unsigned int totalPaid = 0;
                             bool denominating = true;
+                            std::vector<Denomination> addedDenominations;
                             while (denominating)
                             {
                                 std::cout << "You still need to give us $"
@@ -170,11 +184,11 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                                 if (denomination == "" || std::cin.eof())
                                 {
                                     std::cout << std::endl
-                                            << "Purchase cancelled." << std::endl;
+                                    << "Purchase cancelled." << std::endl;
                                     std::cin.clear();
+                                    processRefund(coinManager, addedDenominations);
                                     running = false;
                                     denominating = false;
-        //                            continue;
                                 }
 
                                 else if (!isNumber(denomination))
@@ -182,10 +196,7 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                                     std::cout << std::endl
                                             << "Error: input was not numeric."
                                             << std::endl;
-        //                            continue;
                                 }
-
-
                                     else if (!Helper::isValidDenomination(denomination))
                                     {
                                         std::cout << "Error: "
@@ -194,8 +205,7 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                                     }
                                     else
                                     {
-                                        processPayment(foodItem, coinManager,
-                                                    totalPaid, denomination);
+                                        processPayment(foodItem, coinManager, totalPaid, denomination, addedDenominations);
                                         if (totalPaid >= foodItem->price.dollars * 100
                                         + foodItem->price.cents) {
                                             denominating = false;
