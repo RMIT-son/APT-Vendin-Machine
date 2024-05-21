@@ -220,10 +220,11 @@ void addFood(Food &foodList)
         std::string newFoodName;
         std::string newFoodDescription;
         newId = foodList.generateID();
-        std::cout << "This new meal item will have the Item ID of "
-        << newId <<std::endl;
-        
+        std::cout << "This new meal item will have the Item ID of " << newId << std::endl;
+
         bool nameValid = true;
+        bool descriptionValid = true;
+        bool priceValid = true;
         while (nameValid)
         {
             std::cout << "Enter the item name: ";
@@ -231,18 +232,19 @@ void addFood(Food &foodList)
             if (Helper::isValidName(foodName)) {
                 newFoodName = foodName;
                 nameValid = false;
-            }    
-            if (std::cin.eof() || foodName == "")
+            }
+            if (foodName.empty() || std::cin.eof())
             {
                 std::cin.clear();
-                // running = false;
-                std::cout << "Option cancelled, returning to menu."<<std::endl;
                 running = false;
+                nameValid = false;
+                descriptionValid = false;
+                priceValid = false;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
         }
-        
-        bool descriptionValid = true;
-        while (descriptionValid) 
+
+        while (descriptionValid)
         {
             std::cout << "Enter the item description: ";
             std::string foodDescription = readInput();
@@ -250,24 +252,32 @@ void addFood(Food &foodList)
                 newFoodDescription = foodDescription;
                 descriptionValid = false;
             }
-            if (std::cin.eof() || foodDescription == "")
+            if (std::cin.eof() || foodDescription.empty())
             {
                 std::cin.clear();
-                std::cout << "Option cancelled, returning to menu."<<std::endl;
                 running = false;
+                descriptionValid = false;
+                priceValid = false;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
         }
-        
-        bool priceValid = true;
+
         while (priceValid)
         {
             std::cout << "Enter the price for this item: ";
             std::string foodPrice = readInput();
+            if (std::cin.eof() || foodPrice.empty())
+            {
+                std::cin.clear();
+                running = false;
+                priceValid = false;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
+            }
             if (Helper::isValidPrice(foodPrice))
             {
                 running = false;
                 priceValid = false;
-                std::shared_ptr<FoodItem> newFood=std::make_shared<FoodItem>();
+                std::shared_ptr<FoodItem> newFood = std::make_shared<FoodItem>();
                 newFood->id = newId;
                 newFood->name = newFoodName;
                 newFood->description = newFoodDescription;
@@ -277,6 +287,7 @@ void addFood(Food &foodList)
         }
     }
 }
+
 
 void removeFood(Food &foodList) {
     std::cout << "Enter the food id of the food to remove from the menu: ";
