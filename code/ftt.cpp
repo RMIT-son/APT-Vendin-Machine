@@ -233,7 +233,7 @@ void addFood(Food &foodList)
                 newFoodName = foodName;
                 nameValid = false;
             }
-            if (foodName == "" || std::cin.eof())
+            if (foodName.empty() || std::cin.eof())
             {
                 std::cin.clear();
                 running = false;
@@ -252,7 +252,7 @@ void addFood(Food &foodList)
                 newFoodDescription = foodDescription;
                 descriptionValid = false;
             }
-            if (std::cin.eof() || foodDescription == "")
+            if (std::cin.eof() || foodDescription.empty())
             {
                 std::cin.clear();
                 running = false;
@@ -266,7 +266,7 @@ void addFood(Food &foodList)
         {
             std::cout << "Enter the price for this item: ";
             std::string foodPrice = readInput();
-            if (std::cin.eof() || foodPrice == "")
+            if (std::cin.eof() || foodPrice.empty())
             {
                 std::cin.clear();
                 running = false;
