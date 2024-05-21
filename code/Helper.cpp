@@ -55,7 +55,8 @@ bool Helper::isValidPrice(const std::string& priceStr) {
     // Read cents part
     if (!std::getline(iss, centStr)) {
         std::cout << "Error: money is not formatted properly" << std::endl;
-        return false; // Nothing after the dot or not exactly two digits for cents
+        return false;
+        // Nothing after the dot or not exactly two digits for cents
     }
 
     if(centStr.length() != 2) {
@@ -78,13 +79,23 @@ bool Helper::isValidPrice(const std::string& priceStr) {
     }
 
     // Check if cents can be dispensed
-    std::vector<int> denominations = {FIFTY_DOLLARS_VALUE, TWENTY_DOLLARS_VALUE, TEN_DOLLARS_VALUE, FIVE_DOLLARS_VALUE, TWO_DOLLARS_VALUE, ONE_DOLLAR_VALUE, FIFTY_CENTS_VALUE, TWENTY_CENTS_VALUE, TEN_CENTS_VALUE, FIVE_CENTS_VALUE};
+    std::vector<int> denominations = {FIFTY_DOLLARS_VALUE,
+                                      TWENTY_DOLLARS_VALUE,
+                                      TEN_DOLLARS_VALUE,
+                                      FIVE_DOLLARS_VALUE,
+                                      TWO_DOLLARS_VALUE,
+                                      ONE_DOLLAR_VALUE,
+                                      FIFTY_CENTS_VALUE,
+                                      TWENTY_CENTS_VALUE,
+                                      TEN_CENTS_VALUE,
+                                      FIVE_CENTS_VALUE};
     if (!canDispenseCents(cents, denominations)) {
         std::cout << "Error: price is not a valid denomination." << std::endl;
-        return false; // Cannot dispense the exact cents amount
+        // Cannot dispense the exact cents amount
+        return false;
     }
-
-    return true; // String can be converted to Price
+    // String can be converted to Price
+    return true;
 }
 
 bool Helper::isValidDenomination(const std::string& priceStr) {

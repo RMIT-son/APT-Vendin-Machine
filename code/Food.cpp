@@ -58,7 +58,8 @@ void Food::readFromFile(const std::string& filename) {
         std::istringstream iss(line);
         std::vector<std::string> fields;
         std::string field;
-        while (std::getline(iss, field, '|')) { // Assuming '|' is the delimiter
+        while (std::getline(iss, field, '|')) {
+            // Assuming '|' is the delimiter
             fields.push_back(field);
         }
         if (fields.size() != 4) {
@@ -69,7 +70,8 @@ void Food::readFromFile(const std::string& filename) {
         std::string name = fields[1];
         std::string description = fields[2];
         std::string priceStr = fields[3];
-        Price price = Helper::readPrice(priceStr); // Convert double to Price
+        // Convert double to Price
+        Price price = Helper::readPrice(priceStr);
         std::shared_ptr<FoodItem> item = std::make_shared<FoodItem>();
         item->id = id;
         item->name = name;
@@ -86,7 +88,8 @@ bool Food::writeToFile(const std::string& filename) {
         std::cerr << "Unable to open file: " << filename << std::endl;
         return false;
     }
-    Node* current = foodList.getHead(); // Use a getter method here
+    // Use a getter method here
+    Node* current = foodList.getHead();
     while (current != nullptr) {
         file << current->data->id << FOOD_DELIM
              << current->data->name << FOOD_DELIM
