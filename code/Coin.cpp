@@ -9,9 +9,15 @@ Coin::~Coin() {
     delete this;
 }
 
+CoinManager::CoinManager() {
+    // Initialize the counts for all denominations to 0
+    for (int i = FIVE_CENTS; i <= TWENTY_DOLLARS; i++) {
+        coins[static_cast<Denomination>(i)] = 0;
+    }
+}
 
-int CoinManager::getValue(Denomination denom) const {
-    int value = 0;
+int CoinManager::getValue(const Denomination denom) {
+    int value;
     if (denom == FIVE_CENTS) {
         value = FIVE_CENTS_VALUE;
     } else if (denom == TEN_CENTS) {
@@ -33,12 +39,14 @@ int CoinManager::getValue(Denomination denom) const {
     } else if (denom == FIFTY_DOLLARS) {
         value = FIFTY_DOLLARS_VALUE;
     }
+    else {
+        throw std::invalid_argument("Invalid coin denomination");
+    }
     return value;
 }
 
-Denomination CoinManager::getDenomination(int value) {
+Denomination CoinManager::getDenomination(const int value) {
     Denomination denom;
-
     if (value == FIVE_CENTS_VALUE) {
         denom = FIVE_CENTS;
     } else if (value == TEN_CENTS_VALUE) {
@@ -60,24 +68,16 @@ Denomination CoinManager::getDenomination(int value) {
     } else if (value == FIFTY_DOLLARS_VALUE) {
         denom = FIFTY_DOLLARS;
     } else {
-        throw std::invalid_argument("Invalid coin value");
+        throw std::invalid_argument("Invalid denomination value");
     }
 
     return denom;
 }
 
-
-
-CoinManager::CoinManager() {
-    // Initialize the counts for all denominations to 0
-    for (int i = FIVE_CENTS; i <= TWENTY_DOLLARS; i++) {
-        coins[static_cast<Denomination>(i)] = 0;
-    }
-}
-
 std::unordered_map<Denomination, unsigned> CoinManager::getCoins() const {
     return coins;
 }
+
 bool CoinManager::addCoin(Denomination denom, unsigned count) {
     // Increment the count for the specified denomination
     if (count < 0) {
@@ -146,16 +146,9 @@ bool CoinManager::writeToFile(const std::string& filename) {
             std::cerr << "Failed to write to file: " << filename << std::endl;
             return false;
         }
-
-        std::cout << "Wrote denomination: " << denomination << " count: "
-        << count << " to file." << std::endl;
     }
 
     file.close();
-    if (file.fail()) {
-        std::cerr << "Failed to close file: " << filename << std::endl;
-        return false;
-    }
 
     return true;
 }
@@ -174,7 +167,9 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
             amount -= static_cast<unsigned int>(getValue(denom));
             change.push_back(denom);
         }
-        if (amount == 0) break;
+        if (amount == 0) {
+            return change;
+        }
     }
 
     if (amount > 0) {
@@ -193,10 +188,6 @@ void CoinManager::dispenseCoins(const std::vector<Denomination>& denominations)
             std::cerr<< "Error: Attempt to dispense "
                        "an unavailable denomination of " << getValue(denom)
                        << " cents." << std::endl;
-            // Depending on system design,
-            // you might want to handle the error differently
-            // throw std::runtime_error
-            // ("Attempt to dispense an unavailable denomination.");
         }
     }
 }

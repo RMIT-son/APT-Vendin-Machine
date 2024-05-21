@@ -102,7 +102,7 @@ public:
      * @param denom The denomination to get the value of
      * @return The value of the denomination
      */
-    int getValue(Denomination denom) const;
+    static int getValue(Denomination denom);
 
     /**
      * @brief Get the denomination of a value
