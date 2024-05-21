@@ -20,6 +20,11 @@ std::string readInput()
 {
     std::string input;
     if (std::getline(std::cin, input)) {
+        // Remove trailing whitespace
+        size_t end = input.find_last_not_of(" \t\n\r\f\v");
+        if (end != std::string::npos) {
+            input = input.substr(0, end + 1);
+        }
         std::cout << std::endl;
         return input;
     } else if (std::cin.eof()) {
@@ -382,8 +387,8 @@ int main(int argc, char **argv)
                 else if (option == 3)
                 {
                     running = false;
-                    // foodList.writeToFile(foodFile);
-                    // manager.writeToFile(coinFile);
+                    foodList.writeToFile(foodFile);
+                    manager.writeToFile(coinFile);
                 }
                 else if (option == 4)
                 {
