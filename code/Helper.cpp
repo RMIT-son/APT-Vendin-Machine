@@ -232,7 +232,7 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         std::vector<Denomination> changeDenominations =
             coinManager.calculateChange(change);
         coinManager.dispenseCoins(changeDenominations); // Decrement the counts
-
+        std::sort(changeDenominations.begin(), changeDenominations.end());
         std::cout << "Your change is ";
         for (auto denom : changeDenominations)
         {
