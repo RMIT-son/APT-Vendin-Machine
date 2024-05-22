@@ -16,13 +16,12 @@
 
 class Interface {
 public:
-    Interface();
-    ~Interface();
-    void displayMainMenu();
-    void displayFoodMenu(Food &foodList);
-    static inline void ltrim(std::string &s);
-    static inline void rtrim(std::string &s);
-    static inline void trim(std::string &s);
+    static void displayMainMenu();
+    static void displayFoodMenu(Food &foodList);
+    static void displayBalance(CoinManager &manager);
+    static void purchaseMeal(Food &foodList, CoinManager &coinManager);
+    static void addFood(Food &foodList);
+    static void removeFood(Food &foodList);
 };
 
 #endif // INTERFACE_H
