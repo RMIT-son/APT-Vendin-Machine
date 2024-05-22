@@ -18,22 +18,21 @@ bool LinkedList::clearList() {
 }
 
 bool LinkedList::sortList() {
-    if (!head || !head->next) {
-        return false; // List is empty or has only one node, no need to sort
-    }
-    bool swapped;
-    do {
-        swapped = false;
-        Node* current = head.get();
-        while (current->next) {
-            if (current->data->name > current->next->data->name) {
-                std::swap(current->data, current->next->data);
-                swapped = true;
+    bool swapped = false;
+    if (head && head->next) {
+        do {
+            swapped = false;
+            Node* current = head.get();
+            while (current->next) {
+                if (current->data->name > current->next->data->name) {
+                    std::swap(current->data, current->next->data);
+                    swapped = true;
+                }
+                current = current->next.get();
             }
-            current = current->next.get();
-        }
-    } while (swapped);
-    return true;
+        } while (swapped);
+    }
+    return swapped;
 }
 
 bool LinkedList::addNode(std::shared_ptr<FoodItem> data) {
@@ -48,6 +47,7 @@ bool LinkedList::addNode(std::shared_ptr<FoodItem> data) {
         current->next = std::move(newNode);
     }
     count++;
+    // Always return true as the node is always added
     return true;
 }
 
@@ -71,35 +71,37 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
 
 
 bool LinkedList::removeNode(std::string& id) {
-    if (!head) {
-        return false;
+    bool isRemoved = false;
+    if (head) {
+        if (head->data->id == id) {
+            head = std::move(head->next);
+            count--;
+            isRemoved = true;
+        } else {
+            Node* current = head.get();
+            while (current->next && current->next->data->id != id) {
+                current = current->next.get();
+            }
+            if (current->next) {
+                current->next = std::move(current->next->next);
+                count--;
+                isRemoved = true;
+            }
+        }
     }
-    if (head->data->id == id) {
-        head = std::move(head->next);
-        count--;
-        return true;
-    }
-    Node* current = head.get();
-    while (current->next && current->next->data->id != id) {
-        current = current->next.get();
-    }
-    if (current->next) {
-        current->next = std::move(current->next->next);
-        count--;
-        return true;
-    }
-    return false;
+    // Return the result of the remove operation
+    return isRemoved;
 }
 
 Node* LinkedList::findNode(const std::string& id) const {
-    Node* current = head.get();
-    while (current != nullptr) {
+    Node* foundNode = nullptr;
+    for (Node* current = head.get(); current != nullptr
+    && foundNode == nullptr; current = current->next.get()) {
         if (current->data->id == id) {
-            return current;
+            foundNode = current;
         }
-        current = current->next.get();
     }
-    return nullptr;
+    return foundNode;
 }
 
 unsigned LinkedList::getCount() const {

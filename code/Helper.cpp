@@ -21,7 +21,9 @@ Price Helper::readPrice(const std::string &priceStr)
 std::string Helper::priceToString(const Price &price)
 {
     std::ostringstream oss;
+
     // Convert the price to a string with 2 decimal places separated by a period
+
     oss << price.dollars << "." << std::setfill('0') << std::setw(2)
         << price.cents;
     return oss.str();
@@ -74,24 +76,30 @@ bool Helper::isValidPrice(const std::string &priceStr)
     std::istringstream iss(priceStr);
     std::string dollarStr, centStr;
 
+
     if (!std::getline(iss, dollarStr, '.') || dollarStr.empty())
     {
         isValid = false;
+
     }
     else if (!std::getline(iss, centStr))
     {
         std::cout << "Error: money is not formatted properly" << std::endl;
+
         isValid = false;
+
     }
     else if (centStr.length() != 2)
     {
         std::cout << "Error: there are not two digits for cents." << std::endl;
+
         isValid = false;
     }
     else if (!std::all_of(dollarStr.begin(), dollarStr.end(), ::isdigit) ||
              !std::all_of(centStr.begin(), centStr.end(), ::isdigit))
     {
         isValid = false;
+
     }
     else
     {
@@ -106,6 +114,7 @@ bool Helper::isValidPrice(const std::string &priceStr)
         {
             isValid = false;
         }
+
 
         if (isValid)
         {
@@ -173,6 +182,7 @@ bool Helper::isValidDenomination(const std::string &priceStr)
 bool Helper::isValidName(const std::string &name)
 {
     bool isValid = true;
+
     if (name.length() > NAMELEN)
     {
         std::cout << "The maximum length of a food item name is 40 characters" << std::endl;
@@ -193,6 +203,7 @@ bool Helper::isValidDescription(const std::string &description)
     if (description.length() > DESCLEN)
     {
         std::cout << "The maximum length of a food item description is 255 characters" << std::endl;
+
         isValid = false;
     }
 
