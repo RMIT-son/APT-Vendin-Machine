@@ -4,12 +4,21 @@
 
 #ifndef HELPER_H
 #define HELPER_H
-#include <string>
-#include <iomanip>
-#include <sstream>
+#include "Coin.h"
+#include "Food.h"
 #include "Node.h"
-
-
+#include "LinkedList.h"
+#include <string>
+#include <sstream>
+#include <cctype>
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <map>
+#include <iomanip>
+#include <fstream>
+#include <limits>
+#include <memory>
 
 class Helper {
 public:
@@ -32,6 +41,15 @@ public:
     static bool isValidDenomination(const std::string& priceStr);
     static bool isValidName(const std::string& name);
     static bool isValidDescription(const std::string& description);
+    static std::string readInput();
+    static bool isNumber(std::string s);
+    // static void removeFood(Food &foodList);
+    // static void addFood(Food &foodList);
+    // static void purchaseMeal(Food &foodList, CoinManager &coinManager);
+    static void processRefund(CoinManager& coinManager, const std::vector<Denomination>& addedDenominations);
+    static void processPayment(FoodItem* foodItem, CoinManager& coinManager,
+                    unsigned int& totalPaid, const std::string& denomination, 
+                    std::vector<Denomination>& addedDenominations);
 };
 
 
