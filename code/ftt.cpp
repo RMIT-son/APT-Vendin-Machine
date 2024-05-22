@@ -9,41 +9,13 @@
 #include "LinkedList.h"
 #include "Food.h"
 #include "Coin.h"
+#include "Interface.h"
 
 /**
  * manages the running of the program, initialises data structures, loads
  * data, display the main menu, and handles the processing of options.
  * Make sure free memory and close all files before exiting the program.
  **/
-
-std::string readInput()
-{
-    std::string input;
-    if (std::getline(std::cin, input)) {
-        // Remove trailing whitespace
-        size_t end = input.find_last_not_of(" \t\n\r\f\v");
-        if (end != std::string::npos) {
-            input = input.substr(0, end + 1);
-        }
-        std::cout << std::endl;
-        return input;
-    } else if (std::cin.eof()) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "EOF encountered. Please enter a valid input."<<std::endl;
-        return std::string();
-    } else {
-        return std::string();
-    }
-}
-
-bool isNumber(std::string s)
-{
-    std::string::const_iterator it = s.begin();
-    while (it != s.end() && std::isdigit(*it))
-        ++it;
-    return !s.empty() && it == s.end();
-}
 
 void displayMainMenu()
 {
@@ -59,24 +31,50 @@ void displayMainMenu()
     std::cout << "Select your option (1-7) : ";
 }
 
+// Utility function to trim from start (in place)
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// Utility function to trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+// Utility function to trim from both ends (in place)
+static inline void trim(std::string &s) {
+    ltrim(s);
+    rtrim(s);
+}
+
 void displayFoodMenu(Food &foodList)
 {
     const Node *current = foodList.getHead();
     std::cout << "Food Menu\n"
               << "---------\n";
-    std::cout<<"ID    |Name                                             |Price"
-                 "\n";
-    std::cout <<"-------------------------------------------------------------"
-                 "--\n";
+
+    std::cout << "ID   |Name                                              |Price\n";
+    std::cout << "------------------------------------------------------------------\n";
+
     while (current != nullptr)
     {
-        std::cout << std::left << std::setw(6) << current->data->id
-                  << "|" << std::setw(49) << current->data->name
-                  << "|" << "$" << current->data->price.dollars << "."
-                  << current->data->price.cents
-                  << std::endl;
+        // Trim the name to remove any leading or trailing whitespace or non-visible characters
+        std::string foodName = current->data->name;
+        trim(foodName);
+
+        // Print the food item details with proper formatting
+        std::cout << std::left << std::setw(5) << current->data->id << "|"
+                  << std::setw(50) << foodName << "|$"
+                  << std::setw(2) << std::right << current->data->price.dollars << "."
+                  << std::setfill('0') << std::setw(2) << current->data->price.cents
+                  << std::setfill(' ') << std::endl;
         current = current->next.get();
     }
+    std::cout << "\n";
 }
 
 void processPayment(FoodItem* foodItem, CoinManager& coinManager,
@@ -140,13 +138,14 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
     std::cout << "-------------" << std::endl;
     while (running) {
         std::cout << "Please enter the ID of the food you wish to purchase: ";
-        std::string id = readInput();
-        if (id.empty() || std::cin.eof())
+        std::string id = Helper::readInput();
+        if (id == "" || std::cin.eof())
             {
                 std::cin.clear();
                 running = false;
-                std::cout << "Option cancelled, returning to menu."<<std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             } else {
+                
 
                 if (!std::cin.eof()) {
                     FoodItem *foodItem = foodList.findFood(id);
@@ -165,19 +164,17 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                         }
                         else
                         {
-                            std::cout << "You have selected \""<<foodItem->name
+                            std::cout << "You have selected \"" << foodItem->name
                             << " - " << foodItem->description
-                            << "\". This will cost you $" <<static_cast<double>
-                                    (foodItem->price.dollars) +
-                                    static_cast<double>
-                                    (foodItem->price.cents) / 100
+                            << "\". This will cost you $"
+                                    << static_cast<double>(foodItem->price.dollars) +
+                                    static_cast<double>(foodItem->price.cents) / 100
                                     << "." << std::endl;
                             std::cout << "Please hand over the money - "
-                                        "type in the value of each note/"
-                                        "coin in cents."
+                                        "type in the value of each note/coin in cents."
                                         << std::endl;
-                            std::cout << "Please enter ctrl-D or "
-                                         "enter on a new line to"
+                            std::cout << "Please enter ctrl-D or enter on a new line to"
+
                                         " cancel this purchase." << std::endl;
 
                             unsigned int totalPaid = 0;
@@ -186,51 +183,49 @@ void purchaseMeal(Food &foodList, CoinManager &coinManager)
                             while (denominating)
                             {
                                 std::cout << "You still need to give us $"
-                                        << std::setw(6) << std::fixed <<
-                                        std::setprecision(2)
-                                        <<static_cast<double>
-                                        (foodItem->price.dollars) +
-                                        static_cast<double>
-                                        (foodItem->price.cents) /
-                                        100 - static_cast<double>
-                                        (totalPaid) / 100
+
+                                        << std::setw(6) << std::fixed
+                                        << std::setprecision(2)
+                                        << static_cast<double>(foodItem->price.dollars) +
+                                        static_cast<double>(foodItem->price.cents) /
+                                        100 - static_cast<double>(totalPaid) / 100
                                         << ": ";
-                                std::string denomination = readInput();
+                                std::string denomination = Helper::readInput();
 
                                 if (denomination == "" || std::cin.eof())
                                 {
                                     std::cout << std::endl
                                     << "Purchase cancelled." << std::endl;
                                     std::cin.clear();
-                                    processRefund(coinManager,
-                                                  addedDenominations);
+
+                                    Helper::processRefund(coinManager, addedDenominations);
+
                                     running = false;
                                     denominating = false;
                                 }
 
-                                else if (!isNumber(denomination))
+
+                                else if (!Helper::isNumber(denomination))
+
                                 {
                                     std::cout << std::endl
                                             << "Error: input was not numeric."
                                             << std::endl;
                                 }
-                                    else if (!Helper::isValidDenomination
-                                    (denomination))
+
+                                    else if (!Helper::isValidDenomination(denomination))
                                     {
                                         std::cout << "Error: "
-                                                    "invalid denomination "
-                                                    "encountered."
+                                                    "invalid denomination encountered."
+
                                                     << std::endl;
                                     }
                                     else
                                     {
-                                        processPayment(foodItem,
-                                                       coinManager,
-                                                       totalPaid,
-                                                       denomination,
-                                                       addedDenominations);
-                                        if (totalPaid >=
-                                        foodItem->price.dollars * 100
+
+                                        Helper::processPayment(foodItem, coinManager, totalPaid, denomination, addedDenominations);
+                                        if (totalPaid >= foodItem->price.dollars * 100
+
                                         + foodItem->price.cents) {
                                             denominating = false;
                                             running = false;
@@ -267,11 +262,12 @@ void addFood(Food &foodList)
         while (nameValid)
         {
             std::cout << "Enter the item name: ";
-            std::string foodName = readInput();
+            std::string foodName = Helper::readInput();
             if (Helper::isValidName(foodName)) {
                 newFoodName = foodName;
                 nameValid = false;
-            }
+            }    
+
             if (foodName == "" || std::cin.eof())
             {
                 std::cin.clear();
@@ -279,14 +275,14 @@ void addFood(Food &foodList)
                 nameValid = false;
                 descriptionValid = false;
                 priceValid = false;
-                std::cout << "Option cancelled, returning to menu."<<std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
         }
-
-        while (descriptionValid)
+        
+        while (descriptionValid) 
         {
             std::cout << "Enter the item description: ";
-            std::string foodDescription = readInput();
+            std::string foodDescription = Helper::readInput();
             if (Helper::isValidDescription(foodDescription)) {
                 newFoodDescription = foodDescription;
                 descriptionValid = false;
@@ -297,20 +293,20 @@ void addFood(Food &foodList)
                 running = false;
                 descriptionValid = false;
                 priceValid = false;
-                std::cout << "Option cancelled, returning to menu."<<std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
         }
-
+        
         while (priceValid)
         {
             std::cout << "Enter the price for this item: ";
-            std::string foodPrice = readInput();
+            std::string foodPrice = Helper::readInput();
             if (std::cin.eof() || foodPrice == "")
             {
                 std::cin.clear();
                 running = false;
                 priceValid = false;
-                std::cout << "Option cancelled, returning to menu."<<std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
             if (Helper::isValidPrice(foodPrice))
             {
@@ -330,7 +326,7 @@ void addFood(Food &foodList)
 
 void removeFood(Food &foodList) {
     std::cout << "Enter the food id of the food to remove from the menu: ";
-    std::string foodId = readInput();
+    std::string foodId = Helper::readInput();
     if (!std::cin.eof()) {
         if (foodList.removeFood(foodId)) {
             std::cout << "Food item removed successfully." << std::endl;
@@ -394,14 +390,14 @@ int main(int argc, char **argv)
 
     while (running) {
         displayMainMenu();
-        std::string input = readInput();
+        std::string input = Helper::readInput();
         if (std::cin.eof()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
                             '\n');
             std::cout << "Error in input. Please try again." << std::endl;
         } else
-        if (isNumber(input)) {
+        if (Helper::isNumber(input)) {
             const int option = std::stoi(input);
             if (option > 0 && option < 8)
             {
