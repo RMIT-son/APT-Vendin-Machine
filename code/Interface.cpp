@@ -112,7 +112,7 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
 
     std::cout << "Purchase Meal" << std::endl;
     std::cout << "-------------" << std::endl;
-
+  
     while (running) {
         std::cout << "Please enter the ID of the food you wish to purchase: ";
         std::string id = Helper::readInput();
@@ -242,7 +242,6 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
 void Interface::addFood(Food &foodList)
 {
     bool running = true;
-
     while (running)
     {
         std::string newId;
@@ -251,7 +250,6 @@ void Interface::addFood(Food &foodList)
 
         // Generate a new ID for the food item
         newId = foodList.generateID();
-
         std::cout << "This new meal item will have the Item ID of "
         << newId << std::endl;
 
@@ -264,7 +262,6 @@ void Interface::addFood(Food &foodList)
         {
             std::cout << "Enter the item name: ";
             std::string foodName = Helper::readInput();
-
             if (Helper::isValidName(foodName))
             {
                 newFoodName = foodName;

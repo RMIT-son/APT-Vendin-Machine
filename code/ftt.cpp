@@ -1,11 +1,4 @@
 #include <iostream>
-#include <iomanip>
-#include <vector>
-#include <fstream>
-#include <algorithm>
-#include <limits>
-#include <memory>
-#include <map>
 #include "LinkedList.h"
 #include "Food.h"
 #include "Coin.h"
@@ -16,7 +9,6 @@
  * data, display the main menu, and handles the processing of options.
  * Make sure free memory and close all files before exiting the program.
  **/
-
 int main(int argc, char **argv) {
     int res = 0;
     if (argc < 3) {

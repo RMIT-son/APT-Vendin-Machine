@@ -243,7 +243,8 @@ bool Helper::isValidName(const std::string &name) {
     }
 
     // Check if the name contains the invalid character '|'
-    if (name.find('|') != std::string::npos) {
+    if (name.find(FOOD_DELIM) != std::string::npos)
+    {
         std::cout << "Invalid character found!" << std::endl;
         isValid = false;
     }
@@ -263,7 +264,8 @@ bool Helper::isValidDescription(const std::string &description) {
     }
 
     // Check if the description contains the invalid character '|'
-    if (description.find('|') != std::string::npos) {
+    if (description.find(FOOD_DELIM) != std::string::npos)
+    {
         std::cout << "Invalid character found!" << std::endl;
         isValid = false;
     }
