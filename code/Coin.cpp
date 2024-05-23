@@ -1,13 +1,16 @@
 #include "Coin.h"
 
+// Constructor for the Coin class
 Coin::Coin(Denomination denom) {
     this->denom = denom;
 }
 
+// Destructor for the Coin class
 Coin::~Coin() {
     delete this;
 }
 
+// Constructor for the CoinManager class
 CoinManager::CoinManager() {
     // Initialize the counts for all denominations to 0
     for (int i = FIVE_CENTS; i <= FIFTY_DOLLARS; i++) {
@@ -15,6 +18,7 @@ CoinManager::CoinManager() {
     }
 }
 
+// Get the value of a coin based on its denomination
 int CoinManager::getValue(const Denomination denom) {
     int value;
     if (denom == FIVE_CENTS) {
@@ -44,6 +48,13 @@ int CoinManager::getValue(const Denomination denom) {
     return value;
 }
 
+/*
+ *Given an integer value, this function maps it to a corresponding denomination
+ * If the value matches one of the predefined constants
+ * it assigns the corresponding denomination to the 'denom' variable.
+ * If the value does not match any predefined denomination,
+ * it throws an exception.
+ */
 Denomination CoinManager::getDenomination(const int value) {
     Denomination denom;
     if (value == FIVE_CENTS_VALUE) {
@@ -69,10 +80,13 @@ Denomination CoinManager::getDenomination(const int value) {
     } else {
         throw std::invalid_argument("Invalid denomination value");
     }
-
     return denom;
 }
 
+/*
+ * Returns an unordered map containing coin denominations (keys)
+ * and the number of coins of each denomination (values).
+ */
 std::unordered_map<Denomination, unsigned> CoinManager::getCoins() const {
     return coins;
 }
@@ -80,6 +94,7 @@ std::unordered_map<Denomination, unsigned> CoinManager::getCoins() const {
 bool CoinManager::addCoin(Denomination denom, unsigned count) {
     // Add the coin count to the denomination
     coins[denom] += count;
+    // Successfully added the coins
     return true;
 }
 
@@ -103,7 +118,10 @@ void CoinManager::readFromFile(const std::string& filename) {
     if (fileOpened) {
         std::string line;
 
-        // Read each line from the file and add the coin denomination and count to the coins map
+        /*
+         * Read each line from the file and add the coin denomination
+         * and count to the coins map
+         */
         while (std::getline(file, line)) {
             std::istringstream ss(line);
             std::string valueStr, countStr;
@@ -118,7 +136,8 @@ void CoinManager::readFromFile(const std::string& filename) {
                     Denomination denom = getDenomination(value);
                     coins[denom] = count;
                 } catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid line or coin value: " << line << std::endl;
+                    std::cerr << "Invalid line or coin value: "
+                    << line << std::endl;
                 } catch (const std::out_of_range& e) {
                     std::cerr << "Value out of range: " << line << std::endl;
                 }
@@ -150,7 +169,8 @@ bool CoinManager::writeToFile(const std::string& filename) {
 
                 // Check if the write was successful
                 if (file.fail()) {
-                    std::cerr << "Failed to write coin value: " << denomination << " to file: " << filename << std::endl;
+                    std::cerr << "Failed to write coin value: " << denomination
+                    << " to file: " << filename << std::endl;
                     allWritesSuccessful = false;
                 }
             }
@@ -176,30 +196,50 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
                                                FIFTY_CENTS, TWENTY_CENTS,
                                                TEN_CENTS, FIVE_CENTS};
 
+    bool exactAmountReached = false;
+
+    // Calculate change using available denominations
     for (Denomination denom : denominations) {
         while (amount >= static_cast<unsigned int>(getValue(denom))
-        && coins[denom] > 0) {
+               && coins[denom] > 0
+               && !exactAmountReached) {
+            // Subtract denomination value
             amount -= static_cast<unsigned int>(getValue(denom));
+            // Add denomination to change vector
             change.push_back(denom);
-        }
-        if (amount == 0) {
-            return change;
+
+            if (amount == 0) {
+                // Exact amount reached
+                exactAmountReached = true;
+            }
         }
     }
 
     if (amount > 0) {
         std::cerr << "Insufficient change available." << std::endl;
+        // Clear the change vector if insufficient change is available
+        change.clear();
     }
 
+    /*
+     * Return change (empty if insufficient change,
+     * otherwise contains change denominations)
+     */
     return change;
 }
 
+/*
+ * The dispenseCoins function is responsible for dispensing coins
+ * based on the specified denominations.
+*/
 void CoinManager::dispenseCoins(const std::vector<Denomination>& denominations)
 {
     for (const Denomination& denom : denominations) {
         if (coins[denom] > 0) {
+            // Decrement the count for the specified denomination
             coins[denom]--;
         } else {
+            //Print an error message if insufficient coins of this denomination
             std::cerr<< "Error: Attempt to dispense "
                        "an unavailable denomination of " << getValue(denom)
                        << " cents." << std::endl;
