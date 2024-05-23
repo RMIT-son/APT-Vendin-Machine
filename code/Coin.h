@@ -1,8 +1,19 @@
 #ifndef COIN_H
 #define COIN_H
 
-// Coin.h defines the coin structure for managing currency in the system. 
-#define DELIM ','  // delimiter
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+// Coin.h defines the coin structure for managing currency in the system.
+
+// The delimiter used in the file to separate the denomination and count.
+#define DELIM ','
+
+// The value of each denomination in cents.
 #define FIVE_CENTS_VALUE 5
 #define TEN_CENTS_VALUE 10
 #define TWENTY_CENTS_VALUE 20
@@ -13,12 +24,6 @@
 #define TEN_DOLLARS_VALUE 1000
 #define TWENTY_DOLLARS_VALUE 2000
 #define FIFTY_DOLLARS_VALUE 5000
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 // enumeration representing the various types of currency
 // available in the system.

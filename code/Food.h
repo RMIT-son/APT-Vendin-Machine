@@ -4,10 +4,16 @@
 
 #ifndef FOOD_H
 #define FOOD_H
-#define FOOD_DELIM '|'
 #include <fstream>
 #include "LinkedList.h"
 #include "Helper.h"
+#include <unordered_set>
+
+#define FOOD_DELIM '|'
+#define ID_LENGTH 5
+#define ID_PREFIX 'F'
+#define ID_DIGITS 4
+
 
 class Food {
 public:

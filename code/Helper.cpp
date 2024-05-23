@@ -23,11 +23,29 @@ std::string Helper::priceToString(const Price &price)
     std::ostringstream oss;
 
     // Convert the price to a string with 2 decimal places separated by a period
-
     oss << price.dollars << "." << std::setfill('0') << std::setw(2)
         << price.cents;
     return oss.str();
 }
+
+bool Helper::isValidId(const std::string& id) {
+    bool isValid = true;
+
+    // Check if the ID starts with 'F' and has exactly 5 characters
+    if (id.size() != ID_LENGTH || id[0] != ID_PREFIX) {
+        isValid = false;
+    }
+
+    // Check if the remaining characters are digits
+    for (std::size_t i = 1; i < id.size() && isValid; ++i) {
+        if (!std::isdigit(id[i])) {
+            isValid = false;
+        }
+    }
+
+    return isValid;
+}
+
 
 std::string Helper::readInput()
 {
