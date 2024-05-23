@@ -4,6 +4,8 @@
 
 #ifndef HELPER_H
 #define HELPER_H
+
+
 #include "Coin.h"
 #include "Food.h"
 #include "Node.h"
@@ -19,6 +21,8 @@
 #include <fstream>
 #include <limits>
 #include <memory>
+
+
 
 class Helper {
 public:
@@ -37,6 +41,14 @@ public:
      * @return The string representation of the price.
      */
     static std::string priceToString(const Price& price);
+
+    /**
+     * @brief Check if an ID is valid
+     * @details This function will check if an ID is valid.
+     * @param id The ID to check.
+     * @return True if the ID is valid, false otherwise.
+     */
+    static bool isValidId(const std::string& id);
     static bool isValidPrice(const std::string& priceStr);
     static bool isValidDenomination(const std::string& priceStr);
     static bool isValidName(const std::string& name);
