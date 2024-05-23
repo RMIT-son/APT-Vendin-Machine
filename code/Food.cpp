@@ -8,7 +8,7 @@
 
 Food::Food() {
     // Initialize the Food LinkedList
-    count = 0;
+    count = ZERO;
 }
 
 Food::~Food() {

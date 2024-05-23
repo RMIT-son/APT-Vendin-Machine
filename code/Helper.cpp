@@ -118,14 +118,14 @@ bool Helper::isValidPrice(const std::string &priceStr)
 
         if (isValid)
         {
-            if (dollars == 0 && cents == 0)
+            if (dollars == ZERO && cents == ZERO)
             {
                 std::cout << "Error: the price must be greater than 0.00" << std::endl;
                 isValid = false;
             }
-            else if (dollars > 99)
+            else if (dollars > MAX_PRICE)
             {
-                std::cout << "Error: the price must be smaller than 100.00" << std::endl;
+                std::cout << "Error: the price must be smaller than HUNDRED.00" << std::endl;
                 isValid = false;
             }
             else
@@ -189,7 +189,7 @@ bool Helper::isValidName(const std::string &name)
         isValid = false;
     }
 
-    if (name.find('|') != std::string::npos)
+    if (name.find(FOOD_DELIM) != std::string::npos)
     {
         std::cout << "Invalid character found!" << std::endl;
         isValid = false;
@@ -207,7 +207,7 @@ bool Helper::isValidDescription(const std::string &description)
         isValid = false;
     }
 
-    if (description.find('|') != std::string::npos)
+    if (description.find(FOOD_DELIM) != std::string::npos)
     {
         std::cout << "Invalid character found!" << std::endl;
         isValid = false;
@@ -224,10 +224,10 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
     totalPaid += std::stoi(denomination);
     addedDenominations.push_back(denom);
 
-    if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents)
+    if (totalPaid >= foodItem->price.dollars * HUNDRED + foodItem->price.cents)
     {
         unsigned change = totalPaid -
-                          (foodItem->price.dollars * 100 + foodItem->price.cents);
+                          (foodItem->price.dollars * HUNDRED + foodItem->price.cents);
         // Calculate and dispense change
         std::vector<Denomination> changeDenominations =
             coinManager.calculateChange(change);
@@ -237,9 +237,9 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         for (auto denom : changeDenominations)
         {
             unsigned int value = coinManager.getValue(denom);
-            if (value >= 100)
+            if (value >= HUNDRED)
             {
-                std::cout << "$" << value / 100;
+                std::cout << "$" << value / HUNDRED;
             }
             else
             {
@@ -261,9 +261,9 @@ void Helper::processRefund(CoinManager &coinManager, const std::vector<Denominat
     {
         coinManager.removeCoin(denom, 1); // Remove the money from the machine
         unsigned int value = coinManager.getValue(denom);
-        if (value >= 100)
+        if (value >= HUNDRED)
         {
-            std::cout << "$" << value / 100;
+            std::cout << "$" << value / HUNDRED;
         }
         else
         {

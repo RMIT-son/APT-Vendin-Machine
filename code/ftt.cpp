@@ -1,11 +1,4 @@
 #include <iostream>
-#include <iomanip>
-#include <vector>
-#include <fstream>
-#include <algorithm>
-#include <limits>
-#include <memory>
-#include <map>
 #include "LinkedList.h"
 #include "Food.h"
 #include "Coin.h"
