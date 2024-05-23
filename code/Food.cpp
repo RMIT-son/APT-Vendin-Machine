@@ -4,8 +4,6 @@
 
 #include "Food.h"
 
-#include <unordered_set>
-
 Food::Food() {
     // Initialize the Food LinkedList
     count = 0;
@@ -49,79 +47,61 @@ unsigned Food::getFoodCount() const {
 
 void Food::readFromFile(const std::string& filename) {
     std::ifstream file(filename);
-    if (!file) {
-        // If the file cannot be opened, print an error message and return.
+    bool fileOpened = file.is_open();
+    if (fileOpened) {
+        std::string line;
+        while (std::getline(file, line)) {
+            std::istringstream iss(line);
+            std::vector<std::string> fields;
+            std::string field;
+            while (std::getline(iss, field, FOOD_DELIM)) {
+                fields.push_back(field);
+            }
+            if (fields.size() == 4) {
+                std::string id = fields[0];
+                if (Helper::isValidId(id)) {
+                    std::string name = fields[1];
+                    std::string description = fields[2];
+                    std::string priceStr = fields[3];
+                    // Convert double to Price
+                    Price price = Helper::readPrice(priceStr);
+                    std::shared_ptr<FoodItem> item = std::make_shared<FoodItem>();
+                    item->id = id;
+                    item->name = name;
+                    item->description = description;
+                    item->price = price;
+                    foodList.addNodeSorted(item);
+                } else {
+                    std::cerr << "Invalid ID: " << id << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid line format: " << line << std::endl;
+            }
+        }
+        file.close();
+    } else {
         std::cerr << "Unable to open file: " << filename << std::endl;
-        return;
     }
-
-    std::string line;
-    while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        std::vector<std::string> fields;
-        std::string field;
-        while (std::getline(iss, field, '|')) {
-            // Assuming '|' is the delimiter, split the line into fields.
-            fields.push_back(field);
-        }
-
-        if (fields.size() != 4) {
-            // If the line does not have exactly 4 fields, print error message.
-            std::cerr << "Invalid line format: " << line << std::endl;
-        } else {
-            // Extract data from the fields.
-            std::string id = fields[0];
-            std::string name = fields[1];
-            std::string description = fields[2];
-            std::string priceStr = fields[3];
-
-            // Convert the price string to a Price object.
-            Price price = Helper::readPrice(priceStr);
-
-            // Create a FoodItem and populate its attributes.
-            std::shared_ptr<FoodItem> item = std::make_shared<FoodItem>();
-            item->id = id;
-            item->name = name;
-            item->description = description;
-            item->price = price;
-
-            // Add the FoodItem to the foodList.
-            foodList.addNodeSorted(item);
-        }
-    }
-
-    // Close the file properly.
-    file.close();
 }
 
+
 bool Food::writeToFile(const std::string& filename) {
-    std::ofstream file(filename);
-    // Flag to track the success of the file writing operation
     bool success = false;
-
-    if (!file) {
-        // If the file fails to open, print an error message
-        std::cerr << "Unable to open file: " << filename << std::endl;
-    } else {
-        // Use a getter method here to obtain the head of the linked list
+    std::ofstream file(filename);
+    if (file) {
         Node* current = foodList.getHead();
-
-        // Iterate through the linked list and write each node's data to file
         while (current != nullptr) {
             file << current->data->id << FOOD_DELIM
                  << current->data->name << FOOD_DELIM
                  << current->data->description << FOOD_DELIM
                  << Helper::priceToString(current->data->price) << std::endl;
-
-            // Move to the next node
             current = current->next.get();
         }
-        // Close the file once all data is written
         file.close();
-        // Set the success flag to true indicating successful file writing
         success = true;
+    } else {
+        std::cerr << "Unable to open file: " << filename << std::endl;
     }
-    // Return the success flag indicating the result of file writing operation
     return success;
 }
 
@@ -150,13 +130,12 @@ std::string Food::generateID() {
 
     // Convert newId to string and pad with leading zeros if necessary
     std::string newIdStr = std::to_string(newId);
-    while (newIdStr.length() < 4) {
-        // Assuming IDs have 4 digits
+    while (newIdStr.length() < ID_DIGITS) {  // Assuming IDs have 4 digits
         newIdStr.insert(newIdStr.begin(), '0');
     }
 
     // Add 'F' prefix and return
-    newIdStr.insert(newIdStr.begin(), 'F');
+    newIdStr.insert(newIdStr.begin(), ID_PREFIX);
     return newIdStr;
 }
 

@@ -1,5 +1,4 @@
 #include "Coin.h"
- // implement functions for managing coins
 
 // Constructor for the Coin class
 Coin::Coin(Denomination denom) {
@@ -14,7 +13,7 @@ Coin::~Coin() {
 // Constructor for the CoinManager class
 CoinManager::CoinManager() {
     // Initialize the counts for all denominations to 0
-    for (int i = FIVE_CENTS; i <= TWENTY_DOLLARS; i++) {
+    for (int i = FIVE_CENTS; i <= FIFTY_DOLLARS; i++) {
         coins[static_cast<Denomination>(i)] = 0;
     }
 }
@@ -93,99 +92,96 @@ std::unordered_map<Denomination, unsigned> CoinManager::getCoins() const {
 }
 
 bool CoinManager::addCoin(Denomination denom, unsigned count) {
-    // Increment the count for the specified denomination
-    if (count < 0) {
-        return false;
-    }
-    // Add the specified count to the denomination
+    // Add the coin count to the denomination
     coins[denom] += count;
     // Successfully added the coins
     return true;
 }
 
 bool CoinManager::removeCoin(Denomination denom, unsigned count) {
-    // Initialize a boolean variable to track success
     bool success = false;
 
-    // Decrement the count for the specified denomination, but don't go below 0
+    // Check if there are enough coins of the denomination to remove
     if (coins[denom] >= count) {
         coins[denom] -= count;
-        // Subtract the specified count from the denomination
         success = true;
-    } else {
-        // Set the count to 0 if insufficient coins to remove
-        coins[denom] = 0;
-        // Not enough coins to remove
-        success = false;
     }
     return success;
 }
 
-// Reads coin data from a file and populates the coins data structure
+
+
 void CoinManager::readFromFile(const std::string& filename) {
     std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
-        return;
-        // Exit the function if file cannot be opened
-    }
+    bool fileOpened = file.is_open();
 
-    std::string line;
-    while (std::getline(file, line)) {
-        std::istringstream ss(line);
-        std::string valueStr, countStr;
-        std::getline(ss, valueStr, DELIM);
-        std::getline(ss, countStr, DELIM);
-        // Convert value string to integer
-        int value = std::stoi(valueStr);
-        // Convert count string to unsigned integer
-        unsigned count = std::stoul(countStr);
-        Denomination denom;
-        try {
-            // Get the denomination based on value
-            denom = getDenomination(value);
-        } catch (const std::invalid_argument& e) {
-            std::cerr << "Invalid coin value: " << value << std::endl;
-            // Handle invalid coin value (e.g., unrecognized denomination)
-        }
-        // Set the count for the denomination
-        coins[denom] = count;
-    }
-    // Close the file after reading
-    file.close();
-}
+    if (fileOpened) {
+        std::string line;
 
-bool CoinManager::writeToFile(const std::string& filename) {
-    // Open the specified file for writing
-    std::ofstream file(filename);
-    bool success = true;
+        // Read each line from the file and add the coin denomination and count to the coins map
+        while (std::getline(file, line)) {
+            std::istringstream ss(line);
+            std::string valueStr, countStr;
+            std::getline(ss, valueStr, DELIM);
+            std::getline(ss, countStr, DELIM);
 
-    if (!file.is_open()) {
-        // Failed to open the file for writing
-        std::cerr << "Failed to open file: " << filename << std::endl;
-        success = false;
-    } else if (coins.empty()) {
-        // No coins to write to the file
-        std::cerr << "No coins to write to file." << std::endl;
-        success = false;
-    } else {
-        bool writingFailed = false;
-        for (const auto& pair : coins) {
-            int denomination = getValue(pair.first);
-            unsigned count = pair.second;
-            file << denomination << DELIM << count << "\n";
-            if (file.fail()) {
-                // Failed to write to the file
-                std::cerr << "Failed to write to file: " << filename << std::endl;
-                writingFailed = true;
-                success = false;
+            // Check if the value and count are not empty
+            if (!valueStr.empty() && !countStr.empty()) {
+                try {
+                    int value = std::stoi(valueStr);
+                    unsigned count = std::stoul(countStr);
+                    Denomination denom = getDenomination(value);
+                    coins[denom] = count;
+                } catch (const std::invalid_argument& e) {
+                    std::cerr << "Invalid line or coin value: " << line << std::endl;
+                } catch (const std::out_of_range& e) {
+                    std::cerr << "Value out of range: " << line << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid line format: " << line << std::endl;
             }
         }
-        success = !writingFailed;
+        file.close();
+    } else {
+        std::cerr << "Failed to open file: " << filename << std::endl;
     }
-    file.close();
+}
+
+
+bool CoinManager::writeToFile(const std::string& filename) {
+    bool success = false;
+    std::ofstream file(filename);
+
+    if (file.is_open()) {
+        // Write each coin denomination and count to the file
+        if (!coins.empty()) {
+            bool allWritesSuccessful = true;
+
+            // Write each coin denomination and count to the file
+            for (const auto& pair : coins) {
+                int denomination = getValue(pair.first);
+                unsigned count = pair.second;
+                file << denomination << DELIM << count << "\n";
+
+                // Check if the write was successful
+                if (file.fail()) {
+                    std::cerr << "Failed to write coin value: " << denomination << " to file: " << filename << std::endl;
+                    allWritesSuccessful = false;
+                }
+            }
+            success = allWritesSuccessful;
+        } else {
+            std::cerr << "No coins to write to file." << std::endl;
+        }
+        file.close();
+    } else {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+    }
+
     return success;
 }
+
+
 
 std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
     std::vector<Denomination> change;

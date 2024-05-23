@@ -36,8 +36,27 @@ std::string Helper::priceToString(const Price &price) {
     return oss.str();
 }
 
-std::string Helper::readInput() {
-    // Create a string to store the user input
+bool Helper::isValidId(const std::string& id) {
+    bool isValid = true;
+
+    // Check if the ID starts with 'F' and has exactly 5 characters
+    if (id.size() != ID_LENGTH || id[0] != ID_PREFIX) {
+        isValid = false;
+    }
+
+    // Check if the remaining characters are digits
+    for (std::size_t i = 1; i < id.size() && isValid; ++i) {
+        if (!std::isdigit(id[i])) {
+            isValid = false;
+        }
+    }
+
+    return isValid;
+}
+
+
+std::string Helper::readInput()
+{
     std::string input;
 
     // Read a line of input from the user via std::cin
