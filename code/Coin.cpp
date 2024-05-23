@@ -49,7 +49,7 @@ int CoinManager::getValue(const Denomination denom) {
 }
 
 /*
- * Given an integer value, this function maps it to a corresponding denomination
+ *Given an integer value, this function maps it to a corresponding denomination
  * If the value matches one of the predefined constants
  * it assigns the corresponding denomination to the 'denom' variable.
  * If the value does not match any predefined denomination,
@@ -118,7 +118,10 @@ void CoinManager::readFromFile(const std::string& filename) {
     if (fileOpened) {
         std::string line;
 
-        // Read each line from the file and add the coin denomination and count to the coins map
+        /*
+         * Read each line from the file and add the coin denomination
+         * and count to the coins map
+         */
         while (std::getline(file, line)) {
             std::istringstream ss(line);
             std::string valueStr, countStr;
@@ -133,7 +136,8 @@ void CoinManager::readFromFile(const std::string& filename) {
                     Denomination denom = getDenomination(value);
                     coins[denom] = count;
                 } catch (const std::invalid_argument& e) {
-                    std::cerr << "Invalid line or coin value: " << line << std::endl;
+                    std::cerr << "Invalid line or coin value: "
+                    << line << std::endl;
                 } catch (const std::out_of_range& e) {
                     std::cerr << "Value out of range: " << line << std::endl;
                 }
@@ -165,7 +169,8 @@ bool CoinManager::writeToFile(const std::string& filename) {
 
                 // Check if the write was successful
                 if (file.fail()) {
-                    std::cerr << "Failed to write coin value: " << denomination << " to file: " << filename << std::endl;
+                    std::cerr << "Failed to write coin value: " << denomination
+                    << " to file: " << filename << std::endl;
                     allWritesSuccessful = false;
                 }
             }
@@ -212,10 +217,14 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
 
     if (amount > 0) {
         std::cerr << "Insufficient change available." << std::endl;
-        change.clear();  // Clear the change vector if insufficient change is available
+        // Clear the change vector if insufficient change is available
+        change.clear();
     }
 
-    // Return change (empty if insufficient change, otherwise contains change denominations)
+    /*
+     * Return change (empty if insufficient change,
+     * otherwise contains change denominations)
+     */
     return change;
 }
 
