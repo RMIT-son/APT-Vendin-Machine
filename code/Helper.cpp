@@ -118,14 +118,14 @@ bool Helper::isValidPrice(const std::string &priceStr)
 
         if (isValid)
         {
-            if (dollars == ZERO && cents == ZERO)
+            if (dollars == 0 && cents == 0)
             {
                 std::cout << "Error: the price must be greater than 0.00" << std::endl;
                 isValid = false;
             }
-            else if (dollars > MAX_PRICE)
+            else if (dollars > 99)
             {
-                std::cout << "Error: the price must be smaller than HUNDRED.00" << std::endl;
+                std::cout << "Error: the price must be smaller than 100.00" << std::endl;
                 isValid = false;
             }
             else
@@ -224,10 +224,10 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
     totalPaid += std::stoi(denomination);
     addedDenominations.push_back(denom);
 
-    if (totalPaid >= foodItem->price.dollars * HUNDRED + foodItem->price.cents)
+    if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents)
     {
         unsigned change = totalPaid -
-                          (foodItem->price.dollars * HUNDRED + foodItem->price.cents);
+                          (foodItem->price.dollars * 100 + foodItem->price.cents);
         // Calculate and dispense change
         std::vector<Denomination> changeDenominations =
             coinManager.calculateChange(change);
@@ -237,9 +237,9 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         for (auto denom : changeDenominations)
         {
             unsigned int value = coinManager.getValue(denom);
-            if (value >= HUNDRED)
+            if (value >= 100)
             {
-                std::cout << "$" << value / HUNDRED;
+                std::cout << "$" << value / 100;
             }
             else
             {
@@ -261,9 +261,9 @@ void Helper::processRefund(CoinManager &coinManager, const std::vector<Denominat
     {
         coinManager.removeCoin(denom, 1); // Remove the money from the machine
         unsigned int value = coinManager.getValue(denom);
-        if (value >= HUNDRED)
+        if (value >= 100)
         {
-            std::cout << "$" << value / HUNDRED;
+            std::cout << "$" << value / 100;
         }
         else
         {

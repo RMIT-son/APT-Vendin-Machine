@@ -19,7 +19,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "Helper.h"
 
 // enumeration representing the various types of currency
 // available in the system.

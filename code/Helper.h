@@ -4,9 +4,6 @@
 
 #ifndef HELPER_H
 #define HELPER_H
-#define ZERO 0
-#define HUNDRED 100
-#define MAX_PRICE 99
 #include "Coin.h"
 #include "Food.h"
 #include "Node.h"

@@ -10,9 +10,9 @@ Coin::~Coin() {
 }
 
 CoinManager::CoinManager() {
-    // Initialize the counts for all denominations to ZERO
+    // Initialize the counts for all denominations to 0
     for (int i = FIVE_CENTS; i <= TWENTY_DOLLARS; i++) {
-        coins[static_cast<Denomination>(i)] = ZERO;
+        coins[static_cast<Denomination>(i)] = 0;
     }
 }
 
@@ -80,7 +80,7 @@ std::unordered_map<Denomination, unsigned> CoinManager::getCoins() const {
 
 bool CoinManager::addCoin(Denomination denom, unsigned count) {
     // Increment the count for the specified denomination
-    if (count < ZERO) {
+    if (count < 0) {
         return false;
     }
     coins[denom] += count;
@@ -88,12 +88,12 @@ bool CoinManager::addCoin(Denomination denom, unsigned count) {
 }
 
 bool CoinManager::removeCoin(Denomination denom, unsigned count) {
-    // Decrement the count for the specified denomination, but don't go below ZERO
+    // Decrement the count for the specified denomination, but don't go below 0
     if (coins[denom] >= count) {
         coins[denom] -= count;
         return true;
     } else {
-        coins[denom] = ZERO;
+        coins[denom] = 0;
         return false;
     }
 }
@@ -163,16 +163,16 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
 
     for (Denomination denom : denominations) {
         while (amount >= static_cast<unsigned int>(getValue(denom))
-        && coins[denom] > ZERO) {
+        && coins[denom] > 0) {
             amount -= static_cast<unsigned int>(getValue(denom));
             change.push_back(denom);
         }
-        if (amount == ZERO) {
+        if (amount == 0) {
             return change;
         }
     }
 
-    if (amount > ZERO) {
+    if (amount > 0) {
         std::cerr << "Insufficient change available." << std::endl;
     }
 
@@ -182,7 +182,7 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
 void CoinManager::dispenseCoins(const std::vector<Denomination>& denominations)
 {
     for (const Denomination& denom : denominations) {
-        if (coins[denom] > ZERO) {
+        if (coins[denom] > 0) {
             coins[denom]--;
         } else {
             std::cerr<< "Error: Attempt to dispense "
