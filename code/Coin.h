@@ -24,6 +24,7 @@
 #define TEN_DOLLARS_VALUE 1000
 #define TWENTY_DOLLARS_VALUE 2000
 #define FIFTY_DOLLARS_VALUE 5000
+#define DEFAULT_DENOM_COUNT 0
 
 // enumeration representing the various types of currency
 // available in the system.

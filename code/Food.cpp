@@ -64,7 +64,7 @@ void Food::readFromFile(const std::string& filename) {
                  */
                 fields.push_back(field);
             }
-            if (fields.size() == 4) {
+            if (fields.size() == ID_DIGITS) {
                 // Extract the ID field
                 std::string id = fields[0];
                 if (Helper::isValidId(id)) {

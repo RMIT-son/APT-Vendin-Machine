@@ -152,7 +152,7 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                                   << static_cast<double>
                                   (foodItem->price.dollars) +
                                      static_cast<double>
-                                     (foodItem->price.cents) / 100
+                                     (foodItem->price.cents) / ONE_HUNDRED
                                   << "." << std::endl;
                         std::cout << "Please hand over the money - "
                                      "type in the value of each note/"
@@ -177,8 +177,8 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                                       << static_cast<double>
                                       (foodItem->price.dollars) +
                                          static_cast<double>
-                                         (foodItem->price.cents) / 100 -
-                                         static_cast<double>(totalPaid) / 100
+                                         (foodItem->price.cents) / ONE_HUNDRED -
+                                         static_cast<double>(totalPaid) / ONE_HUNDRED
                                       << ": ";
                             std::string denomination = Helper::readInput();
 
@@ -215,7 +215,7 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                                                        addedDenominations);
 
                                 // Check if total payment is sufficient
-                                if (totalPaid >= foodItem->price.dollars * 100
+                                if (totalPaid >= foodItem->price.dollars * ONE_HUNDRED
                                 + foodItem->price.cents)
                                 {
                                     denominating = false;

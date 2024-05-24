@@ -14,7 +14,7 @@ Coin::~Coin() {
 CoinManager::CoinManager() {
     // Initialize the counts for all denominations to 0
     for (int i = FIVE_CENTS; i <= FIFTY_DOLLARS; i++) {
-        coins[static_cast<Denomination>(i)] = 0;
+        coins[static_cast<Denomination>(i)] = DEFAULT_DENOM_COUNT;
     }
 }
 
@@ -201,21 +201,21 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
     // Calculate change using available denominations
     for (Denomination denom : denominations) {
         while (amount >= static_cast<unsigned int>(getValue(denom))
-               && coins[denom] > 0
+               && coins[denom] > DEFAULT_DENOM_COUNT
                && !exactAmountReached) {
             // Subtract denomination value
             amount -= static_cast<unsigned int>(getValue(denom));
             // Add denomination to change vector
             change.push_back(denom);
 
-            if (amount == 0) {
+            if (amount == DEFAULT_DENOM_COUNT) {
                 // Exact amount reached
                 exactAmountReached = true;
             }
         }
     }
 
-    if (amount > 0) {
+    if (amount > DEFAULT_DENOM_COUNT) {
         std::cerr << "Insufficient change available." << std::endl;
         // Clear the change vector if insufficient change is available
         change.clear();
@@ -235,7 +235,7 @@ std::vector<Denomination> CoinManager::calculateChange(unsigned int amount) {
 void CoinManager::dispenseCoins(const std::vector<Denomination>& denominations)
 {
     for (const Denomination& denom : denominations) {
-        if (coins[denom] > 0) {
+        if (coins[denom] > DEFAULT_DENOM_COUNT) {
             // Decrement the count for the specified denomination
             coins[denom]--;
         } else {
