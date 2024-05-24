@@ -10,13 +10,13 @@
  * Make sure free memory and close all files before exiting the program.
  **/
 int main(int argc, char **argv) {
-    int res = 0;
+    int res = EXIT_SUCCESS;
     if (argc < 3) {
         // Check if the command-line arguments are less than 3
         std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file>"
                   << std::endl;
         // Set the result to 1 to indicate an error
-        res = 1;
+        res = EXIT_FAILURE;
     } else {
         // Get the food file name from command-line argument
         std::string foodFile = argv[1];

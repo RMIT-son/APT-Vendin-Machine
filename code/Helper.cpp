@@ -104,7 +104,7 @@ bool canDispenseCents(int cents, const std::vector<int> &denominations) {
         }
     }
 
-    return cents == 0;
+    return cents == MIN_PRICE;
     /*
      * Return true if the remaining cents are equal to zero, indicating that the
      * given denominations can be used to dispense the original amount of cents
@@ -154,13 +154,13 @@ bool Helper::isValidPrice(const std::string &priceStr) {
         // Further checks for the validity of the price
         if (isValid) {
             // Check if the price is zero
-            if (dollars == 0 && cents == 0) {
+            if (dollars == MIN_PRICE && cents == MIN_PRICE) {
                 std::cout << "Error: the price must be greater than 0.00"
                 << std::endl;
                 isValid = false;
             }
             // Check if the price exceeds 99.99
-            else if (dollars > 99) {
+            else if (dollars > MAX_PRICE) {
                 std::cout << "Error: the price must be smaller than 100.00"
                 << std::endl;
                 isValid = false;
@@ -290,9 +290,9 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
     addedDenominations.push_back(denom);
 
     // Check if the total amount paid is sufficient for the food item price
-    if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
+    if (totalPaid >= foodItem->price.dollars * ONE_HUNDRED + foodItem->price.cents) {
         // Calculate the change to be given back to the customer
-        unsigned change = totalPaid - (foodItem->price.dollars * 100 +
+        unsigned change = totalPaid - (foodItem->price.dollars * ONE_HUNDRED +
                 foodItem->price.cents);
 
         // Calculate the denominations needed for the change
@@ -309,8 +309,8 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         std::cout << "Your change is ";
         for (auto denom : changeDenominations) {
             unsigned int value = coinManager.getValue(denom);
-            if (value >= 100) {
-                std::cout << "$" << value / 100;
+            if (value >= ONE_HUNDRED) {
+                std::cout << "$" << value / ONE_HUNDRED;
             } else {
                 std::cout << value << "c";
             }
@@ -338,8 +338,8 @@ void Helper::processRefund(CoinManager &coinManager,
         unsigned int value = coinManager.getValue(denom);
 
         // Print the value of the denomination in dollars or cents
-        if (value >= 100) {
-            std::cout << "$" << value / 100;
+        if (value >= ONE_HUNDRED) {
+            std::cout << "$" << value / ONE_HUNDRED;
         } else {
             std::cout << value << "c";
         }

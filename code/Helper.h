@@ -22,7 +22,9 @@
 #include <limits>
 #include <memory>
 
-
+#define MIN_PRICE 0
+#define MAX_PRICE 99
+#define ONE_HUNDRED 100
 
 class Helper {
 public:
