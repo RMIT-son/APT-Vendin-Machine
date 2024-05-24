@@ -1,21 +1,21 @@
 #include "Interface.h"
 
 // Utility function to trim from start (in place)
-static inline void ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+static void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](const unsigned char ch) {
         return !std::isspace(ch);
     }));
 }
 
 // Utility function to trim from end (in place)
-static inline void rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+static void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](const unsigned char ch) {
         return !std::isspace(ch);
     }).base(), s.end());
 }
 
 // Utility function to trim from both ends (in place)
-static inline void trim(std::string &s) {
+static void trim(std::string &s) {
     ltrim(s);
     rtrim(s);
 }
@@ -39,7 +39,7 @@ void Interface::displayMainMenu()
     std::cout << "Select your option (1-7) : ";
 }
 
-void Interface::displayFoodMenu(Food &foodList)
+void Interface::displayFoodMenu(const Food &foodList)
 {
     const Node *current = foodList.getHead();
 
@@ -74,8 +74,8 @@ void Interface::displayFoodMenu(Food &foodList)
 void Interface::displayBalance(CoinManager &manager)
 {
     // Sort the coins in ascending order based on their denomination
-    std::map<Denomination, unsigned> sortedCoins(manager.coins.begin(),
-                                                 manager.coins.end());
+    const std::map<Denomination, unsigned> sortedCoins(manager.coins.begin(),
+                                                       manager.coins.end());
 
     double totalValue = 0.0;
 
@@ -88,9 +88,9 @@ void Interface::displayBalance(CoinManager &manager)
     // Iterate through the sorted coins and display their details
     for (const auto &pair : sortedCoins)
     {
-        int denomination = manager.getValue(pair.first);
-        unsigned count = pair.second;
-        double value = count * (denomination / 100.0);
+        const int denomination = CoinManager::getValue(pair.first);
+        const unsigned count = pair.second;
+        const double value = count * (denomination / 100.0);
 
         // Print the denomination, quantity, and value of the coin
         std::cout << std::right << std::setw(5) << denomination << " | "
@@ -105,7 +105,7 @@ void Interface::displayBalance(CoinManager &manager)
     std::cout << "Total:            $" << std::setw(7) << std::fixed <<
               std::setprecision(2) << totalValue << std::endl;
 }
-void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
+void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
 {
     // Added CoinManager reference
     bool running = true;
@@ -118,7 +118,7 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
         std::string id = Helper::readInput();
 
         // Check if input is empty or EOF (end of file)
-        if (id == "" || std::cin.eof())
+        if (id.empty() || std::cin.eof())
         {
             std::cin.clear();
             running = false;
@@ -149,11 +149,8 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                         std::cout << "You have selected \"" << foodItem->name
                                   << " - " << foodItem->description
                                   << "\". This will cost you $"
-                                  << static_cast<double>
-                                  (foodItem->price.dollars) +
-                                     static_cast<double>
-                                     (foodItem->price.cents) / ONE_HUNDRED
-                                  << "." << std::endl;
+                                  << Helper::priceToString(foodItem->price)
+                                  << std::endl;
                         std::cout << "Please hand over the money - "
                                      "type in the value of each note/"
                                      "coin in cents." << std::endl;
@@ -174,16 +171,14 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                             std::cout << "You still need to give us $"
                                       << std::setw(6) << std::fixed
                                       << std::setprecision(2)
-                                      << static_cast<double>
-                                      (foodItem->price.dollars) +
-                                         static_cast<double>
-                                         (foodItem->price.cents) / ONE_HUNDRED -
-                                         static_cast<double>(totalPaid) / ONE_HUNDRED
+                                      << Helper::priceToString({
+                                          (foodItem->price.dollars * 100 +foodItem->price.cents - totalPaid) / 100,
+                                          (foodItem->price.dollars * 100 + foodItem->price.cents - totalPaid) % 100})
                                       << ": ";
                             std::string denomination = Helper::readInput();
 
                             // Check if input is empty or EOF
-                            if (denomination == "" || std::cin.eof())
+                            if (denomination.empty() || std::cin.eof())
                             {
                                 std::cout << std::endl << "Purchase cancelled."
                                 << std::endl;
@@ -215,7 +210,7 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                                                        addedDenominations);
 
                                 // Check if total payment is sufficient
-                                if (totalPaid >= foodItem->price.dollars * ONE_HUNDRED
+                                if (totalPaid >= foodItem->price.dollars * 100
                                 + foodItem->price.cents)
                                 {
                                     denominating = false;
@@ -269,7 +264,7 @@ void Interface::addFood(Food &foodList)
             }
 
             // Check if input is empty or EOF
-            if (foodName == "" || std::cin.eof())
+            if (foodName.empty() || std::cin.eof())
             {
                 std::cin.clear();
                 running = false;
@@ -310,7 +305,7 @@ void Interface::addFood(Food &foodList)
             std::string foodPrice = Helper::readInput();
 
             // Check if input is empty or EOF
-            if (std::cin.eof() || foodPrice == "")
+            if (std::cin.eof() || foodPrice.empty())
             {
                 std::cin.clear();
                 running = false;
@@ -323,8 +318,7 @@ void Interface::addFood(Food &foodList)
                 running = false;
 
                 // Create a new FoodItem object with the entered details
-                std::shared_ptr<FoodItem> newFood =
-                        std::make_shared<FoodItem>();
+                const auto newFood = std::make_shared<FoodItem>();
                 newFood->id = newId;
                 newFood->name = newFoodName;
                 newFood->description = newFoodDescription;
@@ -332,6 +326,7 @@ void Interface::addFood(Food &foodList)
 
                 // Add the new food item to the food list
                 foodList.addFood(newFood);
+                priceValid = false;
             }
         }
     }
@@ -340,7 +335,7 @@ void Interface::addFood(Food &foodList)
 void Interface::removeFood(Food &foodList)
 {
     std::cout << "Enter the food id of the food to remove from the menu: ";
-    std::string foodId = Helper::readInput();
+    const std::string foodId = Helper::readInput();
 
     if (!std::cin.eof())
     {

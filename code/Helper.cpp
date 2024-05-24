@@ -58,18 +58,19 @@ bool Helper::isValidId(const std::string& id) {
 std::string Helper::readInput()
 {
     std::string input;
-
-    // Read a line of input from the user via std::cin
-    if (std::getline(std::cin, input)) {
-        // Print a newline character to improve readability
+    if (std::getline(std::cin, input))
+    {
+        // Remove any leading or trailing whitespace
+        const size_t end = input.find_last_not_of(" \t\n\r\f\v");
+        if (end != std::string::npos) {
+            input = input.substr(0, end + 1);
+        }
         std::cout << std::endl;
         // Check if the input stream encountered an end-of-file condition
     } else if (std::cin.eof()) {
         std::cin.clear();
         // Clear the input stream and ignore any remaining characters in the buffer
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        // Print an error message indicating that an end-of-file was encountered
-        std::cout << "EOF encountered. Please enter a valid input." << std::endl;
         // Set the input string to an empty string
         input = std::string();
     } else {
@@ -133,8 +134,8 @@ bool Helper::isValidPrice(const std::string &priceStr) {
         isValid = false;
     }
     // Check if both the dollar and cent portions consist of only digits
-    else if (!std::all_of(dollarStr.begin(), dollarStr.end(), ::isdigit) ||
-             !std::all_of(centStr.begin(), centStr.end(), ::isdigit)) {
+    else if (!std::all_of(dollarStr.begin(), dollarStr.end(), isdigit) ||
+             !std::all_of(centStr.begin(), centStr.end(), isdigit)) {
         isValid = false;
     }
     /*
@@ -278,7 +279,7 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
                             const std::string &denomination,
                             std::vector<Denomination> &addedDenominations) {
     // Get the denomination object based on the provided denomination value
-    Denomination denom = coinManager.getDenomination(std::stoi(denomination));
+    const Denomination denom = CoinManager::getDenomination(std::stoi(denomination));
 
     // Add the coin to the coin manager
     coinManager.addCoin(denom, 1);
@@ -290,14 +291,14 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
     addedDenominations.push_back(denom);
 
     // Check if the total amount paid is sufficient for the food item price
-    if (totalPaid >= foodItem->price.dollars * ONE_HUNDRED + foodItem->price.cents) {
+    if (totalPaid >= foodItem->price.dollars * 100 + foodItem->price.cents) {
         // Calculate the change to be given back to the customer
-        unsigned change = totalPaid - (foodItem->price.dollars * ONE_HUNDRED +
-                foodItem->price.cents);
+        const unsigned change = totalPaid - (foodItem->price.dollars * 100 +
+                                             foodItem->price.cents);
 
         // Calculate the denominations needed for the change
         std::vector<Denomination> changeDenominations =
-                coinManager.calculateChange(change);
+            coinManager.calculateChange(change);
 
         // Dispense the coins for the change
         coinManager.dispenseCoins(changeDenominations);
@@ -308,9 +309,9 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         // Print the change denominations
         std::cout << "Your change is ";
         for (auto denom : changeDenominations) {
-            unsigned int value = coinManager.getValue(denom);
-            if (value >= ONE_HUNDRED) {
-                std::cout << "$" << value / ONE_HUNDRED;
+            unsigned int value = CoinManager::getValue(denom);
+            if (value >= ONE_DOLLAR_VALUE) {
+                std::cout << "$" << value / 100;
             } else {
                 std::cout << value << "c";
             }
@@ -335,11 +336,11 @@ void Helper::processRefund(CoinManager &coinManager,
         coinManager.removeCoin(denom, 1);
 
         // Get the value of the denomination
-        unsigned int value = coinManager.getValue(denom);
+        unsigned int value = CoinManager::getValue(denom);
 
         // Print the value of the denomination in dollars or cents
-        if (value >= ONE_HUNDRED) {
-            std::cout << "$" << value / ONE_HUNDRED;
+        if (value >= ONE_DOLLAR_VALUE) {
+            std::cout << "$" << value / 100;
         } else {
             std::cout << value << "c";
         }

@@ -1,7 +1,7 @@
 #include "Coin.h"
 
 // Constructor for the Coin class
-Coin::Coin(Denomination denom) {
+Coin::Coin(const Denomination denom) {
     this->denom = denom;
 }
 
@@ -91,14 +91,14 @@ std::unordered_map<Denomination, unsigned> CoinManager::getCoins() const {
     return coins;
 }
 
-bool CoinManager::addCoin(Denomination denom, unsigned count) {
+bool CoinManager::addCoin(const Denomination denom, const unsigned count) {
     // Add the coin count to the denomination
     coins[denom] += count;
     // Successfully added the coins
     return true;
 }
 
-bool CoinManager::removeCoin(Denomination denom, unsigned count) {
+bool CoinManager::removeCoin(const Denomination denom, const unsigned count) {
     bool success = false;
 
     // Check if there are enough coins of the denomination to remove
@@ -152,7 +152,7 @@ void CoinManager::readFromFile(const std::string& filename) {
 }
 
 
-bool CoinManager::writeToFile(const std::string& filename) {
+bool CoinManager::writeToFile(const std::string& filename) const {
     bool success = false;
     std::ofstream file(filename);
 
@@ -163,8 +163,8 @@ bool CoinManager::writeToFile(const std::string& filename) {
 
             // Write each coin denomination and count to the file
             for (const auto& pair : coins) {
-                int denomination = getValue(pair.first);
-                unsigned count = pair.second;
+                const int denomination = getValue(pair.first);
+                const unsigned count = pair.second;
                 file << denomination << DELIM << count << "\n";
 
                 // Check if the write was successful

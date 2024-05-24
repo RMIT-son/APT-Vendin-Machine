@@ -5,14 +5,15 @@
 #ifndef FOOD_H
 #define FOOD_H
 #include <fstream>
+#include <unordered_set>
 #include "LinkedList.h"
 #include "Helper.h"
-#include <unordered_set>
 
 #define FOOD_DELIM '|'
 #define ID_LENGTH 5
 #define ID_PREFIX 'F'
 #define ID_DIGITS 4
+#define FOOD_FIELDS 4
 
 
 class Food {
@@ -44,7 +45,7 @@ public:
      *@param id The id of the food item to be purchased.
      *@return True if the food item was purchased successfully, false otherwise.
      */
-    bool removeFood(std::string& id);
+    bool removeFood(const std::string& id);
 
     /**
      *@brief Sort the food items in the food object
@@ -64,14 +65,14 @@ public:
      *@param id The id of the food item to be found.
      *@return A pointer to the food item if it was found, nullptr otherwise.
      */
-    FoodItem* findFood(const std::string& id) const;
+    [[nodiscard]] FoodItem* findFood(const std::string& id) const;
 
     /**
      *@brief Get the number of food items in the food object
      *@details This function will return the number of food items in the food object.
      *@return The number of food items in the food object.
      */
-    unsigned getFoodCount() const;
+    [[nodiscard]] unsigned getFoodCount() const;
 
     /**
      *@brief Read food items from a file
@@ -86,20 +87,20 @@ public:
      *@param filename The name of the file to write the food items to.
      *@return True if the food items were written successfully, false otherwise.
      */
-    bool writeToFile(const std::string& filename);
+    [[nodiscard]] bool writeToFile(const std::string& filename) const;
 
     /**
      * @brief Generate a unique ID for a food item
      * @details This function will generate the smallest unique ID for a food item.
      * @return String containing the unique ID
      */
-    std::string generateID();
+    [[nodiscard]] std::string generateID() const;
 
     /**
      * @brief Get the head of the list
      * @return The head of the list
      */
-    Node* getHead();
+    [[nodiscard]] Node* getHead() const;
 private:
     // the beginning of the list
     LinkedList foodList;

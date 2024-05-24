@@ -26,16 +26,17 @@ Administrator-Only Menu:
 Select your option (1-7) :
 Food Menu
 ---------
-ID    |Name                                             |Price
----------------------------------------------------------------
-F0001 |Baklava                                          |$8.50
-F0005 |Bibimbab                                         |$15.80
-F0008 |Chicken and Waffles                              |$18.50
-F0006 |Fondue                                           |$31.50
-F0002 |Gnocchi                                          |$12.50
-F0003 |Haggis                                           |$18.70
-F0004 |Jambalaya                                        |$23.0
-F0007 |Kelewele                                         |$11.50
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0008|Chicken and Waffles                               |$18.50
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+
 Main Menu:
    1. Display Meal Options
    2. Purchase Meal

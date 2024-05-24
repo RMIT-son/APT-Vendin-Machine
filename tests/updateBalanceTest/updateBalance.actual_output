@@ -11,13 +11,11 @@ Select your option (1-7) :
 Purchase Meal
 -------------
 Please enter the ID of the food you wish to purchase: 
-F0004
-You have selected "Jambalaya - Creole rish dish containing prawns, chicken, sausage and vegetables". This will cost you $23.
+You have selected "Jambalaya - Creole rish dish containing prawns, chicken, sausage and vegetables". This will cost you $23.00
 Please hand over the money - type in the value of each note/coin in cents.
 Please enter ctrl-D or enter on a new line to cancel this purchase.
 You still need to give us $ 23.00: 
-Your change is $20 $5 $2 
-
+Your change is $2 $5 $20 
 Thank you for your purchase!
 Main Menu:
    1. Display Meal Options

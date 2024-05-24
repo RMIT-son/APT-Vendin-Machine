@@ -65,7 +65,7 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
     auto newNode = std::make_unique<Node>(std::move(data));
     if (!head || newNode->data->name < head->data->name) {
         /*
-         * If the list is empty or the new node comes before the head,
+         * If the list is empty or the new node comes after the head,
          * make it the new head
          */
         newNode->next = std::move(head);
@@ -85,7 +85,7 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
     return true;
 }
 
-bool LinkedList::removeNode(std::string& id) {
+bool LinkedList::removeNode(const std::string& id) {
     bool isRemoved = false;
     if (head) {
         if (head->data->id == id) {
@@ -132,7 +132,7 @@ unsigned LinkedList::getCount() const {
     return count;
 }
 
-Node* LinkedList::getHead() {
+Node* LinkedList::getHead() const {
     return head.get();
 }
 

@@ -11,15 +11,13 @@ Select your option (1-7) :
 Purchase Meal
 -------------
 Please enter the ID of the food you wish to purchase: 
-F0005
-You have selected "Bibimbab - Spicy Korean rice dish with vegetables, bean paste and beef". This will cost you $15.8.
+You have selected "Bibimbab - Spicy Korean rice dish with vegetables, bean paste and beef". This will cost you $15.80
 Please hand over the money - type in the value of each note/coin in cents.
 Please enter ctrl-D or enter on a new line to cancel this purchase.
 You still need to give us $ 15.80: 
 Error: invalid denomination encountered.
 You still need to give us $ 15.80: 
-Your change is $2 $2 20c 
-
+Your change is 20c $2 $2 
 Thank you for your purchase!
 Main Menu:
    1. Display Meal Options

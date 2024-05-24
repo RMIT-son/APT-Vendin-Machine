@@ -9,7 +9,7 @@ Node::Node() {
 }
 
 // Constructor for Node class with data parameter
-Node::Node(std::shared_ptr<FoodItem> data) {
+Node::Node(const std::shared_ptr<FoodItem> &data) {
     // Set data pointer to the provided data
     this->data = data;
     // Initialize next pointer to nullptr

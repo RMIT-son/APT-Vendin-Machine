@@ -40,7 +40,7 @@ enum Denomination
 class Coin
 {
 public:
-    Coin(Denomination denom);
+    explicit Coin(Denomination denom);
     ~Coin();
     // the denomination type
     Denomination denom;
@@ -100,7 +100,7 @@ public:
      * @param filename The name of the file to write to
      * @return True if the coins were written, false otherwise
      */
-    bool writeToFile(const std::string& filename);
+    bool writeToFile(const std::string& filename) const;
 
     /**
      * @brief Get the value of a denomination

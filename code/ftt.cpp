@@ -1,5 +1,4 @@
 #include <iostream>
-#include "LinkedList.h"
 #include "Food.h"
 #include "Coin.h"
 #include "Interface.h"
@@ -7,9 +6,9 @@
 /**
  * manages the running of the program, initialises data structures, loads
  * data, display the main menu, and handles the processing of options.
- * Make sure free memory and close all files before exiting the program.
+ * Make sure free memory and close all files after exiting the program.
  **/
-int main(int argc, char **argv) {
+int main(const int argc, char **argv) {
     int res = EXIT_SUCCESS;
     if (argc < 3) {
         // Check if the command-line arguments are less than 3
@@ -19,16 +18,16 @@ int main(int argc, char **argv) {
         res = EXIT_FAILURE;
     } else {
         // Get the food file name from command-line argument
-        std::string foodFile = argv[1];
+        const std::string foodFile = argv[1];
         // Get the coin file name from command-line argument
-        std::string coinFile = argv[2];
+        const std::string coinFile = argv[2];
 
         // Flag to control the main loop
         bool running = true;
         // Create an instance of CoinManager class
-        CoinManager manager;
+        CoinManager coinsManager;
         // Read coin data from the coin file
-        manager.readFromFile(coinFile);
+        coinsManager.readFromFile(coinFile);
         // Create an instance of Food class
         Food foodList;
         // Read food data from the food file
@@ -59,14 +58,26 @@ int main(int argc, char **argv) {
                         Interface::displayFoodMenu(foodList);
                     } else if (option == 2) {
                         // Allow the user to purchase a meal
-                        Interface::purchaseMeal(foodList, manager);
+                        Interface::purchaseMeal(foodList, coinsManager);
                     } else if (option == 3) {
                         // Stop the main loop
                         running = false;
                         // Write food data to the food file
-                        foodList.writeToFile(foodFile);
+                        if (!foodList.writeToFile(foodFile)) {
+                            // Check if the food data was not written to the file
+                            std::cerr << "Error: failed to write to food file."
+                                      << std::endl;
+                            // Set the result to 1 to indicate an error
+                            res = EXIT_FAILURE;
+                        }
                         // Write coin data to the coin file
-                        manager.writeToFile(coinFile);
+                        if (!coinsManager.writeToFile(coinFile)) {
+                            // Check if the coin data was not written to the file
+                            std::cerr << "Error: failed to write to coins file."
+                                      << std::endl;
+                            // Set the result to 1 to indicate an error
+                            res = EXIT_FAILURE;
+                        }
                     } else if (option == 4) {
                         // Allow the user to add a new food item
                         Interface::addFood(foodList);
@@ -75,7 +86,7 @@ int main(int argc, char **argv) {
                         Interface::removeFood(foodList);
                     } else if (option == 6) {
                         // Display the current coin balance
-                        Interface::displayBalance(manager);
+                        Interface::displayBalance(coinsManager);
                     } else if (option == 7) {
                         // Stop the main loop
                         running = false;

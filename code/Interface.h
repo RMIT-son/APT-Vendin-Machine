@@ -20,13 +20,13 @@ public:
     static void displayMainMenu();
 
     // Display the food menu options
-    static void displayFoodMenu(Food &foodList);
+    static void displayFoodMenu(const Food &foodList);
 
     // Display the current balance of the coin manager
     static void displayBalance(CoinManager &manager);
 
     // Purchase a meal from the food menu
-    static void purchaseMeal(Food &foodList, CoinManager &coinManager);
+    static void purchaseMeal(const Food &foodList, CoinManager &coinManager);
 
     // Add a new food item to the food list
     static void addFood(Food &foodList);

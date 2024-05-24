@@ -16,10 +16,10 @@ Food::~Food() {
 
 bool Food::addFood(std::shared_ptr<FoodItem> newFood) {
     // Add a new food item to the Food LinkedList
-    return foodList.addNodeSorted(newFood);
+    return foodList.addNodeSorted(std::move(newFood));
 }
 
-bool Food::removeFood(std::string& id) {
+bool Food::removeFood(const std::string& id) {
     // Purchase a food item from the Food LinkedList
     return foodList.removeNode(id);
 }
@@ -36,7 +36,7 @@ bool Food::clearFood() {
 
 FoodItem* Food::findFood(const std::string& id) const {
     // Find a food item in the Food LinkedList
-    Node* node = foodList.findNode(id);
+    const Node* node = foodList.findNode(id);
     return node ? node->data.get() : nullptr;
 }
 
@@ -64,7 +64,7 @@ void Food::readFromFile(const std::string& filename) {
                  */
                 fields.push_back(field);
             }
-            if (fields.size() == ID_DIGITS) {
+                if (fields.size() == FOOD_FIELDS) {
                 // Extract the ID field
                 std::string id = fields[0];
                 if (Helper::isValidId(id)) {
@@ -78,8 +78,7 @@ void Food::readFromFile(const std::string& filename) {
                     Price price = Helper::readPrice(priceStr);
 
                     // Create a shared pointer to a new FoodItem object
-                    std::shared_ptr<FoodItem>
-                            item = std::make_shared<FoodItem>();
+                    auto item = std::make_shared<FoodItem>();
                     item->id = id;
                     item->name = name;
                     item->description = description;
@@ -104,14 +103,14 @@ void Food::readFromFile(const std::string& filename) {
     }
 }
 
-bool Food::writeToFile(const std::string& filename) {
+bool Food::writeToFile(const std::string& filename) const {
     // Initialize the success flag as false
     bool success = false;
     // Open the file with the provided filename for writing
     std::ofstream file(filename);
     if (file) {
         // Get the head node of the foodList
-        Node* current = foodList.getHead();
+        const Node* current = foodList.getHead();
         while (current != nullptr) {
             /*
              * Write the fields of the current FoodItem to the file,
@@ -136,14 +135,14 @@ bool Food::writeToFile(const std::string& filename) {
     return success;
 }
 
-Node* Food::getHead() {
+Node* Food::getHead() const {
     // Delegate to foodList's getHead() function and return the head node
     return foodList.getHead();
 }
 
-std::string Food::generateID() {
+std::string Food::generateID() const {
     std::unordered_set<int> idSet;
-    Node* current = foodList.getHead();
+    const Node* current = foodList.getHead();
 
     // Traverse the linked list and store all IDs in the set
     while (current != nullptr) {

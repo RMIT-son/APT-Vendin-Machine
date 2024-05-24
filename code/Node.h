@@ -78,7 +78,7 @@ public:
      * with the given FoodItem in it.
      * @param data The data to store in the node.
      */
-    explicit Node(std::shared_ptr<FoodItem> data);
+    explicit Node(const std::shared_ptr<FoodItem> &data);
 
     /**
      * @brief Default destructor for Nodes
