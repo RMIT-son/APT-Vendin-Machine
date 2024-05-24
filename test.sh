@@ -4,7 +4,7 @@
 # Test the add food functionality
 ./ftt ./tests/addFoodTest/addFood.actual_foods ./data/coins.dat < ./tests/addFoodTest/addFood.input > ./tests/addFoodTest/addFood.actual_output
 diff -w ./tests/addFoodTest/addFood.expected_output ./tests/addFoodTest/addFood.actual_output
-diff -w -y ./tests/addFoodTest/addFood.actual_foods ./tests/addFoodTest/after/foods.dat
+diff -w ./tests/addFoodTest/addFood.actual_foods ./tests/addFoodTest/after/foods.dat
 if [ $? -eq 0 ]
 then
     echo "Add Food Test: Passed"
@@ -73,8 +73,8 @@ fi
 # Test the save and exit functionality
 ./ftt ./tests/saveExitTest/saveExit.actual_foods ./tests/saveExitTest/saveExit.actual_coins < ./tests/saveExitTest/saveExit.input > ./tests/saveExitTest/saveExit.actual_output
 diff -w ./tests/saveExitTest/saveExit.expected_output ./tests/saveExitTest/saveExit.actual_output
-diff -w -y ./tests/saveExitTest/saveExit.actual_foods ./tests/saveExitTest/after/foods.dat
-diff -w -y ./tests/saveExitTest/saveExit.actual_coins ./tests/saveExitTest/after/coins.dat
+diff -w ./tests/saveExitTest/saveExit.actual_foods ./tests/saveExitTest/after/foods.dat
+diff -w ./tests/saveExitTest/saveExit.actual_coins ./tests/saveExitTest/after/coins.dat
 if [ $? -eq 0 ]
 then
     echo "Save&Exit Test: Passed"
@@ -112,8 +112,8 @@ fi
 # Test all functionalities together
 ./ftt ./tests/end2EndTest/end2End.actual_foods ./tests/end2EndTest/end2End.actual_coins < ./tests/end2EndTest/end2End.input > ./tests/end2EndTest/end2End.actual_output
 diff -w ./tests/end2EndTest/end2End.expected_output ./tests/end2EndTest/end2End.actual_output
-diff -w -y ./tests/end2EndTest/end2End.actual_foods ./tests/end2EndTest/after/foods.dat
-diff -w -y ./tests/end2EndTest/end2End.actual_coins ./tests/end2EndTest/after/coins.dat
+diff -w ./tests/end2EndTest/end2End.actual_foods ./tests/end2EndTest/after/foods.dat
+diff -w ./tests/end2EndTest/end2End.actual_coins ./tests/end2EndTest/after/coins.dat
 if [ $? -eq 0 ]
 then
     echo "End-to-End Test: Passed"
