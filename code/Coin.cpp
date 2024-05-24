@@ -161,8 +161,16 @@ bool CoinManager::writeToFile(const std::string& filename) const {
         if (!coins.empty()) {
             bool allWritesSuccessful = true;
 
+            // Copy the elements from the coins map to a vector of pairs
+            std::vector<std::pair<Denomination, unsigned>> coinVector(coins.begin(), coins.end());
+
+            // Sort the vector in descending order based on the denomination
+            std::sort(coinVector.begin(), coinVector.end(), [](const auto& a, const auto& b) {
+                return a.first > b.first;
+            });
+
             // Write each coin denomination and count to the file
-            for (const auto& pair : coins) {
+            for (const auto& pair : coinVector) {
                 const int denomination = getValue(pair.first);
                 const unsigned count = pair.second;
                 file << denomination << DELIM << count << "\n";
