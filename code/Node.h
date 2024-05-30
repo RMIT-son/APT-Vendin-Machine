@@ -17,7 +17,8 @@
 //The default coin level to reset the coins to on request
 #define DEFAULT_COIN_COUNT 20
 
-//The possible default food stock level that all new stock should start at and that we should reset to on restock
+//The possible default food stock level that all new stock should start at
+//and that we should reset to on restock
 #define DEFAULT_FOOD_STOCK_LEVEL 20
 
 //The number of denominations of currency available in the system 
@@ -66,20 +67,23 @@ class Node
 public:
     /**
      * @brief Default constructor for Nodes
-     * @details This constructor will create a new Node object with no data in it.
+     * @details This constructor will create a new Node object
+     * with no data in it.
      */
     Node();
 
     /**
      * @brief Constructor for Nodes
-     * @details This constructor will create a new Node object with the given FoodItem in it.
+     * @details This constructor will create a new Node object
+     * with the given FoodItem in it.
      * @param data The data to store in the node.
      */
-    explicit Node(std::shared_ptr<FoodItem> data);
+    explicit Node(const std::shared_ptr<FoodItem> &data);
 
     /**
      * @brief Default destructor for Nodes
-     * @details This destructor will destroy the Node object and free up any memory that was allocated for it.
+     * @details This destructor will destroy the Node object
+     * and free up any memory that was allocated for it.
      */
     ~Node();
 

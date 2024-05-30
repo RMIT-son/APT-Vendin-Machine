@@ -1,219 +1,106 @@
 #include <iostream>
-#include <iomanip>
-#include <vector>
-#include <fstream>
-#include <algorithm>
-#include <memory>
-#include "LinkedList.h"
 #include "Food.h"
+#include "Coin.h"
+#include "Interface.h"
 
 /**
  * manages the running of the program, initialises data structures, loads
  * data, display the main menu, and handles the processing of options.
- * Make sure free memory and close all files before exiting the program.
+ * Make sure free memory and close all files after exiting the program.
  **/
+int main(const int argc, char **argv) {
+    int res = EXIT_SUCCESS;
+    if (argc < 3) {
+        // Check if the command-line arguments are less than 3
+        std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file>"
+                  << std::endl;
+        // Set the result to 1 to indicate an error
+        res = EXIT_FAILURE;
+    } else {
+        // Get the food file name from command-line argument
+        const std::string foodFile = argv[1];
+        // Get the coin file name from command-line argument
+        const std::string coinFile = argv[2];
 
-std::string readInput()
-{
-   std::string input;
-   std::getline(std::cin, input);
-   std::cout << std::endl;
+        // Flag to control the main loop
+        bool running = true;
+        // Create an instance of CoinManager class
+        CoinManager coinsManager;
+        // Read coin data from the coin file
+        coinsManager.readFromFile(coinFile);
+        // Create an instance of Food class
+        Food foodList;
+        // Read food data from the food file
+        foodList.readFromFile(foodFile);
 
-   return input;
-}
+        while (running) {
+            // Display the main menu
+            Interface::displayMainMenu();
+            // Read user input
+            std::string input = Helper::readInput();
 
-bool isNumber(std::string s)
-{
-   std::string::const_iterator it = s.begin();
-   while (it != s.end() && std::isdigit(*it)) ++it;
-   return !s.empty() && it == s.end();
-}
+            if (std::cin.eof()) {
+                // Check if the input stream encountered end-of-file condition
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                                '\n');
+                std::cout << "Error in input. Please try again." << std::endl;
+            } else if (Helper::isNumber(input)) {
+                // Check if the input is a numeric value
+                const int option = std::stoi(input);
+                // Convert the input to an integer
 
-void displayMainMenu() {
-    std::cout << "Main Menu:" << std::endl;
-    std::cout << "   1. Display Meal Options" << std::endl;
-    std::cout << "   2. Purchase Meal" << std::endl;
-    std::cout << "   3. Save and Exit" << std::endl;
-    std::cout << "Administrator-Only Menu:" << std::endl;
-    std::cout << "   4. Add Food" << std::endl;
-    std::cout << "   5. Remove Food" << std::endl;
-    std::cout << "   6. Display Balance" << std::endl;
-    std::cout << "   7. Abort Program" << std::endl;
-    std::cout << "Select your option (1-7) : ";
-}
+                if (option > 0 && option < 8) {
+                    // Check if the option is within the valid range
 
-void displayFoodMenu(Food& foodList) {
-    const Node* current = foodList.getHead();
-    std::cout << "Food Menu\n" << "---------\n";
-    std::cout << "ID   |Name                                              |Price\n";
-    std::cout << "---------------------------------------------------------------\n";
-    while (current != nullptr) {
-        std::cout << std::left << std::setw(6) << current->data->id
-          << "|" << std::setw(49) << current->data->name  
-          << "|" << "$" << current->data->price.dollars << "." << current->data->price.cents    
-          << std::endl;
-        current = current->next.get();
-    }
-}
-
-void purchaseMeal(Food& foodList) {
-    bool running = true;
-
-    while (running) {
-        std::cout << "Purchase Meal" << std::endl;
-        std::cout << "-------------" << std::endl;
-        std::cout << "Please enter the ID of the food you wish to purchase: ";
-        std::string id = readInput();
-
-        
-        FoodItem* foodItem = foodList.findFood(id);
-        if (foodItem == nullptr) {
-            std::cout << "Error: Food item with ID " << id << " not found." << std::endl;
-            return;
-        }
-
-
-        if (foodItem->on_hand == 0) {
-            std::cout << "Error: No more " << foodItem->name << " available." << std::endl;
-            return;
-        }
-
-        std::cout << "You have selected \"" << foodItem->name << " - " << foodItem->description << "\". This will cost you $"
-                << static_cast<double>(foodItem->price.dollars) + static_cast<double>(foodItem->price.cents) / 100 << "." << std::endl;
-        std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
-        std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase." << std::endl;
-
-        unsigned totalPaid = 0;
-        bool denominating = true;
-        std::vector<unsigned> denominations;
-        while (denominating) {
-            std::cout << "You still need to give us $"
-                    << std::setw(6) << std::fixed << std::setprecision(2)
-                    << static_cast<double>(foodItem->price.dollars) + static_cast<double>(foodItem->price.cents) / 100 - static_cast<double>(totalPaid) / 100
-                    << ": ";
-            std::string denomination = readInput();
-
-            if (denomination == "") {
-                std::cout << std::endl << "Purchase cancelled." << std::endl;
-                running = false;
-                denominating = false;
-            }
-
-            if (!isNumber(denomination)) {
-                std::cout << std::endl << "Error: input was not numeric." << std::endl;
-            } 
-        }
-    }
-}
-
-void addFood(Food& foodList) {
-    bool running = true;
-    while(running) {
-        std::cout << "This new meal item will have the Item id of F000" << "" << std::endl; 
-        std::cout << "Enter the item name: "; 
-        std::string foodName = readInput();
-        std::cout << "Enter the item description: ";
-        std::string foodDescription = readInput();
-
-        bool priceValid = true;
-        while (priceValid) {
-            std::cout << "Enter the price for this item: ";
-            std::string foodPrice = readInput();
-            if(Helper::isValidPrice(foodPrice)) {
-                running = false;
-                priceValid = false;
-                std::shared_ptr<FoodItem> newFood = std::make_shared<FoodItem>();
-                newFood->id = "F1234";
-                newFood->name = foodName;
-                newFood->description = foodDescription;
-                newFood->price = Helper::readPrice(foodPrice); 
-
-                foodList.addFood(newFood);
+                    if (option == 1) {
+                        // Display the food menu
+                        Interface::displayFoodMenu(foodList);
+                    } else if (option == 2) {
+                        // Allow the user to purchase a meal
+                        Interface::purchaseMeal(foodList, coinsManager);
+                    } else if (option == 3) {
+                        // Stop the main loop
+                        running = false;
+                        // Write food data to the food file
+                        if (!foodList.writeToFile(foodFile)) {
+                            // Check if the food data was not written to the file
+                            std::cerr << "Error: failed to write to food file."
+                                      << std::endl;
+                            // Set the result to 1 to indicate an error
+                            res = EXIT_FAILURE;
+                        }
+                        // Write coin data to the coin file
+                        if (!coinsManager.writeToFile(coinFile)) {
+                            // Check if the coin data was not written to the file
+                            std::cerr << "Error: failed to write to coins file."
+                                      << std::endl;
+                            // Set the result to 1 to indicate an error
+                            res = EXIT_FAILURE;
+                        }
+                    } else if (option == 4) {
+                        // Allow the user to add a new food item
+                        Interface::addFood(foodList);
+                    } else if (option == 5) {
+                        // Allow the user to remove a food item
+                        Interface::removeFood(foodList);
+                    } else if (option == 6) {
+                        // Display the current coin balance
+                        Interface::displayBalance(coinsManager);
+                    } else if (option == 7) {
+                        // Stop the main loop
+                        running = false;
+                    }
+                } else {
+                    std::cout << "Error: number was outside of range."
+                    << std::endl;
+                }
             } else {
-                std::cout << "Error: money is not formatted properly" << std::endl;
+                std::cout << "Error: input was not numeric." << std::endl;
+                std::cout << "Error in input. Please try again." << std::endl;
             }
         }
     }
-}
-
-void removeFood(Food& foodList) {
-    const Node* current = foodList.getHead();
-    std::cout << "Enter the food id of the food to remove from the menu: "; 
-    std::string foodId = readInput();
-    while (current != nullptr) {
-        if (current->data->id == foodId) {
-            std::cout << "'" 
-            << current->data->id 
-            << " - " 
-            << current->data->name 
-            << " - " 
-            << current->data->description 
-            << "' " 
-            <<"has been removed from the system."
-            << std::endl;
-            foodList.removeFood(current->data->id);
-        }
-        current = current->next.get();
-    }
-}
-
-void displayBalance(const Coin coins[], int numCoins) {
-    std::cout << "Balance Summary\n";
-    std::cout << "---------------\n";
-    std::cout << "Denom  | Quantity | Value\n";
-    std::cout << "---------------------------\n";
-
-    double totalValue = 0;
-    for (int i = 0; i < numCoins; i++) {
-        double value = coins[i].getValue();
-        totalValue += value;
-
-        std::cout << std::right << std::setw(5) << coins[i].denom << "   | "
-                  << std::setw(8) << coins[i].count << "   |$"
-                  << std::setw(7) << std::fixed << std::setprecision(2) << value << std::endl;
-    }
-
-    std::cout << "---------------------------\n";
-    std::cout << "                   $" << std::setw(7) << std::setprecision(2) << totalValue << std::endl;
-}
-
-
-int main(int argc, char **argv)
-{
-    bool running = true;
-    Food foodList;
-    foodList.readFromFile("foods.dat");
-
-    while (running) {
-        displayMainMenu();
-        std::string input = readInput();
-        if (isNumber(input)) {
-            int option = std::stoi(input);
-            if (option > 0 && option < 8) {
-                if (option == 1) {
-                    displayFoodMenu(foodList);
-                } else if (option == 2) {
-                    purchaseMeal(foodList);
-                } else if (option == 3) {
-                    running = false;
-                } else if (option == 4) {
-                    addFood(foodList);
-                } else if (option == 5) {
-                    removeFood(foodList);
-                } else if (option == 6) {
-                
-                } else if (option == 7) {
-                    running = false;
-                } 
-            } else {
-                    std::cout << "Error: number was outside of range." << std::endl;
-            }
-        } else {
-            std::cout << "Error: input was not numeric." << std::endl;
-            std::cout << "Error in input. Please try again." << std::endl;
-        }
-    }
-    
-
-    return EXIT_SUCCESS;
+    // Return the result of the program execution
+    return res;
 }

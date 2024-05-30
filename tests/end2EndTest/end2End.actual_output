@@ -1,0 +1,328 @@
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Food Menu
+---------
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Purchase Meal
+-------------
+Please enter the ID of the food you wish to purchase: 
+You have selected "Kelewele - From Ghana, fried plantains seasoned with spices". This will cost you $11.50
+Please hand over the money - type in the value of each note/coin in cents.
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $ 11.50: 
+You still need to give us $ 11.45: 
+You still need to give us $ 10.95: 
+You still need to give us $ 10.85: 
+You still need to give us $  8.85: 
+Your change is 5c 10c $1 
+Thank you for your purchase!
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Balance Summary
+----------------
+Denom | Quantity | Value
+---------------------------
+    5 |       20 |$   1.00
+   10 |       40 |$   4.00
+   20 |        3 |$   0.60
+   50 |        5 |$   2.50
+  100 |       28 |$  28.00
+  200 |       20 |$  40.00
+  500 |        5 |$  25.00
+ 1000 |       11 |$ 110.00
+ 2000 |       11 |$ 220.00
+ 5000 |       10 |$ 500.00
+---------------------------
+Total:            $ 931.10
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Food Menu
+---------
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Purchase Meal
+-------------
+Please enter the ID of the food you wish to purchase: 
+You have selected "Fondue - European dish of assorted melted cheeses. Served with bread for dipping". This will cost you $31.50
+Please hand over the money - type in the value of each note/coin in cents.
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $ 31.50: 
+Your change is 50c $1 $2 $5 $10 
+Thank you for your purchase!
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+This new meal item will have the Item ID of F0008
+Enter the item name: 
+Enter the item description: 
+Enter the price for this item: 
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Food Menu
+---------
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+F0008|Pizza                                             |$20.50
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+This new meal item will have the Item ID of F0009
+Enter the item name: 
+Enter the item description: 
+Enter the price for this item: 
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Food Menu
+---------
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+F0009|Okonomiyaki                                       |$10.00
+F0008|Pizza                                             |$20.50
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Purchase Meal
+-------------
+Please enter the ID of the food you wish to purchase: 
+You have selected "Okonomiyaki - Japanese savory pancake containing a variety of ingredients". This will cost you $10.00
+Please hand over the money - type in the value of each note/coin in cents.
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $ 10.00: 
+You still need to give us $  5.00: 
+Your change is 
+Thank you for your purchase!
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Balance Summary
+----------------
+Denom | Quantity | Value
+---------------------------
+    5 |       20 |$   1.00
+   10 |       40 |$   4.00
+   20 |        3 |$   0.60
+   50 |        4 |$   2.00
+  100 |       27 |$  27.00
+  200 |       19 |$  38.00
+  500 |        6 |$  30.00
+ 1000 |       10 |$ 100.00
+ 2000 |       11 |$ 220.00
+ 5000 |       11 |$ 550.00
+---------------------------
+Total:            $ 972.60
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Food Menu
+---------
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+F0009|Okonomiyaki                                       |$10.00
+F0008|Pizza                                             |$20.50
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Enter the food id of the food to remove from the menu: 
+Food item removed successfully.
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Food Menu
+---------
+ID   |Name                                              |Price
+------------------------------------------------------------------
+F0001|Baklava                                           |$ 8.50
+F0005|Bibimbab                                          |$15.80
+F0006|Fondue                                            |$31.50
+F0002|Gnocchi                                           |$12.50
+F0003|Haggis                                            |$18.70
+F0004|Jambalaya                                         |$23.00
+F0007|Kelewele                                          |$11.50
+F0009|Okonomiyaki                                       |$10.00
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Balance Summary
+----------------
+Denom | Quantity | Value
+---------------------------
+    5 |       20 |$   1.00
+   10 |       40 |$   4.00
+   20 |        3 |$   0.60
+   50 |        4 |$   2.00
+  100 |       27 |$  27.00
+  200 |       19 |$  38.00
+  500 |        6 |$  30.00
+ 1000 |       10 |$ 100.00
+ 2000 |       11 |$ 220.00
+ 5000 |       11 |$ 550.00
+---------------------------
+Total:            $ 972.60
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 

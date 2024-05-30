@@ -1,8 +1,20 @@
 #ifndef COIN_H
 #define COIN_H
 
-// Coin.h defines the coin structure for managing currency in the system. 
-#define DELIM ','  // delimiter
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+// Coin.h defines the coin structure for managing currency in the system.
+
+// The delimiter used in the file to separate the denomination and count.
+#define DELIM ','
+
+// The value of each denomination in cents.
 #define FIVE_CENTS_VALUE 5
 #define TEN_CENTS_VALUE 10
 #define TWENTY_CENTS_VALUE 20
@@ -13,13 +25,10 @@
 #define TEN_DOLLARS_VALUE 1000
 #define TWENTY_DOLLARS_VALUE 2000
 #define FIFTY_DOLLARS_VALUE 5000
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <unordered_map>
+#define DEFAULT_DENOM_COUNT 0
 
-// enumeration representing the various types of currency available in the system. 
+// enumeration representing the various types of currency
+// available in the system.
 enum Denomination
 {
     FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS, ONE_DOLLAR, 
@@ -27,12 +36,12 @@ enum Denomination
 };
 
 
-// represents a coin type stored in the cash register perhaps. Each demonination
-// will have exactly one of these in the cash register.
+// represents a coin type stored in the cash register perhaps.
+// Each demonination will have exactly one of these in the cash register.
 class Coin
 {
 public:
-    Coin(Denomination denom);
+    explicit Coin(Denomination denom);
     ~Coin();
     // the denomination type
     Denomination denom;
@@ -92,7 +101,7 @@ public:
      * @param filename The name of the file to write to
      * @return True if the coins were written, false otherwise
      */
-    bool writeToFile(const std::string& filename);
+    bool writeToFile(const std::string& filename) const;
 
     /**
      * @brief Get the value of a denomination
@@ -100,7 +109,7 @@ public:
      * @param denom The denomination to get the value of
      * @return The value of the denomination
      */
-    int getValue(Denomination denom) const;
+    static int getValue(Denomination denom);
 
     /**
      * @brief Get the denomination of a value
@@ -112,6 +121,8 @@ public:
 
     // Coins Map to store the count of each denomination
     std::unordered_map<Denomination, unsigned> coins;
+    std::vector<Denomination> calculateChange(unsigned amount);
+    void dispenseCoins(const std::vector<Denomination>& denominations);
 };
 
 #endif // COIN_H
