@@ -57,9 +57,6 @@ public:
     static bool isValidDescription(const std::string& description);
     static std::string readInput();
     static bool isNumber(std::string s);
-    // static void removeFood(Food &foodList);
-    // static void addFood(Food &foodList);
-    // static void purchaseMeal(Food &foodList, CoinManager &coinManager);
     static void processRefund(CoinManager& coinManager, const std::vector<Denomination>& addedDenominations);
     static void processPayment(FoodItem* foodItem, CoinManager& coinManager,
                     unsigned int& totalPaid, const std::string& denomination, 

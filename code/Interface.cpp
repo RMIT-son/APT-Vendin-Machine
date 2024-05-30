@@ -1,42 +1,66 @@
 #include "Interface.h"
 
 // Utility function to trim from start (in place)
-static inline void ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }));
+static inline void ltrim(std::string &s)
+{
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch)
+                                    { return !std::isspace(ch); }));
 }
 
 // Utility function to trim from end (in place)
-static inline void rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }).base(), s.end());
+static inline void rtrim(std::string &s)
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch)
+                         { return !std::isspace(ch); })
+                .base(),
+            s.end());
 }
 
 // Utility function to trim from both ends (in place)
-static inline void trim(std::string &s) {
+static inline void trim(std::string &s)
+{
     ltrim(s);
     rtrim(s);
 }
 
 void Interface::displayMainMenu()
 {
-    // Display the main menu options
-    std::cout << "Main Menu:" << std::endl;
-    std::cout << "   1. Display Meal Options" << std::endl;
-    std::cout << "   2. Purchase Meal" << std::endl;
-    std::cout << "   3. Save and Exit" << std::endl;
+    if (enhancement)
+    {
+        // Display the main menu options
+        std::cout << "Main Menu:" << std::endl;
+        std::cout << "   1. Display Meal Options" << std::endl;
+        std::cout << "   2. Purchase Meal" << std::endl;
+        std::cout << "   3. Save and Exit" << std::endl;
 
-    // Display the administrator-only menu options
-    std::cout << "Administrator-Only Menu:" << std::endl;
-    std::cout << "   4. Add Food" << std::endl;
-    std::cout << "   5. Remove Food" << std::endl;
-    std::cout << "   6. Display Balance" << std::endl;
-    std::cout << "   7. Abort Program" << std::endl;
+        // Display the administrator-only menu options
+        std::cout << "Administrator-Only Menu:" << std::endl;
+        std::cout << "   4. Add Food" << std::endl;
+        std::cout << "   5. Remove Food" << std::endl;
+        std::cout << "   6. Display Balance" << std::endl;
+        std::cout << "   7. Turn off enhancement mode" << std::endl;
+        std::cout << "   8. Abort Program" << std::endl;
 
-    // Prompt the user to select an option
-    std::cout << "Select your option (1-7) : ";
+        // Prompt the user to select an option
+        std::cout << "Select your option (1-8) : ";
+    } else {
+        // Display the main menu options
+        std::cout << "Main Menu:" << std::endl;
+        std::cout << "   1. Display Meal Options" << std::endl;
+        std::cout << "   2. Purchase Meal" << std::endl;
+        std::cout << "   3. Save and Exit" << std::endl;
+
+        // Display the administrator-only menu options
+        std::cout << "Administrator-Only Menu:" << std::endl;
+        std::cout << "   4. Add Food" << std::endl;
+        std::cout << "   5. Remove Food" << std::endl;
+        std::cout << "   6. Display Balance" << std::endl;
+        std::cout << "   7. Turn on enhancement mode" << std::endl;
+        std::cout << "   8. Abort Program" << std::endl;
+
+        // Prompt the user to select an option
+        std::cout << "Select your option (1-8) : ";
+    }
 }
 
 void Interface::displayFoodMenu(Food &foodList)
@@ -102,8 +126,7 @@ void Interface::displayBalance(CoinManager &manager)
 
     // Display the total balance value
     std::cout << "---------------------------\n";
-    std::cout << "Total:            $" << std::setw(7) << std::fixed <<
-              std::setprecision(2) << totalValue << std::endl;
+    std::cout << "Total:            $" << std::setw(7) << std::fixed << std::setprecision(2) << totalValue << std::endl;
 }
 void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
 {
@@ -112,8 +135,9 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
 
     std::cout << "Purchase Meal" << std::endl;
     std::cout << "-------------" << std::endl;
-  
-    while (running) {
+
+    while (running)
+    {
         std::cout << "Please enter the ID of the food you wish to purchase: ";
         std::string id = Helper::readInput();
 
@@ -135,31 +159,31 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                 if (foodItem == nullptr)
                 {
                     std::cout << "Item not found. Please check the food ID"
-                                 " and try again." << std::endl;
+                                 " and try again."
+                              << std::endl;
                 }
                 else
                 {
                     if (foodItem->on_hand == 0)
                     {
                         std::cout << "Error: No more " << foodItem->name
-                        << " available." << std::endl;
+                                  << " available." << std::endl;
                     }
                     else
                     {
                         std::cout << "You have selected \"" << foodItem->name
                                   << " - " << foodItem->description
                                   << "\". This will cost you $"
-                                  << static_cast<double>
-                                  (foodItem->price.dollars) +
-                                     static_cast<double>
-                                     (foodItem->price.cents) / ONE_HUNDRED
+                                  << static_cast<double>(foodItem->price.dollars) +
+                                         static_cast<double>(foodItem->price.cents) / ONE_HUNDRED
                                   << "." << std::endl;
                         std::cout << "Please hand over the money - "
                                      "type in the value of each note/"
-                                     "coin in cents." << std::endl;
+                                     "coin in cents."
+                                  << std::endl;
                         std::cout << "Please enter ctrl-D or enter on a new "
                                      "line to cancel this purchase."
-                                     << std::endl;
+                                  << std::endl;
 
                         unsigned int totalPaid = 0;
                         bool denominating = true;
@@ -174,19 +198,18 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                             std::cout << "You still need to give us $"
                                       << std::setw(6) << std::fixed
                                       << std::setprecision(2)
-                                      << static_cast<double>
-                                      (foodItem->price.dollars) +
-                                         static_cast<double>
-                                         (foodItem->price.cents) / ONE_HUNDRED -
-                                         static_cast<double>(totalPaid) / ONE_HUNDRED
+                                      << static_cast<double>(foodItem->price.dollars) +
+                                             static_cast<double>(foodItem->price.cents) / ONE_HUNDRED -
+                                             static_cast<double>(totalPaid) / ONE_HUNDRED
                                       << ": ";
                             std::string denomination = Helper::readInput();
 
                             // Check if input is empty or EOF
                             if (denomination == "" || std::cin.eof())
                             {
-                                std::cout << std::endl << "Purchase cancelled."
-                                << std::endl;
+                                std::cout << std::endl
+                                          << "Purchase cancelled."
+                                          << std::endl;
                                 std::cin.clear();
 
                                 // Process refund for added denominations
@@ -197,14 +220,16 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                             }
                             else if (!Helper::isNumber(denomination))
                             {
-                                std::cout << std::endl << "Error: input was "
-                                                          "not numeric."
-                                                          << std::endl;
+                                std::cout << std::endl
+                                          << "Error: input was "
+                                             "not numeric."
+                                          << std::endl;
                             }
-                            else if(!Helper::isValidDenomination(denomination))
+                            else if (!Helper::isValidDenomination(denomination))
                             {
                                 std::cout << "Error: invalid denomination"
-                                             " encountered." << std::endl;
+                                             " encountered."
+                                          << std::endl;
                             }
                             else
                             {
@@ -215,8 +240,7 @@ void Interface::purchaseMeal(Food &foodList, CoinManager &coinManager)
                                                        addedDenominations);
 
                                 // Check if total payment is sufficient
-                                if (totalPaid >= foodItem->price.dollars * ONE_HUNDRED
-                                + foodItem->price.cents)
+                                if (totalPaid >= foodItem->price.dollars * ONE_HUNDRED + foodItem->price.cents)
                                 {
                                     denominating = false;
                                     running = false;
@@ -251,7 +275,7 @@ void Interface::addFood(Food &foodList)
         // Generate a new ID for the food item
         newId = foodList.generateID();
         std::cout << "This new meal item will have the Item ID of "
-        << newId << std::endl;
+                  << newId << std::endl;
 
         bool nameValid = true;
         bool descriptionValid = true;
@@ -276,7 +300,7 @@ void Interface::addFood(Food &foodList)
                 nameValid = false;
                 descriptionValid = false;
                 priceValid = false;
-                std::cout<< "Option cancelled, returning to menu."<< std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
         }
 
@@ -299,7 +323,7 @@ void Interface::addFood(Food &foodList)
                 running = false;
                 descriptionValid = false;
                 priceValid = false;
-                std::cout<< "Option cancelled, returning to menu."<< std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
         }
 
@@ -315,7 +339,7 @@ void Interface::addFood(Food &foodList)
                 std::cin.clear();
                 running = false;
                 priceValid = false;
-                std::cout<< "Option cancelled, returning to menu."<< std::endl;
+                std::cout << "Option cancelled, returning to menu." << std::endl;
             }
 
             if (Helper::isValidPrice(foodPrice))
@@ -324,7 +348,7 @@ void Interface::addFood(Food &foodList)
 
                 // Create a new FoodItem object with the entered details
                 std::shared_ptr<FoodItem> newFood =
-                        std::make_shared<FoodItem>();
+                    std::make_shared<FoodItem>();
                 newFood->id = newId;
                 newFood->name = newFoodName;
                 newFood->description = newFoodDescription;
@@ -359,4 +383,14 @@ void Interface::removeFood(Food &foodList)
         std::cin.clear();
         std::cout << "Option cancelled. Returning to Menu" << std::endl;
     }
+}
+
+void Interface::setEnhancement(bool state)
+{
+    enhancement = state;
+}
+
+bool Interface::getEnhancement() const
+{
+    return enhancement;
 }

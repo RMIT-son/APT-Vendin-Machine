@@ -310,9 +310,9 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         for (auto denom : changeDenominations) {
             unsigned int value = coinManager.getValue(denom);
             if (value >= ONE_HUNDRED) {
-                std::cout << "$" << value / ONE_HUNDRED;
+                std::cout << "\033[1;32m" << "$" << value / ONE_HUNDRED  << "\033[0m";
             } else {
-                std::cout << value << "c";
+                std::cout << "\033[1;32m" << value << "c" << "\033[0m";
             }
             std::cout << " ";
         }
@@ -323,7 +323,7 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
 
         // Print a thank you message for the purchase
         std::cout << "Thank you for your purchase!" << std::endl;
-    }
+    } 
 }
 
 void Helper::processRefund(CoinManager &coinManager,
