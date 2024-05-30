@@ -306,13 +306,16 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
         std::sort(changeDenominations.begin(), changeDenominations.end());
 
         // Print the change denominations
-        std::cout << "Your change is ";
+        if (changeDenominations.size() > 0)
+        {
+           std::cout << "Your change is ";
+        }
         for (auto denom : changeDenominations) {
             unsigned int value = coinManager.getValue(denom);
             if (value >= ONE_HUNDRED) {
-                std::cout << "\033[1;32m" << "$" << value / ONE_HUNDRED  << "\033[0m";
+                std::cout << "$" << value / ONE_HUNDRED ;
             } else {
-                std::cout << "\033[1;32m" << value << "c" << "\033[0m";
+                std::cout << value << "c";
             }
             std::cout << " ";
         }

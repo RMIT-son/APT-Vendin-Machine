@@ -39,6 +39,10 @@ public:
     void setEnhancement(bool state);
 
     bool getEnhancement() const;  
+
+    void purchaseMealEnhancement(MainLinkedList &mainList, CoinManager &coinManager);
+
+    void addFoodEnhancement(MainLinkedList &mainList);
 private:
     bool enhancement;
 };

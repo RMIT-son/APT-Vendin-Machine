@@ -3,6 +3,7 @@
 #include "Node.h"
 
 
+
 class LinkedList {
 public:
     /**
@@ -34,18 +35,18 @@ public:
     /**
      * @brief Add a node to the list
      * @details This function will add a node to the list.
-     * @param newNode The node to add to the list.
+     * @param data The node to add to the list.
      * @return True if the node was added, false otherwise.
      */
-    bool addNode(std::shared_ptr<FoodItem> newNode);
+    bool addNode(std::shared_ptr<FoodItem> data);
 
     /**
      * @brief Add a node to the list in sorted order
      * @details This function will add a node to the list in sorted order.
-     * @param newNode The node to add to the list.
+     * @param data The node to add to the list.
      * @return True if the node was added, false otherwise.
      */
-    bool addNodeSorted(std::shared_ptr<FoodItem> newNode);
+    bool addNodeSorted(std::shared_ptr<FoodItem> data);
 
     /**
      * @brief Remove a node from the list
@@ -53,7 +54,7 @@ public:
      * @param id The ID of the node to remove.
      * @return True if the node was removed, false otherwise.
      */
-    bool removeNode(std::string& id);
+    bool removeNode(const std::string& id);
 
     /**
      * @brief Find a node in the list
@@ -61,21 +62,25 @@ public:
      * @param id The ID of the node to find.
      * @return A pointer to the node if it was found, nullptr otherwise.
      */
-    Node* findNode(const std::string& id) const;
+    [[nodiscard]] Node* findNode(const std::string& id) const;
 
     /**
      * @brief Get the number of nodes in the list
      * @details This function will return the number of nodes in the list.
      * @return The number of nodes in the list.
      */
-    unsigned getCount() const;
+    [[nodiscard]] unsigned getCount() const;
 
     /**
      * @brief Get the head of the list
      * @details This function will return the head of the list.
      * @return The head of the list.
      */
-    Node* getHead();
+    [[nodiscard]] Node* getHead() const;
+    Node* getNext(Node* node) const;
+    void displayItems() const; 
+    std::string getCategoryName() const;
+    void setCategoryName(const std::string& categoryName);  // Set category name
 
 private:
     // the beginning of the list
@@ -83,8 +88,8 @@ private:
   
     // how many nodes are there in the list
     unsigned count = 0;
+    Node* tail;  // For doubly linked list
+    std::string categoryName;
 };
 
 #endif  // LINKEDLIST_H
-
-

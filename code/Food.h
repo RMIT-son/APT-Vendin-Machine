@@ -6,8 +6,12 @@
 #define FOOD_H
 #include <fstream>
 #include "LinkedList.h"
+#include "MainLinkedList.h"
 #include "Helper.h"
 #include <unordered_set>
+#include <unordered_map>
+#include <sstream>
+#include <iostream>
 
 #define FOOD_DELIM '|'
 #define ID_LENGTH 5
@@ -100,6 +104,7 @@ public:
      * @return The head of the list
      */
     Node* getHead();
+    void readFromEnhancementFile(const std::string& filename, MainLinkedList& mainList);
 private:
     // the beginning of the list
     LinkedList foodList;
