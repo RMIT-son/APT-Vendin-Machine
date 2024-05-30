@@ -11,7 +11,6 @@
 #include <map>
 #include "Coin.h"
 
-
 //The length of the id string not counting the nul terminator
 #define IDLEN 5
 

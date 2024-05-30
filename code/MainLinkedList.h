@@ -33,7 +33,7 @@ public:
     std::string generateID();
     MainNode* getNext(MainNode* node) const;
     LinkedList* getFoodList(MainNode* node) const;
-
+    bool writeToFile(const std::string &filename);
 };
 
 #endif // MAINLINKEDLIST_H

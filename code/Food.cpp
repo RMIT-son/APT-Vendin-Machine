@@ -264,3 +264,4 @@ void Food::readFromEnhancementFile(const std::string& filename, MainLinkedList& 
         std::cerr << "Unable to open file: " << filename << std::endl;
     }
 }
+

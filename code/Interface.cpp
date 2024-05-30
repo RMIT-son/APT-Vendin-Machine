@@ -676,3 +676,36 @@ void Interface::addFoodEnhancement(MainLinkedList &mainList)
     }
 }
 
+void Interface::removeFoodEnhancement(MainLinkedList &mainList)
+{
+    std::cout << "Enter the food id of the food to remove from the menu: ";
+    std::string foodId = Helper::readInput();
+
+    if (!std::cin.eof())
+    {
+        bool foodRemoved = false;
+
+        // Traverse the main list to find and remove the food item
+        auto *categoryNode = mainList.getHead();
+        while (categoryNode != nullptr && !foodRemoved)
+        {
+            LinkedList *foodList = mainList.getFoodList(categoryNode);
+            if (foodList != nullptr && foodList->removeNode(foodId))
+            {
+                foodRemoved = true;
+                std::cout << "Food item removed successfully." << std::endl;
+            }
+            categoryNode = mainList.getNext(categoryNode);
+        }
+
+        if (!foodRemoved)
+        {
+            std::cout << "Error: food item not found." << std::endl;
+        }
+    }
+    else
+    {
+        std::cin.clear();
+        std::cout << "Option cancelled. Returning to Menu" << std::endl;
+    }
+}

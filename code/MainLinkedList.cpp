@@ -82,25 +82,30 @@ MainLinkedList::MainNode *MainLinkedList::getHead()
     return head.get();
 }
 
-MainLinkedList::MainNode* MainLinkedList::getNext(MainNode* node) const {
+MainLinkedList::MainNode *MainLinkedList::getNext(MainNode *node) const
+{
     return node->next.get();
 }
 
-LinkedList* MainLinkedList::getFoodList(MainNode* node) const {
+LinkedList *MainLinkedList::getFoodList(MainNode *node) const
+{
     return node->data.get();
 }
 
-std::string MainLinkedList::generateID() {
+std::string MainLinkedList::generateID()
+{
     std::unordered_set<int> idSet;
     auto categoryNode = getHead();
 
     // Traverse the main linked list and store all IDs in the set
-    while (categoryNode != nullptr) {
+    while (categoryNode != nullptr)
+    {
         auto foodList = getFoodList(categoryNode);
         auto foodNode = foodList->getHead();
 
         // Traverse the food linked list
-        while (foodNode != nullptr) {
+        while (foodNode != nullptr)
+        {
             int numericId = std::stoi(foodNode->data->id.substr(1)); // Skip the first character
             idSet.insert(numericId);
             foodNode = foodList->getNext(foodNode);
@@ -110,7 +115,8 @@ std::string MainLinkedList::generateID() {
 
     // Find the smallest non-existent ID
     int newId = 1;
-    while (idSet.find(newId) != idSet.end()) {
+    while (idSet.find(newId) != idSet.end())
+    {
         newId++;
     }
 
@@ -118,11 +124,61 @@ std::string MainLinkedList::generateID() {
     std::string newIdStr = std::to_string(newId);
     const int ID_DIGITS = 4;
     const char ID_PREFIX = 'F';
-    while (newIdStr.length() < ID_DIGITS) {
+    while (newIdStr.length() < ID_DIGITS)
+    {
         newIdStr.insert(newIdStr.begin(), '0');
     }
 
     // Add prefix and return
     newIdStr.insert(newIdStr.begin(), ID_PREFIX);
     return newIdStr;
+}
+
+static std::string priceToString(const Price &price) {
+    // Create an output string stream to build the price string
+    std::ostringstream oss;
+
+    // Convert the price to a string with 2 decimal places separated by a period
+    oss << price.dollars << "." << std::setfill('0') << std::setw(2)
+        << price.cents;
+    // Return the built price string
+    return oss.str();
+}
+
+bool MainLinkedList::writeToFile(const std::string &filename)
+{
+    bool success = false;
+    std::ofstream file(filename);
+
+    if (file)
+    {
+        MainNode *categoryNode = getHead();
+
+        while (categoryNode != nullptr)
+        {
+            LinkedList *foodList = getFoodList(categoryNode);
+            Node *current = foodList->getHead();
+
+            while (current != nullptr)
+            {
+                file << current->data->id << "|"
+                     << current->data->name << "|"
+                     << current->data->description << "|"
+                     << priceToString(current->data->price) << "|" 
+                     << categoryNode->data->getCategoryName() << std::endl;
+                current = foodList->getNext(current);
+            }
+
+            categoryNode = getNext(categoryNode);
+        }
+
+        file.close();
+        success = true;
+    }
+    else
+    {
+        std::cerr << "Unable to open file: " << filename << std::endl;
+    }
+
+    return success;
 }

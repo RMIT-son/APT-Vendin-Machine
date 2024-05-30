@@ -99,10 +99,11 @@ int main(int argc, char **argv)
                     {
                         // Stop the main loop
                         running = false;
-                        // // Write food data to the food file
-                        // foodList.writeToFile(foodFile);
-                        // // Write coin data to the coin file
-                        // manager.writeToFile(coinFile);
+                        // Write food data to the food file
+                        foodList.writeToFile(foodFile);
+                        foodEnhancementList.writeToFile(foodEnhancementFile);
+                        // Write coin data to the coin file
+                        manager.writeToFile(coinFile);
                     }
                     else if (option == 4)
                     {
@@ -113,14 +114,20 @@ int main(int argc, char **argv)
                         }
                         else
                         {
-
                             interface.addFood(foodList);
                         }
                     }
                     else if (option == 5)
                     {
-                        // Allow the user to remove a food item
-                        interface.removeFood(foodList);
+                        if (interface.getEnhancement())
+                        {
+                            interface.removeFoodEnhancement(foodEnhancementList);
+                        }
+                        else
+                        {
+                            // Allow the user to remove a food item
+                            interface.removeFood(foodList);
+                        }
                     }
                     else if (option == 6)
                     {

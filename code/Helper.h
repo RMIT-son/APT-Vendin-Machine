@@ -8,8 +8,6 @@
 
 #include "Coin.h"
 #include "Food.h"
-#include "Node.h"
-#include "LinkedList.h"
 #include <string>
 #include <sstream>
 #include <cctype>
