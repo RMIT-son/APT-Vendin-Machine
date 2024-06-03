@@ -12,10 +12,10 @@
 int main(int argc, char **argv)
 {
     int res = EXIT_SUCCESS;
-    if (argc < 4)
+    if (argc < 3)
     {
         // Check if the command-line arguments are less than 3
-        std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file> <foodEnhancement_file>"
+        std::cerr << "Usage: " << argv[0] << " <food_file> <coin_file> "
                   << std::endl;
         // Set the result to 1 to indicate an error
         res = EXIT_FAILURE;
@@ -26,7 +26,6 @@ int main(int argc, char **argv)
         std::string foodFile = argv[1];
         // Get the coin file name from command-line argument
         std::string coinFile = argv[2];
-        std::string foodEnhancementFile = argv[3];
 
         Interface interface;
         // Flag to control the main loop
@@ -40,10 +39,9 @@ int main(int argc, char **argv)
 
         // Create an instance of MainLinkedList for enhanced food items
         MainLinkedList foodEnhancementList;
-        // Read food data from the food file
-        foodList.readFromFile(foodFile);
-        // Read enhanced food data from the food enhancement file
-        foodList.readFromEnhancementFile(foodEnhancementFile, foodEnhancementList);
+    
+        // Read enhanced food data from the food file
+        foodList.readFromEnhancementFile(foodFile, foodEnhancementList);
 
         while (running)
         {
@@ -66,68 +64,35 @@ int main(int argc, char **argv)
                 const int option = std::stoi(input);
                 // Convert the input to an integer
 
-                if (option > 0 && option < 9)
+                if (option > 0 && option < 10)
                 {
                     // Check if the option is within the valid range
 
                     if (option == 1)
                     {
-                        if (interface.getEnhancement())
-                        {
-                            foodEnhancementList.displayLists();
-                        }
-                        else
-                        {
-                            // Display the food menu
-                            interface.displayFoodMenu(foodList);
-                        }
+                        interface.displayFoodMenu(foodEnhancementList);
                     }
                     else if (option == 2)
                     {
-                        if (interface.getEnhancement())
-                        {
-                            interface.purchaseMealEnhancement(foodEnhancementList, manager);
-                        }
-                        else
-                        {
-
-                            // Allow the user to purchase a meal
-                            interface.purchaseMeal(foodList, manager);
-                        }
+                        interface.purchaseMealEnhancement(foodEnhancementList, manager);
                     }
                     else if (option == 3)
                     {
                         // Stop the main loop
                         running = false;
                         // Write food data to the food file
-                        foodList.writeToFile(foodFile);
-                        foodEnhancementList.writeToFile(foodEnhancementFile);
+                        foodEnhancementList.writeToFile(foodFile);
                         // Write coin data to the coin file
                         manager.writeToFile(coinFile);
                     }
                     else if (option == 4)
                     {
                         // Allow the user to add a new food item
-                        if (interface.getEnhancement())
-                        {
-                            interface.addFoodEnhancement(foodEnhancementList);
-                        }
-                        else
-                        {
-                            interface.addFood(foodList);
-                        }
+                        interface.addFoodEnhancement(foodEnhancementList);
                     }
                     else if (option == 5)
                     {
-                        if (interface.getEnhancement())
-                        {
-                            interface.removeFoodEnhancement(foodEnhancementList);
-                        }
-                        else
-                        {
-                            // Allow the user to remove a food item
-                            interface.removeFood(foodList);
-                        }
+                        interface.removeFoodEnhancement(foodEnhancementList);
                     }
                     else if (option == 6)
                     {
@@ -135,6 +100,17 @@ int main(int argc, char **argv)
                         interface.displayBalance(manager);
                     }
                     else if (option == 7)
+                    {
+                        if (interface.getColor())
+                        {
+                            interface.setColor(false);
+                        }
+                        else
+                        {
+                            interface.setColor(true);
+                        }
+                    }
+                    else if (option == 8)
                     {
                         if (interface.getEnhancement())
                         {
@@ -145,7 +121,7 @@ int main(int argc, char **argv)
                             interface.setEnhancement(true);
                         }
                     }
-                    else if (option == 8)
+                    else if (option == 9)
                     {
                         // Stop the main loop
                         running = false;

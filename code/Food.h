@@ -78,21 +78,6 @@ public:
     unsigned getFoodCount() const;
 
     /**
-     *@brief Read food items from a file
-     *@details This function will read food items from a file and add them to the food object.
-     *@param filename The name of the file to read the food items from.
-     */
-    void readFromFile(const std::string& filename);
-
-    /**
-     *@brief Write food items to a file
-     *@details This function will write the food items in the food object to a file.
-     *@param filename The name of the file to write the food items to.
-     *@return True if the food items were written successfully, false otherwise.
-     */
-    bool writeToFile(const std::string& filename);
-
-    /**
      * @brief Generate a unique ID for a food item
      * @details This function will generate the smallest unique ID for a food item.
      * @return String containing the unique ID

@@ -9,10 +9,9 @@
 #include <limits>
 #include <memory>
 #include <map>
-#include "LinkedList.h"
+#include "MainLinkedList.h"
 #include "Food.h"
 #include "Coin.h"
-#include "Interface.h"
 
 class Interface {
 public:
@@ -21,32 +20,31 @@ public:
     // Display the main menu options
     void displayMainMenu();
 
-    // Display the food menu options
-    void displayFoodMenu(Food &foodList);
-
     // Display the current balance of the coin manager
     void displayBalance(CoinManager &manager);
 
     // Purchase a meal from the food menu
-    void purchaseMeal(Food &foodList, CoinManager &coinManager);
+    void purchaseMealEnhancement(MainLinkedList &mainList, CoinManager &coinManager);
 
     // Add a new food item to the food list
-    void addFood(Food &foodList);
+    void addFoodEnhancement(MainLinkedList &mainList);
 
     // Remove a food item from the food list
-    void removeFood(Food &foodList);
+    void removeFoodEnhancement(MainLinkedList &mainList);
+
+    void displayFoodMenu(MainLinkedList &mainList);
 
     void setEnhancement(bool state);
 
-    bool getEnhancement() const;  
+    bool getEnhancement() const; 
 
-    void purchaseMealEnhancement(MainLinkedList &mainList, CoinManager &coinManager);
+    void setColor(bool state);
 
-    void addFoodEnhancement(MainLinkedList &mainList);
-
-    void removeFoodEnhancement(MainLinkedList &mainList);
+    bool getColor() const; 
+        
 private:
     bool enhancement;
+    bool color;
 };
 
 #endif // INTERFACE_H

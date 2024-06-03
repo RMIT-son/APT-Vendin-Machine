@@ -41,7 +41,6 @@ bool MainLinkedList::addList(std::unique_ptr<LinkedList> list)
 }
 
 // Find list by category name
-// Find list by category name
 LinkedList *MainLinkedList::findList(const std::string &category) const
 {
     MainNode *current = head.get();
@@ -54,20 +53,6 @@ LinkedList *MainLinkedList::findList(const std::string &category) const
         current = current->next.get();
     }
     return nullptr;
-}
-
-// Display all lists
-void MainLinkedList::displayLists() const
-{
-    MainNode *temp = head.get();
-    std::cout << "Food Menu\n"
-              << "---------\n";
-    while (temp)
-    {
-        std::cout << temp->data->getCategoryName() << std::endl;
-        temp->data->displayItems();
-        temp = temp->next.get();
-    }
 }
 
 // Get the count of lists
@@ -134,7 +119,8 @@ std::string MainLinkedList::generateID()
     return newIdStr;
 }
 
-static std::string priceToString(const Price &price) {
+static std::string priceToString(const Price &price)
+{
     // Create an output string stream to build the price string
     std::ostringstream oss;
 
@@ -164,7 +150,7 @@ bool MainLinkedList::writeToFile(const std::string &filename)
                 file << current->data->id << "|"
                      << current->data->name << "|"
                      << current->data->description << "|"
-                     << priceToString(current->data->price) << "|" 
+                     << priceToString(current->data->price) << "|"
                      << categoryNode->data->getCategoryName() << std::endl;
                 current = foodList->getNext(current);
             }

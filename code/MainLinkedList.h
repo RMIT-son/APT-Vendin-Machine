@@ -26,8 +26,7 @@ public:
     MainLinkedList();
     ~MainLinkedList();
     bool addList(std::unique_ptr<LinkedList> list);
-    LinkedList *findList(const std::string &category) const;
-    void displayLists() const;
+    LinkedList *findList(const std::string &category) const;;
     unsigned getCount() const;
     MainNode *getHead();
     std::string generateID();

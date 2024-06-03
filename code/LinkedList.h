@@ -78,7 +78,6 @@ public:
      */
     [[nodiscard]] Node* getHead() const;
     Node* getNext(Node* node) const;
-    void displayItems() const; 
     std::string getCategoryName() const;
     void setCategoryName(const std::string& categoryName);  // Set category name
 

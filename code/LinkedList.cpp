@@ -206,34 +206,3 @@ static inline void trim(std::string &s)
     ltrim(s);
     rtrim(s);
 }
-
-// Display the list
-void LinkedList::displayItems() const
-{
-    Node *temp = head.get();
-
-    std::cout << "ID   |Name                                              |Price\n";
-    std::cout << "------------------------------------------------------------------\n";
-    while (temp != nullptr)
-    {
-        /*
-         * Trim the name to remove any leading
-         * or trailing whitespace or non-visible characters*/
-        std::string foodName = temp->data->name;
-        trim(foodName);
-
-        // Print the food item details with proper formatting
-        std::cout << std::left << std::setw(5) << temp->data->id << "|"
-                  << std::setw(50) << foodName << "|" << "\033[32m" << "$" 
-                  << std::setw(2) << std::right
-                  << temp->data->price.dollars << "."
-                  << std::setfill('0') << std::setw(2)
-                  << temp->data->price.cents
-                  << std::setfill(' ') << std::endl
-                  << "\033[0m";
-
-        temp = temp->next.get();
-    }
-    std::cout << "\n";
-}
-
