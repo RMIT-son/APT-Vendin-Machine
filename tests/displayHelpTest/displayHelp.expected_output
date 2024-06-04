@@ -1,0 +1,24 @@
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+
+Type 'help' for assistance.
+
+Select your option (1-7) : help
+
+Command List:
+1. Display food menu: Shows the available food items.
+2. Purchase a meal: Allows you to buy a meal from the food menu.
+3. Exit program: Terminates the program and saves the data.
+4. Add a new food item: Lets you add a new food item to the menu.
+5. Remove a food item: Allows you to remove a food item from the menu.
+6. Display coin balance: Shows your current balance of coins.
+7. Exit program without saving: Terminates the program without saving the data.
+
+Enter the corresponding number to execute a command.
