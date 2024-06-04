@@ -1,7 +1,3 @@
-//
-// Created by Son on 5/13/2024.
-//
-
 #ifndef HELPER_H
 #define HELPER_H
 

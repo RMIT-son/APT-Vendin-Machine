@@ -55,12 +55,6 @@ bool LinkedList::addNode(std::shared_ptr<FoodItem> data) {
         head = std::move(newNode);
         tail = head.get();
     } else {
-        // Traverse to the end of the list and add the new node at the end
-//        Node* current = head.get();
-//        while (current->next) {
-//            current = current->next.get();
-//        }
-//        current->next = std::move(newNode);
         newNode->prev = tail;
         tail->next = std::move(newNode);
         tail = tail->next.get();
@@ -127,14 +121,6 @@ bool LinkedList::removeNode(const std::string& id) {
              * with the given ID and remove it
              */
             Node* current = head.get();
-//            while (current->next && current->next->data->id != id) {
-//                current = current->next.get();
-//            }
-//            if (current->next) {
-//                current->next = std::move(current->next->next);
-//                count--;
-//                isRemoved = true;
-//            }
 
             while (current->next) {
                 if (current->next->data->id == id) {

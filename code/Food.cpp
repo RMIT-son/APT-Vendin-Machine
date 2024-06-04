@@ -1,7 +1,3 @@
-//
-// Created by Son on 5/11/2024.
-//
-
 #include "Food.h"
 
 Food::Food() {

@@ -44,7 +44,7 @@ public:
     // Remove a food item from the food list
     static void removeFood(Food &foodList);
 
-
+    // Add a help function from the food menu
     static void displayHelp();
 };
 

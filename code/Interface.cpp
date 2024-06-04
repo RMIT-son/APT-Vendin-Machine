@@ -298,7 +298,8 @@ void Interface::addFood(Food &foodList)
                 newFoodDescription = foodDescription;
                 descriptionValid = false;
             } else {
-                std::cout << "Error: Invalid description. Please enter a valid description." << std::endl;
+                std::cout << "Error: Invalid description. "
+                             "Please enter a valid description." << std::endl;
             }
 
             // Check if input is empty or EOF

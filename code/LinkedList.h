@@ -80,7 +80,6 @@ public:
 private:
     // the beginning of the list
     std::unique_ptr<Node> head;
-//    std::unique_ptr<Node> tail;
     Node* tail;
     // how many nodes are there in the list
     unsigned count = 0;
