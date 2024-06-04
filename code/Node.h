@@ -91,6 +91,8 @@ public:
     std::shared_ptr<FoodItem> data{};
     // pointer to the next node in the list 
     std::unique_ptr<Node> next;
+//    std::unique_ptr<Node> prev;
+Node* prev;
 };
 
 #endif // NODE_H

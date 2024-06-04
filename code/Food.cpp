@@ -169,8 +169,3 @@ std::string Food::generateID() const {
     newIdStr.insert(newIdStr.begin(), ID_PREFIX);
     return newIdStr;
 }
-
-
-
-
-

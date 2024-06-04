@@ -2,6 +2,7 @@
 
 LinkedList::LinkedList() {
     head = nullptr;
+    tail = nullptr;
     count = 0;
 }
 
@@ -16,7 +17,11 @@ bool LinkedList::clearList() {
          * effectively removing the current head node
          */
         head = std::move(head->next);
+        if (head) {
+            head->prev = nullptr;
+        }
     }
+    tail = nullptr;
     count = 0;
     return true;
 }
@@ -48,13 +53,17 @@ bool LinkedList::addNode(std::shared_ptr<FoodItem> data) {
     if (!head) {
         // If the list is empty, make the new node the head
         head = std::move(newNode);
+        tail = head.get();
     } else {
         // Traverse to the end of the list and add the new node at the end
-        Node* current = head.get();
-        while (current->next) {
-            current = current->next.get();
-        }
-        current->next = std::move(newNode);
+//        Node* current = head.get();
+//        while (current->next) {
+//            current = current->next.get();
+//        }
+//        current->next = std::move(newNode);
+        newNode->prev = tail;
+        tail->next = std::move(newNode);
+        tail = tail->next.get();
     }
     count++;
     // Always return true as the node is always added successfully
@@ -69,6 +78,11 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
          * make it the new head
          */
         newNode->next = std::move(head);
+        if (newNode->next) {
+            newNode->next->prev = newNode.get();
+        } else {
+            tail = newNode.get();
+        }
         head = std::move(newNode);
     } else {
         //Traverse the list to find the correct position to insert the new node
@@ -78,7 +92,13 @@ bool LinkedList::addNodeSorted(std::shared_ptr<FoodItem> data) {
             current = current->next.get();
         }
         newNode->next = std::move(current->next);
+        if (newNode->next) {
+            newNode->next->prev = newNode.get();
+        } else {
+            tail = newNode.get();
+        }
         current->next = std::move(newNode);
+        current->next->prev = current;
     }
     count++;
     // Always return true as the node is always added successfully
@@ -94,6 +114,11 @@ bool LinkedList::removeNode(const std::string& id) {
              * remove it and update the head
              */
             head = std::move(head->next);
+            if (head) {
+                head->prev = nullptr;
+            } else {
+                tail = nullptr;
+            }
             count--;
             isRemoved = true;
         } else {
@@ -102,13 +127,28 @@ bool LinkedList::removeNode(const std::string& id) {
              * with the given ID and remove it
              */
             Node* current = head.get();
-            while (current->next && current->next->data->id != id) {
+//            while (current->next && current->next->data->id != id) {
+//                current = current->next.get();
+//            }
+//            if (current->next) {
+//                current->next = std::move(current->next->next);
+//                count--;
+//                isRemoved = true;
+//            }
+
+            while (current->next) {
+                if (current->next->data->id == id) {
+                    current->next = std::move(current->next->next);
+                    if (current->next) {
+                        current->next->prev = current;
+                    } else {
+                        tail = current;
+                    }
+                    count--;
+                    isRemoved = true;
+                    return  isRemoved;
+                }
                 current = current->next.get();
-            }
-            if (current->next) {
-                current->next = std::move(current->next->next);
-                count--;
-                isRemoved = true;
             }
         }
     }

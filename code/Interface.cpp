@@ -1,4 +1,8 @@
 #include "Interface.h"
+#include <iostream>
+#include <iomanip>
+#include <limits>
+#include <stdexcept>
 
 // Utility function to trim from start (in place)
 static void ltrim(std::string &s) {
@@ -34,9 +38,10 @@ void Interface::displayMainMenu()
     std::cout << "   5. Remove Food" << std::endl;
     std::cout << "   6. Display Balance" << std::endl;
     std::cout << "   7. Abort Program" << std::endl;
+    std::cout << "\nType 'help' for assistance." << std::endl;
 
     // Prompt the user to select an option
-    std::cout << "Select your option (1-7) : ";
+    std::cout << "\nSelect your option (1-7) : ";
 }
 
 void Interface::displayFoodMenu(const Food &foodList)
@@ -105,6 +110,7 @@ void Interface::displayBalance(CoinManager &manager)
     std::cout << "Total:            $" << std::setw(7) << std::fixed <<
               std::setprecision(2) << totalValue << std::endl;
 }
+
 void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
 {
     // Added CoinManager reference
@@ -112,7 +118,7 @@ void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
 
     std::cout << "Purchase Meal" << std::endl;
     std::cout << "-------------" << std::endl;
-  
+
     while (running) {
         std::cout << "Please enter the ID of the food you wish to purchase: ";
         std::string id = Helper::readInput();
@@ -149,7 +155,9 @@ void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
                         std::cout << "You have selected \"" << foodItem->name
                                   << " - " << foodItem->description
                                   << "\". This will cost you $"
+                                  << ANSI_COLOR_BLUE
                                   << Helper::priceToString(foodItem->price)
+                                  << ANSI_COLOR_RESET
                                   << std::endl;
                         std::cout << "Please hand over the money - "
                                      "type in the value of each note/"
@@ -171,9 +179,11 @@ void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
                             std::cout << "You still need to give us $"
                                       << std::setw(6) << std::fixed
                                       << std::setprecision(2)
+                                      << ANSI_COLOR_RED
                                       << Helper::priceToString({
                                           (foodItem->price.dollars * 100 +foodItem->price.cents - totalPaid) / 100,
                                           (foodItem->price.dollars * 100 + foodItem->price.cents - totalPaid) % 100})
+                                      << ANSI_COLOR_RESET
                                       << ": ";
                             std::string denomination = Helper::readInput();
 
@@ -261,6 +271,8 @@ void Interface::addFood(Food &foodList)
             {
                 newFoodName = foodName;
                 nameValid = false;
+            } else {
+                std::cout << "Error: Invalid name. Please enter a valid name." << std::endl;
             }
 
             // Check if input is empty or EOF
@@ -285,6 +297,8 @@ void Interface::addFood(Food &foodList)
             {
                 newFoodDescription = foodDescription;
                 descriptionValid = false;
+            } else {
+                std::cout << "Error: Invalid description. Please enter a valid description." << std::endl;
             }
 
             // Check if input is empty or EOF
@@ -327,6 +341,8 @@ void Interface::addFood(Food &foodList)
                 // Add the new food item to the food list
                 foodList.addFood(newFood);
                 priceValid = false;
+            } else {
+                std::cout << "Error: Invalid price. Please enter a valid price." << std::endl;
             }
         }
     }
@@ -346,12 +362,119 @@ void Interface::removeFood(Food &foodList)
         }
         else
         {
-            std::cout << "Error: food item not found." << std::endl;
+            std::cout << "Error: Food item not found. "
+                         "Please check the food ID and try again." <<std::endl;
         }
     }
     else
     {
         std::cin.clear();
         std::cout << "Option cancelled. Returning to Menu" << std::endl;
+    }
+}
+void Interface::displayHelp() {
+    std::cout << "Command List:" << std::endl;
+    std::cout << "1. Display food menu: "
+                 "Shows the available food items." << std::endl;
+    std::cout << "2. Purchase a meal: Allows you to buy"
+                 " a meal from the food menu." << std::endl;
+    std::cout << "3. Exit program: Terminates the "
+                 "program and saves the data." << std::endl;
+    std::cout << "4. Add a new food item: Lets you add "
+                 "a new food item to the menu." << std::endl;
+    std::cout << "5. Remove a food item: Allows you to "
+                 "remove a food item from the menu." << std::endl;
+    std::cout << "6. Display coin balance: Shows your "
+                 "current balance of coins." << std::endl;
+    std::cout << "7. Exit program without saving: "
+                 "Terminates the program without saving the data." <<std::endl;
+    std::cout << std::endl;
+    std::cout << "Enter the corresponding number "
+                 "to execute a command." << std::endl;
+
+    std::string input;
+    std::getline(std::cin, input);
+
+    if (input == "1") {
+        std::cout << std::endl;
+        std::cout << "Display food menu:" << std::endl;
+        std::cout << "If you want to see the food list, you can see all the "
+                     "detail of food in the menu to purchase" << std::endl;
+    }
+    else if (input == "2") {
+        std::cout << std::endl;
+        std::cout << "Purchase a Meal:" << std::endl;
+        std::cout << "To purchase a meal, follow these steps:" << std::endl;
+        std::cout << "1. Enter the corresponding number "
+                     "for the meal you want to buy." << std::endl;
+        std::cout << "Remember that for the amount you pay, "
+                     "it must have the following denominations: " << std::endl;
+        std::cout << FIVE_CENTS_VALUE << " is 5 cents" <<std::endl;
+        std::cout << TEN_CENTS_VALUE << " is 10 cents" <<std::endl;
+        std::cout << TWENTY_CENTS_VALUE << " is 20 cents" <<std::endl;
+        std::cout << FIFTY_CENTS_VALUE << " is 50 cents" <<std::endl;
+        std::cout << ONE_DOLLAR_VALUE << " is 1 dollar" <<std::endl;
+        std::cout << TWO_DOLLARS_VALUE << " is 2 dollars" <<std::endl;
+        std::cout << FIVE_DOLLARS_VALUE << " is 5 dollars" <<std::endl;
+        std::cout << TEN_DOLLARS_VALUE << " is 10 dollars" <<std::endl;
+        std::cout << TWENTY_DOLLARS_VALUE << " is 20 dollars" <<std::endl;
+        std::cout << FIFTY_DOLLARS_VALUE << " is 50 dollars" <<std::endl;
+        std::cout << "2. If the meal requires payment, ensure you have"
+                     " enough coins in your balance." << std::endl;
+        std::cout << "3. Confirm the purchase by following"
+                     " the on-screen prompts." << std::endl;
+        std::cout << "4. Enjoy your meal!" << std::endl;
+        std::cout << "\nIf you encounter any issues or need further assistance,"
+                     " please let us know." << std::endl;
+    }
+    else if (input == "3") {
+        std::cout << std::endl;
+        std::cout << "Save and Exit:" << std::endl;
+        std::cout << "When you purchased a meal, the program "
+                     "will save that food taken out." << std::endl;
+        std::cout << "Also, it will deduct the balance"
+                     " in the coins data." << std::endl;
+        std::cout << "After all, all the data will be saved in the data"
+                     " files and then exit the program" << std::endl;
+    }
+    else if (input == "4") {
+        std::cout << std::endl;
+        std::cout << "Add a New Food Item:" << std::endl;
+        std::cout << "To add a new food item to the menu, "
+                     "follow these steps:" << std::endl;
+        std::cout << "1. Enter the name of the new food item." << std::endl;
+        std::cout << "2. Provide a description or additional "
+                     "details about the food item." << std::endl;
+        std::cout << "3. Specify the price of the food item." << std::endl;
+        std::cout << "4. The new food item will now be "
+                     "available in the food menu." << std::endl;
+        std::cout << "\nIf you encounter any issues or need further assistance,"
+                     " please let us know." << std::endl;
+    }
+    else if (input == "5") {
+        std::cout << std::endl;
+        std::cout << "Remove a Food Item:" << std::endl;
+        std::cout << "To remove a food item from the menu,"
+                     " follow these steps:" << std::endl;
+        std::cout << "1. Enter the corresponding number for the "
+                     "food item you want to remove." << std::endl;
+        std::cout << "2. Confirm the removal of the food item." << std::endl;
+        std::cout << "3. The selected food item will be removed"
+                     " from the food menu." << std::endl;
+        std::cout << "\nIf you encounter any issues or need further assistance,"
+                     " please let us know." << std::endl;
+    }
+    else if (input == "6") {
+        std::cout << std::endl;
+        std::cout << "Display Balance:" << std::endl;
+        std::cout << "When you want to check the balance, it will appear how many coins left." << std::endl;
+        std::cout << "This will help you purchase the meal and give back excess money" << std::endl;
+    }
+    else if (input == "7") {
+        std::cout << std::endl;
+        std::cout << "Abort Program:" << std::endl;
+        std::cout << "If you don't want to save any data that you have changed "
+                     "before, this will help exit the program "
+                     "without any changes." << std::endl;
     }
 }

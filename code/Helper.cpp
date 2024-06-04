@@ -126,11 +126,13 @@ bool Helper::isValidPrice(const std::string &priceStr) {
     // Attempt to read the cent portion of the price string
     else if (!std::getline(iss, centStr)) {
         std::cout << "Error: money is not formatted properly" << std::endl;
+        std::cout << "Please enter a valid price. \n For example: 1.00";
         isValid = false;
     }
     // Check if the cent portion has exactly two digits
     else if (centStr.length() != 2) {
         std::cout << "Error: there are not two digits for cents." << std::endl;
+        std::cout << "Please enter a valid price. \n For example: 1.50";
         isValid = false;
     }
     // Check if both the dollar and cent portions consist of only digits

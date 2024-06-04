@@ -6,6 +6,7 @@ Node::Node() {
     this->data = nullptr;
     // Initialize next pointer to nullptr
     this->next = nullptr;
+    this->prev = nullptr;
 }
 
 // Constructor for Node class with data parameter
@@ -14,6 +15,7 @@ Node::Node(const std::shared_ptr<FoodItem> &data) {
     this->data = data;
     // Initialize next pointer to nullptr
     this->next = nullptr;
+    this->prev = nullptr;
 }
 
 // Destructor for Node class
@@ -23,4 +25,5 @@ Node::~Node(){
      * effectively breaking the link to the next node
      */
     next = nullptr;
+    prev = nullptr;
 }

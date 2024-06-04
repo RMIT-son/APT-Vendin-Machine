@@ -8,6 +8,7 @@
  * data, display the main menu, and handles the processing of options.
  * Make sure free memory and close all files after exiting the program.
  **/
+
 int main(const int argc, char **argv) {
     int res = EXIT_SUCCESS;
     if (argc < 3) {
@@ -42,9 +43,11 @@ int main(const int argc, char **argv) {
             if (std::cin.eof()) {
                 // Check if the input stream encountered end-of-file condition
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
-                                '\n');
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Error in input. Please try again." << std::endl;
+            } else if (input == "help") {
+                // Display help text
+                Interface::displayHelp();
             } else if (Helper::isNumber(input)) {
                 // Check if the input is a numeric value
                 const int option = std::stoi(input);
@@ -92,15 +95,14 @@ int main(const int argc, char **argv) {
                         running = false;
                     }
                 } else {
-                    std::cout << "Error: number was outside of range."
-                    << std::endl;
+                    std::cout << "Error: number was outside of range." << std::endl;
                 }
             } else {
                 std::cout << "Error: input was not numeric." << std::endl;
                 std::cout << "Error in input. Please try again." << std::endl;
             }
         }
+        // Return the result of the program execution
+        return res;
     }
-    // Return the result of the program execution
-    return res;
 }
