@@ -6,6 +6,7 @@
 #define ENHANCEDLINKEDLIST_H
 #include "EnhancedNode.h"
 
+
 class EnhancedLinkedList {
 public:
     EnhancedLinkedList();
@@ -23,7 +24,7 @@ public:
      * @details This function will sort the list.
      * @return True if the list was sorted successfully, false otherwise.
      */
-    bool sortList();
+    bool sortList() const;
 
     /**
      * @brief Add a node to the list
@@ -31,7 +32,7 @@ public:
      * @param data The node to add to the list.
      * @return True if the node was added, false otherwise.
      */
-    bool addNode(std::shared_ptr<InnerLinkedList> data);
+    bool addNode(std::shared_ptr<FoodItem> data);
 
     /**
      * @brief Add a node to the list in sorted order
@@ -39,7 +40,7 @@ public:
      * @param data The node to add to the list.
      * @return True if the node was added, false otherwise.
      */
-    bool addNodeSorted(std::shared_ptr<InnerLinkedList> data);
+    bool addNodeSorted(std::shared_ptr<FoodItem> data);
 
     /**
      * @brief Remove a node from the list
@@ -69,14 +70,14 @@ public:
      * @details This function will return the head of the list.
      * @return The head of the list.
      */
-    [[nodiscard]] Node* getHead() const;
+    [[nodiscard]] EnhancedNode* getHead() const;
 
 private:
     // the beginning of the list
     std::unique_ptr<EnhancedNode> head;
 
     // the end of the list
-    std::unique_ptr<EnhancedNode> tail;
+    EnhancedNode* tail;
 
     // how many nodes are there in the list
     unsigned count = 0;

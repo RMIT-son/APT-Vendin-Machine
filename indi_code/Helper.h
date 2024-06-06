@@ -25,6 +25,18 @@
 #define MIN_PRICE 0
 #define MAX_PRICE 99
 
+// Enumeration for the different contexts in the program
+enum context {
+    MAIN_MENU,
+    PURCHASE_ID,
+    PURCHASE_DENOMINATION,
+    ADD_FOOD_NAME,
+    ADD_FOOD_DESCRIPTION,
+    ADD_FOOD_PRICE,
+    REMOVE_FOOD_ID,
+    ENHANCEMENTS_MENU
+};
+
 class Helper {
 public:
     /**

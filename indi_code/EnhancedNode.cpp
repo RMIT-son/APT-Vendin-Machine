@@ -10,7 +10,9 @@ EnhancedNode::EnhancedNode() {
 }
 
 
-EnhancedNode::EnhancedNode(std::unique_ptr<InnerLinkedList> data) {
+EnhancedNode::EnhancedNode(std::shared_ptr<FoodItem> data) {
     this->data = std::move(data);
     this->next = nullptr;
 }
+
+

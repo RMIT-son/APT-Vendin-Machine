@@ -4,20 +4,20 @@
 
 #ifndef ENHANCEDNODE_H
 #define ENHANCEDNODE_H
-#include "InnerLinkedList.h"
+#include "Node.h"
 
 
 class EnhancedNode {
 public:
     EnhancedNode();
     ~EnhancedNode() = default;
-    std::unique_ptr<InnerLinkedList> data;
+    explicit EnhancedNode(std::shared_ptr<FoodItem> data);
+
+    // Data members
+    std::shared_ptr<FoodItem> data;
     std::unique_ptr<EnhancedNode> next;
     std::weak_ptr<EnhancedNode> prev;
-
-    explicit EnhancedNode(std::unique_ptr<InnerLinkedList> data);
 };
-
 
 
 #endif //ENHANCEDNODE_H

@@ -329,7 +329,7 @@ void Helper::processPayment(FoodItem *foodItem, CoinManager &coinManager,
 
 void Helper::processRefund(CoinManager &coinManager,
                            const std::vector<Denomination>
-                                   &addedDenominations) {
+                           &addedDenominations) {
     std::cout << "Refund: ";
     for (const auto &denom : addedDenominations) {
         // Remove the coin from the coin manager

@@ -7,7 +7,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -29,4 +30,5 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 

@@ -7,7 +7,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) :
+   8. Enhancements Menu
+Select your option (1-8) :
 Purchase Meal
 -------------
 Please enter the ID of the food you wish to purchase:
@@ -26,4 +27,5 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) :
+   8. Enhancements Menu
+Select your option (1-8) :

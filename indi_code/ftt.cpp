@@ -1,7 +1,8 @@
 #include <iostream>
 #include "Food.h"
 #include "Coin.h"
-#include "Interface.h"
+#include "Menu.h"
+#include "Command.h"
 
 /**
  * manages the running of the program, initialises data structures, loads
@@ -24,6 +25,9 @@ int main(const int argc, char **argv) {
 
         // Flag to control the main loop
         bool running = true;
+        // Flags to control the enhancements
+        bool helpToggle = false;
+        bool colorToggle = false;
         // Create an instance of CoinManager class
         CoinManager coinsManager;
         // Read coin data from the coin file
@@ -33,77 +37,41 @@ int main(const int argc, char **argv) {
         // Read food data from the food file
         foodList.readFromFile(foodFile);
 
+        Menu menu;
+        // Set the commands for the menu
+        menu.setCommand(1, std::make_unique<DisplayMealOptionsCommand>(&foodList));
+        menu.setCommand(2, std::make_unique<PurchaseMealCommand>(&foodList, &coinsManager,
+                                                                                helpToggle, colorToggle));
+        menu.setCommand(3, std::make_unique<SaveAndExitCommand>(foodList,
+                                                                                coinsManager,
+                                                                                foodFile,
+                                                                                coinFile,
+                                                                                running,
+                                                                                res));
+        menu.setCommand(4, std::make_unique<AddFoodCommand>(&foodList, helpToggle));
+        menu.setCommand(5, std::make_unique<RemoveFoodCommand>(&foodList, helpToggle));
+        menu.setCommand(6, std::make_unique<DisplayBalanceCommand>(&coinsManager));
+        menu.setCommand(7, std::make_unique<AbortProgramCommand>(running));
+        menu.setCommand(8, std::make_unique<EnhancementsCommand>(helpToggle, colorToggle));
         while (running) {
             // Display the main menu
             Interface::displayMainMenu();
             // Read user input
             std::string input = Helper::readInput();
-
             if (std::cin.eof()) {
-                // Check if the input stream encountered end-of-file condition
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
-                                '\n');
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Error in input. Please try again." << std::endl;
+            } else if (helpToggle && input == HELP_COMMAND) {
+                Interface::help(MAIN_MENU);
             } else if (Helper::isNumber(input)) {
-                // Check if the input is a numeric value
                 const int option = std::stoi(input);
-                // Convert the input to an integer
-
-                if (option > 0 && option < 8) {
-                    // Check if the option is within the valid range
-
-                    if (option == 1) {
-                        // Display the food menu
-                        Interface::displayFoodMenu(foodList);
-                    } else if (option == 2) {
-                        // Allow the user to purchase a meal
-                        Interface::purchaseMeal(foodList, coinsManager);
-                    } else if (option == 3) {
-                        // Stop the main loop
-                        running = false;
-                        // Write food data to the food file
-                        if (!foodList.writeToFile(foodFile)) {
-                            // Check if the food data was not written to the file
-                            std::cerr << "Error: failed to write to food file."
-                                      << std::endl;
-                            // Set the result to 1 to indicate an error
-                            res = EXIT_FAILURE;
-                        }
-                        // Write coin data to the coin file
-                        if (!coinsManager.writeToFile(coinFile)) {
-                            // Check if the coin data was not written to the file
-                            std::cerr << "Error: failed to write to coins file."
-                                      << std::endl;
-                            // Set the result to 1 to indicate an error
-                            res = EXIT_FAILURE;
-                        }
-                    } else if (option == 4) {
-                        // Allow the user to add a new food item
-                        Interface::addFood(foodList);
-                    } else if (option == 5) {
-                        // Allow the user to remove a food item
-                        Interface::removeFood(foodList);
-                    } else if (option == 6) {
-                        // Display the current coin balance
-                        Interface::displayBalance(coinsManager);
-                    } else if (option == 7) {
-                        // TODO Enhancements Menu
-                        Interface::displayEnhancementsMenu(foodList, coinsManager);
-                    } else if (option == 8) {
-                        // Stop the main loop
-                        running = false;
-                    }
-                } else {
-                    std::cout << "Error: number was outside of range."
-                    << std::endl;
-                }
+                menu.executeCommand(option);
             } else {
                 std::cout << "Error: input was not numeric." << std::endl;
                 std::cout << "Error in input. Please try again." << std::endl;
             }
         }
     }
-    // Return the result of the program execution
     return res;
 }

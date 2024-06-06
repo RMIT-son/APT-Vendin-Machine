@@ -7,7 +7,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 This new meal item will have the Item ID of F0008
 Enter the item name: 
 Enter the item description: 
@@ -23,7 +24,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -46,4 +48,5 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 

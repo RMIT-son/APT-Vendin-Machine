@@ -34,14 +34,15 @@ void Interface::displayMainMenu()
     std::cout << "   5. Remove Food" << std::endl;
     std::cout << "   6. Display Balance" << std::endl;
     std::cout << "   7. Abort Program" << std::endl;
+    std::cout << "   8. Enhancements Menu" << std::endl;
 
     // Prompt the user to select an option
-    std::cout << "Select your option (1-7) : ";
+    std::cout << "Select your option (1-8) : ";
 }
 
 void Interface::displayFoodMenu(const Food &foodList)
 {
-    const Node *current = foodList.getHead();
+    const EnhancedNode *current = foodList.getHead();
 
     // Display the food menu header
     std::cout << "Food Menu\n"
@@ -105,7 +106,7 @@ void Interface::displayBalance(CoinManager &manager)
     std::cout << "Total:            $" << std::setw(7) << std::fixed <<
               std::setprecision(2) << totalValue << std::endl;
 }
-void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
+void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager, bool& helpToggle, bool& colorToggle)
 {
     // Added CoinManager reference
     bool running = true;
@@ -117,18 +118,17 @@ void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
         std::cout << "Please enter the ID of the food you wish to purchase: ";
         std::string id = Helper::readInput();
 
+        if (helpToggle && id == HELP_COMMAND) {
+            help(PURCHASE_ID);
+
         // Check if input is empty or EOF (end of file)
-        if (id.empty() || std::cin.eof())
-        {
+        } else if (id.empty() || std::cin.eof()) {
             std::cin.clear();
             running = false;
             std::cout << "Option cancelled, returning to menu." << std::endl;
-        }
-        else
-        {
+        } else {
             // Input is not empty or EOF
-            if (!std::cin.eof())
-            {
+            if (!std::cin.eof()) {
                 // Find the food item based on the provided ID
                 FoodItem *foodItem = foodList.findFood(id);
 
@@ -168,18 +168,31 @@ void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
                          */
                         while (denominating)
                         {
-                            std::cout << "You still need to give us $"
-                                      << std::setw(6) << std::fixed
-                                      << std::setprecision(2)
-                                      << Helper::priceToString({
-                                          (foodItem->price.dollars * 100 +foodItem->price.cents - totalPaid) / 100,
-                                          (foodItem->price.dollars * 100 + foodItem->price.cents - totalPaid) % 100})
-                                      << ": ";
+                            if (colorToggle) {
+                                std::cout << "You still need to give us $"
+                                          << GREEN
+                                          << std::setw(6) << std::fixed
+                                          << std::setprecision(2)
+                                          << Helper::priceToString({
+                                              (foodItem->price.dollars * 100 +foodItem->price.cents - totalPaid) / 100,
+                                              (foodItem->price.dollars * 100 + foodItem->price.cents - totalPaid) % 100})
+                                          << ESCAPE
+                                          << ": ";
+                            } else {
+                                std::cout << "You still need to give us $"
+                                          << std::setw(6) << std::fixed
+                                          << std::setprecision(2)
+                                          << Helper::priceToString({
+                                              (foodItem->price.dollars * 100 +foodItem->price.cents - totalPaid) / 100,
+                                              (foodItem->price.dollars * 100 + foodItem->price.cents - totalPaid) % 100})
+                                          << ": ";
+                            }
                             std::string denomination = Helper::readInput();
 
+                            if (helpToggle && denomination == HELP_COMMAND) {
+                                help(PURCHASE_DENOMINATION);
                             // Check if input is empty or EOF
-                            if (denomination.empty() || std::cin.eof())
-                            {
+                            } else if (denomination.empty() || std::cin.eof()) {
                                 std::cout << std::endl << "Purchase cancelled."
                                 << std::endl;
                                 std::cin.clear();
@@ -234,7 +247,7 @@ void Interface::purchaseMeal(const Food &foodList, CoinManager &coinManager)
     }
 }
 
-void Interface::addFood(Food &foodList)
+void Interface::addFood(Food &foodList, const bool& helpToggle)
 {
     bool running = true;
     while (running)
@@ -257,8 +270,9 @@ void Interface::addFood(Food &foodList)
         {
             std::cout << "Enter the item name: ";
             std::string foodName = Helper::readInput();
-            if (Helper::isValidName(foodName))
-            {
+            if (helpToggle && foodName == HELP_COMMAND) {
+                help(ADD_FOOD_NAME);
+            } else if (Helper::isValidName(foodName)) {
                 newFoodName = foodName;
                 nameValid = false;
             }
@@ -281,8 +295,9 @@ void Interface::addFood(Food &foodList)
             std::cout << "Enter the item description: ";
             std::string foodDescription = Helper::readInput();
 
-            if (Helper::isValidDescription(foodDescription))
-            {
+            if (helpToggle && foodDescription == HELP_COMMAND) {
+                help(ADD_FOOD_DESCRIPTION);
+            } else if (Helper::isValidDescription(foodDescription)) {
                 newFoodDescription = foodDescription;
                 descriptionValid = false;
             }
@@ -303,18 +318,16 @@ void Interface::addFood(Food &foodList)
         {
             std::cout << "Enter the price for this item: ";
             std::string foodPrice = Helper::readInput();
+            if (helpToggle && foodPrice == HELP_COMMAND) {
+                help(ADD_FOOD_PRICE);
 
             // Check if input is empty or EOF
-            if (std::cin.eof() || foodPrice.empty())
-            {
+            } else if (std::cin.eof() || foodPrice.empty()) {
                 std::cin.clear();
                 running = false;
                 priceValid = false;
                 std::cout<< "Option cancelled, returning to menu."<< std::endl;
-            }
-
-            if (Helper::isValidPrice(foodPrice))
-            {
+            } else if (Helper::isValidPrice(foodPrice)) {
                 running = false;
 
                 // Create a new FoodItem object with the entered details
@@ -332,7 +345,7 @@ void Interface::addFood(Food &foodList)
     }
 }
 
-void Interface::removeFood(Food &foodList)
+void Interface::removeFood(Food &foodList, const bool& helpToggle)
 {
     std::cout << "Enter the food id of the food to remove from the menu: ";
     const std::string foodId = Helper::readInput();
@@ -340,12 +353,12 @@ void Interface::removeFood(Food &foodList)
     if (!std::cin.eof())
     {
         // Check if the food item exists and remove it
-        if (foodList.removeFood(foodId))
-        {
+        if (helpToggle && foodId == HELP_COMMAND) {
+            help(REMOVE_FOOD_ID);
+        } else if (foodList.removeFood(foodId)) {
             std::cout << "Food item removed successfully." << std::endl;
         }
-        else
-        {
+        else {
             std::cout << "Error: food item not found." << std::endl;
         }
     }
@@ -357,6 +370,100 @@ void Interface::removeFood(Food &foodList)
 }
 
 void Interface::displayEnhancementsMenu() {
-    // TODO
+    // Display the enhancements menu options
     std::cout << "Enhancements Menu" << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "1. Help Toggle" << std::endl;
+    std::cout << "2. Color Toggle" << std::endl;
+    std::cout << "3. Return to Main Menu" << std::endl;
 }
+
+void Interface::Enhancements(bool& helpToggle, bool& colorToggle) {
+    bool running = true;
+    while (running) {
+        displayEnhancementsMenu();
+        std::cout << "Select your option (1-3) : ";
+        std::string input = Helper::readInput();
+        if (input.empty() || std::cin.eof()) {
+            std::cin.clear();
+            std::cout << "Option cancelled. Returning to Menu" << std::endl;
+            running = false;
+        } else if (helpToggle && input == HELP_COMMAND) {
+            help(ENHANCEMENTS_MENU);
+        } else if (Helper::isNumber(input)) {
+            const int option = std::stoi(input);
+            if (option == 1) {
+                // Toggle Help
+                helpToggle = !helpToggle;
+                std::cout << "Help is now " << (helpToggle ? "enabled" : "disabled") << std::endl;
+            } else if (option == 2) {
+                // Toggle Color
+                colorToggle = !colorToggle;
+                std::cout << "Color is now " << (colorToggle ? "enabled" : "disabled") << std::endl;
+            } else if (option == 3) {
+                // Return to Main Menu
+                running = false;
+            } else {
+                std::cout << "Error: number was outside of range." << std::endl;
+            }
+        } else {
+            std::cout << "Error: input was not numeric." << std::endl;
+            std::cout << "Error in input. Please try again." << std::endl;
+        }
+    }
+}
+
+void Interface::help(const context context) {
+    if (context == MAIN_MENU) {
+        std::cout << "Press 1 to see the Menu\n"
+                     "Press 2 to purchase a meal\n"
+                     "Press 3 to Save & Exit\n"
+                     "Press 4 to add a new food item\n"
+                     "Press 5 to remove a food item\n"
+                     "Press 6 to display the current coin balance\n"
+                     "Press 7 to display the enhancements menu\n"
+                     "Press 8 to exit the program\n";
+    } else if (context == PURCHASE_ID) {
+        std::cout << "Enter the ID of the food item you wish to purchase\n"
+                     "The ID must be in the format 'F****' where * are numbers\n";
+    } else if (context == PURCHASE_DENOMINATION) {
+        std::cout << "Enter the denomination of the coin you wish to insert\n"
+                     "The denomination must be in cents\n"
+                     "Valid denominations are\n";
+
+        // Print the valid coin denominations
+        int denominations[] = {FIVE_CENTS_VALUE,
+                                 TEN_CENTS_VALUE,
+                                 TWENTY_CENTS_VALUE,
+                                 FIFTY_CENTS_VALUE,
+                                 ONE_DOLLAR_VALUE,
+                                 TWO_DOLLARS_VALUE,
+                                 FIVE_DOLLARS_VALUE,
+                                 TEN_DOLLARS_VALUE,
+                                 TWENTY_DOLLARS_VALUE,
+                                 FIFTY_DOLLARS_VALUE};
+
+        for (const int denomination : denominations) {
+            std::cout << denomination << "\n";
+        }
+    } else if (context == ADD_FOOD_NAME) {
+        std::cout << "Enter the name of the food item you wish to add\n"
+                     "The name must be between 1 and 40 characters\n";
+    } else if (context == ADD_FOOD_DESCRIPTION) {
+        std::cout << "Enter the description of the food item you wish to add\n"
+                     "The description must be between 1 and 255 characters\n";
+    } else if (context == ADD_FOOD_PRICE) {
+        std::cout << "Enter the price of the food item you wish to add\n"
+                     "The price must be in the format 'D.CC' where D is dollars and C is cents\n";
+    } else if (context == REMOVE_FOOD_ID) {
+        std::cout << "Enter the ID of the food item you wish to remove\n"
+                     "The ID must be in the format 'F****' where * are numbers\n";
+    } else if (context == ENHANCEMENTS_MENU) {
+        std::cout << "Press 1 to toggle help\n"
+                     "Press 2 to toggle color\n"
+                     "Press 3 to return to the main menu\n";
+    }
+}
+
+
+

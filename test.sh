@@ -123,3 +123,13 @@ fi
 # Overwrite actual_foods and actual_coins to reset
 cp ./tests/end2EndTest/before/end2End.actual_foods ./tests/end2EndTest/end2End.actual_foods
 cp ./tests/end2EndTest/before/end2End.actual_coins ./tests/end2EndTest/end2End.actual_coins
+
+# Test the Help functionality
+./ftt ./data/foods.dat ./data/coins.dat < ./tests/helpTest/help.input > ./tests/helpTest/help.actual_output
+diff -w ./tests/helpTest/help.expected_output ./tests/helpTest/help.actual_output
+if [ $? -eq 0 ]
+then
+    echo "Help Test: Passed"
+else
+    echo "Help Test: Failed"
+fi

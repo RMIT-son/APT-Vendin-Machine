@@ -36,7 +36,7 @@ bool Food::clearFood() {
 
 FoodItem* Food::findFood(const std::string& id) const {
     // Find a food item in the Food LinkedList
-    const Node* node = foodList.findNode(id);
+    const EnhancedNode* node = foodList.findNode(id);
     return node ? node->data.get() : nullptr;
 }
 
@@ -110,7 +110,7 @@ bool Food::writeToFile(const std::string& filename) const {
     std::ofstream file(filename);
     if (file) {
         // Get the head node of the foodList
-        const Node* current = foodList.getHead();
+        const EnhancedNode* current = foodList.getHead();
         while (current != nullptr) {
             /*
              * Write the fields of the current FoodItem to the file,
@@ -135,14 +135,14 @@ bool Food::writeToFile(const std::string& filename) const {
     return success;
 }
 
-Node* Food::getHead() const {
+EnhancedNode* Food::getHead() const {
     // Delegate to foodList's getHead() function and return the head node
     return foodList.getHead();
 }
 
 std::string Food::generateID() const {
     std::unordered_set<int> idSet;
-    const Node* current = foodList.getHead();
+    const EnhancedNode* current = foodList.getHead();
 
     // Traverse the linked list and store all IDs in the set
     while (current != nullptr) {

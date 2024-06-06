@@ -2,7 +2,7 @@
 CXX = g++
 CXXFLAGS = -Wall -Werror -std=c++14 -O
 TARGET = ftt
-SOURCES = $(wildcard ./code/*.cpp)
+SOURCES = $(wildcard ./indi_code/*.cpp)
 
 # Default target
 all: $(TARGET)

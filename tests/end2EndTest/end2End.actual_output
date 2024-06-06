@@ -7,7 +7,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -29,7 +30,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Purchase Meal
 -------------
 Please enter the ID of the food you wish to purchase: 
@@ -52,7 +54,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Balance Summary
 ----------------
 Denom | Quantity | Value
@@ -78,7 +81,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -100,7 +104,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Purchase Meal
 -------------
 Please enter the ID of the food you wish to purchase: 
@@ -119,7 +124,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 This new meal item will have the Item ID of F0008
 Enter the item name: 
 Enter the item description: 
@@ -133,7 +139,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -156,7 +163,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 This new meal item will have the Item ID of F0009
 Enter the item name: 
 Enter the item description: 
@@ -170,7 +178,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -194,7 +203,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Purchase Meal
 -------------
 Please enter the ID of the food you wish to purchase: 
@@ -214,7 +224,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Balance Summary
 ----------------
 Denom | Quantity | Value
@@ -240,7 +251,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -264,7 +276,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Enter the food id of the food to remove from the menu: 
 Food item removed successfully.
 Main Menu:
@@ -276,7 +289,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Food Menu
 ---------
 ID   |Name                                              |Price
@@ -299,7 +313,8 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 
 Balance Summary
 ----------------
 Denom | Quantity | Value
@@ -325,4 +340,5 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7) : 
+   8. Enhancements Menu
+Select your option (1-8) : 

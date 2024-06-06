@@ -6,6 +6,8 @@
 #define FOOD_H
 #include <fstream>
 #include <unordered_set>
+
+#include "EnhancedLinkedList.h"
 #include "LinkedList.h"
 #include "Helper.h"
 
@@ -100,10 +102,10 @@ public:
      * @brief Get the head of the list
      * @return The head of the list
      */
-    [[nodiscard]] Node* getHead() const;
+    [[nodiscard]] EnhancedNode* getHead() const;
 private:
     // the beginning of the list
-    LinkedList foodList;
+    EnhancedLinkedList foodList;
     // how many nodes are there in the list
     unsigned count = 0;
 };
